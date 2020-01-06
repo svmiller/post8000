@@ -1,0 +1,4 @@
+*.Rmd
+figs
+old
+*.tex
