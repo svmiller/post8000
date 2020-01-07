@@ -4,7 +4,7 @@ title: Course Materials
 permalink: /course-materials/
 ---
 
-{% include image.html url="/_images/dsi-mm.png" caption="The (Effectively) Required Books for the Semester" width=640 align="right" %}
+{% include image.html url="/_images/dsi-mm.png" caption="The (Effectively) Required Books for the Semester" width=400 align="right" %}
 
 ## (Effectively) Required Books
 
