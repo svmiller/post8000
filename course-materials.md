@@ -14,7 +14,7 @@ King, Gary, Robert O. Keohane, and Sidney Verba. 1994. [Designing Social Inquiry
 
 *Will also be used extensively, but is [available electronically through Clemson's library](http://libcat.clemson.edu/record=b3513527) and the Canvas module for the course:*
 
-Best, Henning and Christof Wolf (eds.). 2014. [The SAGE Handbook of Regression Analysis and Causal Inference](https://www.amazon.com/Handbook-Regression-Analysis-Causal-Inference/dp/1446252442). London, UK: SAGE Publications Ltd
+Best, Henning and Christof Wolf (eds.). 2014. [The SAGE Handbook of Regression Analysis and Causal Inference](https://www.amazon.com/Handbook-Regression-Analysis-Causal-Inference/dp/1446252442). London, UK: SAGE Publications, Ltd.
 
 ## A Comment on Assigned Books and Graduate-Level Methods Instruction
 
