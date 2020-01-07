@@ -4,13 +4,17 @@ title: Course Materials
 permalink: /course-materials/
 ---
 
-{% include image.html url="/_images/dsi-mm.png" caption="The (Effectively) Required Books for the Semester" width=400 align="right" %}
+{% include image.html url="/_images/dsi-mm.png" caption="The (Effectively) Required Books for the Semester" width=350 align="right" %}
 
 ## (Effectively) Required Books
 
 Angrist, Joshua D. and Jorn-Steffen Pischke. 2014. [Mastering 'Metrics: The Path from Cause to Effect](https://www.amazon.com/Mastering-Metrics-Path-Cause-Effect/dp/0691152845). Princeton, NJ: Princeton University Press.
 
 King, Gary, Robert O. Keohane, and Sidney Verba. 1994. [Designing Social Inquiry: Scientific Inference in Qualitative Research](https://www.amazon.com/Designing-Social-Inquiry-Scientific-Qualitative/dp/0691034710). Princeton, NJ: Princeton University Press.
+
+*Will also be used extensively, but is [available electronically through Clemson's library](http://libcat.clemson.edu/record=b3513527) and the Canvas module for the course:*
+
+Best, Henning and Christof Wolf (eds.). 2014. [The SAGE Handbook of Regression Analysis and Causal Inference](https://www.amazon.com/Handbook-Regression-Analysis-Causal-Inference/dp/1446252442). London, UK: SAGE Publications Ltd
 
 ## A Comment on Assigned Books and Graduate-Level Methods Instruction
 
