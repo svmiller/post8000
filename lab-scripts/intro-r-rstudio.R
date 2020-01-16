@@ -1,3 +1,13 @@
+getwd()
+
+a <- 3
+b <- 4 
+this_is_a_long_object_name_and_you_should_not_do_this <- 5
+d <- pi # notice there are a few built-in functions/objects
+
+ls()
+
+
 install.packages(c("tidyverse","devtools"))
 
 # Once it's installed:
