@@ -1,0 +1,135 @@
+---
+title: "What Is Scientific Research?"
+subtitle: POST 8000  -- Foundations of Social Science Research for Public Policy
+author: Steven V. Miller
+institute: Department of Political Science
+titlegraphic: /Dropbox/teaching/clemson-academic.png
+date: 
+fontsize: 10pt
+output:
+ beamer_presentation:
+    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
+    latex_engine: xelatex
+    dev: cairo_pdf
+    fig_caption: true
+    slide_level: 3
+make149: true
+mainfont: "Open Sans"
+titlefont: "Titillium Web"
+---
+
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE, warning=F)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='cache/')
+
+knitr::opts_chunk$set(
+                  fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      }
+                  )
+```
+
+```{r loadstuff, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+library(stevemisc)
+
+```
+
+# Introduction
+### Goal for Today
+
+*Discuss what we mean by "science" and how we can relate it to policy analyses.*
+
+# What Is Science?
+<!-- ### What Is Science? -->
+
+<!-- It's easy to misuse the term "science", including shorthand for: -->
+
+<!-- - Things that seem cool but we don't understand -->
+<!-- - TED talks that are almost always bad -->
+<!-- - An acquired repository of "facts" -->
+<!-- - Technology -->
+<!-- - An umbrella term for STEM stuff (i.e. "the hard sciences") -->
+<!-- - Whatever it is that Neil Degrasse Tyson talks about. -->
+
+
+<!-- Science is ultimately none of that. -->
+
+### What Is Science?
+
+Science is a *method*, not a discipline. 
+
+- Informally: test assumptions against observable evidence in a systematic manner.
+- Each step is made explicit.
+
+Other components:
+
+- Scientific method is ultimately value-neutral.
+- It seeks generalizations, not to explain specific observations.
+
+For shorthand, we call this the empirical implications of theoretical models (EITM) or hypothetico-deductivism.
+
+###
+
+> The method of the book, then, is to develop the deductive implications of the four basic axioms for a given, highly specific set of conditions; review evidence indicating whether or not these implications are empirically correct; and present new evidence as necessary and possible to resolve outstanding empirical questions (Zaller 1992, 51).
+
+## H-D and EITM
+### Hypothetico-Deductivism (H-D)
+
+Kyburg (1988, 65) outlined the H-D model.
+
+- A hypothesis *H* is set up for testing or examination.
+- We deduce an observation sentence *O* from *H* and its necessary qualifiers, boundary conditions, etc.
+- We test *H* with an experiment or examination and observe either *O* or ~*O*.
+
+If ~*O*, then ~*H*. If *O*, we fail to refute *H*.
+
+### Hypothetico-Deductivism (H-D)
+
+Replace *H* with theory *T* and we have the standard political science model (Hausman 1992, 304).
+
+1. *Formulate* some hypothesis *H* from theory *T*.
+2. *Deduce* prediction *P* from *H* with necessary qualifiers (e.g. "ceteris paribus").
+3. *Test* *P*.
+4. *Judge* whether *H* is confirmed or disconfirmed, contingent on *P* or ~*P*.
+
+### Empirical Implications of Theoretical Models (EITM)
+
+EITM is shorthand for this approach, and a push across political science.
+
+1. Start with theory, informed by case study, field work, or "puzzle".
+2. Outline model establishing causal linkages.
+3. Stipulate deductions and hypotheses.
+4. Outline measurement and research design to test deductions.
+5. Collect and analyze data.
+
+The results are inductively compared to the theory and its hypotheses.
+
+### KKV (1994)
+
+KKV fit well within this paradigm:
+
+1. *The goal is inference*.
+2. Procedures are public/transparent (more on this later in the semester).
+3. The conclusions are uncertain.
+4. *The content is the method.*
+
+In many ways, KKV describe a "pre-statistical" (c.f. McKeown, 1999) approach to inference.
+
+<!-- ### KKV (1994) as "Pre-Statistical" -->
+
+<!-- Must scientific research be statistical? Yes and no. -->
+
+<!-- - No: KKV's method is unchanged whether it's interviews or regression. -->
+<!-- - Yes: we should strive to generalize, esp. when data are available. -->
+
+
+### Some Limitations, Discussion
+
+1. What is a "theory?" How do you write one?
+2. How do you evaluate a theory?
+3. Must scientific research be statistical?
+4. Are theories "tested with data?"
+
