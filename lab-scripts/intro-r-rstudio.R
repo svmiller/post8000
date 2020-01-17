@@ -79,6 +79,6 @@ pwt_sample %>%
   # give me the observations from the most recent year.
   filter(year == max(year))
 
-
+pwt_sample %>%
 # convert real GDP to billions
 mutate(rgdpnab = rgdpna/1000) -> NewObjectName
