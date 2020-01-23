@@ -1,0 +1,114 @@
+---
+title: "Descriptive Inference"
+subtitle: POST 8000  -- Foundations of Social Science Research for Public Policy
+author: Steven V. Miller
+institute: Department of Political Science
+titlegraphic: /Dropbox/teaching/clemson-academic.png
+date: 
+fontsize: 10pt
+output:
+ beamer_presentation:
+    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
+    latex_engine: xelatex
+    dev: cairo_pdf
+    fig_caption: true
+    slide_level: 3
+make149: true
+mainfont: "Open Sans"
+titlefont: "Titillium Web"
+---
+
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE, warning=F)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='cache/')
+
+knitr::opts_chunk$set(
+                  fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      }
+                  )
+```
+
+```{r loadstuff, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+library(tidyverse)
+library(stevemisc)
+library(post8000r)
+
+```
+
+# Descriptive Inference
+## Introduction
+### Goal for Today
+
+*Introduce students to basic descriptive inference.*
+
+### What Makes Good Scientific Research?
+
+1. Generates inference.
+2. The research procedures are transparent/public.
+3. The conclusions are "uncertain" (i.e. includes reasonable estimates of uncertainty).
+4. The content is the method.
+
+## Interpretation and Inference
+### Interpretation and Inference
+
+KKV spend much of chp. 2 contrasting "interpretation" with "inference."
+
+- "Interpretation" seeks accurate summaries of historical detail, placing them in historical context in which we can understand their meaning.
+
+KKV want something more with "inference."
+
+- i.e. to use the facts we know to learn more about the facts we don't yet know.
+
+## A Generalized Model of Research Design
+### A Generalized Model of Research Design
+
+KKV build on the "model" metaphor to formalize research design. Definitions first:
+
+- **Data collection**: a wide range of methods for gathering information, ideally connected to the question we want to answer.
+- **Variable**: an empirical measurement of a characteristic, typically denoted as $y$.
+- **Unit**: a level of analysis (e.g. individual people, countries, counties, etc.)
+- **Observation**: an individual observation of *y*, typically denoted like $y_i$.
+
+
+### An Example from the General Social Survey (2018)
+
+My `post8000r` package has a `gss_spending` data frame from the GSS in 2018.
+
+- **Data collection**: a probability sample of individuals living in the U.S.
+- **Variable**: (take your pick of various demographic attributes and attitudes toward spending programs)
+- **Unit**: individuals living in the U.S.
+- **Observation**: a numeric value (again, take your pick, type `?gss_spending` in R for more information).
+    - example: `race` = 1 for white people, 2 for black people, 3 for other.
+    
+```{r}
+gss_spending %>% distinct(race)
+```
+
+### Summarizing Historical Detail
+
+There are any number of ways of summarizing your variable into a *statistic*, but two principles apply:
+
+1. The statistic should focus on the outcome the researcher wishes to describe or explain.
+2. *The goal of the model is to simplify*.
+
+
+### Descriptive Inference
+
+"Descriptive inference" is the process of understanding the unobserved from the observed. Two governing principles:
+
+1. There are *systematic* differences we can explain by reference to something fundamental/predictable.
+2. There are still *nonsystematic* (or *stochastic*) differences from stuff we can't explain.
+
+Our goal is to distinguish the former from the latter.
+
+## Discussion
+### Discussion
+
+1. How do we evaluate descriptive inference?
+2. What can we do about stochastic/nonsystematic differences in our variable?
+3. What is the difference between "realized" and "random" in our variables?
+4. What can interpretative methods teach us about inference?
