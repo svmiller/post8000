@@ -28,6 +28,7 @@ cache
 # Also, students should definitely not have access to some of this stuff.
 readings*
 sample-syllabi*
+_private
 
 # Ignore some jekyll stuff
 _site
