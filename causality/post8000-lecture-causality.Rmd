@@ -60,7 +60,7 @@ A set of tools to understand how a response variable corresponds with some attri
 - Correlation
 - Regression(?)
 
-"Associational inference consists of [estimates, tests, posterior distributions, etc.] about the associational paramters relating *Y* and *A* [from units in *U*]. In this sense, associational inference is simply descriptive statistics." - Holland, 1986 (p. 946)
+"Associational inference consists of [estimates, tests, posterior distributions, etc.] about the associational parameters relating *Y* and *A* [from units in *U*]. In this sense, associational inference is simply descriptive statistics." - Holland, 1986 (p. 946)
 
 
 ### Probability Distributions
@@ -101,9 +101,9 @@ $$
 ### Standardization
 
 
-\begin{equation}
+$$
     z = \frac{\textrm{Deviation from the mean}}{\textrm{Standard unit}}
-\end{equation}
+$$
 
 The standard unit will vary, contingent on what you want.
 
@@ -131,10 +131,10 @@ Causal inference owes much to Rubin's "potential outcomes framework.
 
 ### The Problem in a Nutshell
 
-An individual ($i$) who is offered a treatment ($Z_i$ = 1) with two potential outcomes:
+An individual ($i$) who is offered a treatment ($Z_i = 1$) has two potential outcomes:
 
-- An outcome to be revealed if s/he accepts the treatment ($T_i$ = 1): $Y_i(T_i = 1 | Z_i = 1)$
-- An outcome to be revealed if untreated ($T_i$ = 0): $Y_i(T_i = 0 | Z_i = 1)$
+- An outcome to be revealed if treated ($T_i = 1$): $Y_i(T_i = 1 | Z_i = 1)$
+- An outcome to be revealed if *un*treated ($T_i = 0$): $Y_i(T_i = 0 | Z_i = 1)$
 
 This is a missing data problem of a kind.
 
