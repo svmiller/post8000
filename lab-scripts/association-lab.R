@@ -381,7 +381,7 @@ oursamplesummaries %>%
 # So, we reject the claim that Trump's thermometer rating is 50 (in fact, we know it's not) and suggest our sample mean is 
 # closer to what it actually is. Which is true. We've been playing god this entire time.
 
-# To this point, we've been assuming we know the populationa sigma, if not the mu, in calculating our standard error of the sample mean.
+# To this point, we've been assuming we know the population sigma, if not the mu, in calculating our standard error of the sample mean.
 # This is a bit unrealistic, obviously. To know sigma is to also know mu.
 # What about when you don't know the population parameters at all?
 # t-distribution is your answer.
