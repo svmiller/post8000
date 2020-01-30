@@ -26,7 +26,7 @@ library(broom) # for the tidy function later in the script. Also good to have ar
 # see ?gss_spending for more information
 cor(gss_spending$polviews, gss_spending$sumnatsoc, use="complete.obs")
 
-# If you're going to just explore shit without overwriting anything, you can add  it to a pipe workflow. Observe:
+# If you're going to just explore without overwriting anything, you can add it to a pipe workflow. Observe:
 
 gss_spending %>%
   summarize(r = cor(polviews, sumnatsoc, use="complete.obs"))
@@ -44,12 +44,12 @@ Quartets %>%
   group_by(quartet) %>%
   summarize_if(is.numeric, list(mean = mean, sd = sd))
 
-# The correlations are effectively the same
+# The correlations are effectively the same for all four quartets.
 Quartets %>%
   group_by(quartet) %>%
   summarize(r = cor(x, y))
 
-# Linear function of y ~ x is practically the same
+# Linear function of y ~ x is practically the same across all four quartets
 Quartets %>%
   group_by(quartet) %>%
   do(model = lm(y ~ x, data = .))  %>% 
@@ -64,7 +64,7 @@ Quartets %>%
   ggplot(.,aes(x,y)) +
   facet_wrap(~quartet) + geom_point() + geom_smooth(method = "lm")
 
-# Basically: look at your data and be mindful that you can be easily misled if you don't.
+# Basically: look at your data and be mindful that you can be easily misled if you don't do this.
 
 
 # Simpson's paradox -----
@@ -82,8 +82,8 @@ Guber99 %>%
 
 # But there's a lurking variable. Use your head on this one:
 # 1) The ACT is a test-taking alternative in a lot of these states.
-# 2) Spendier states may have a regression to the mean, of sorts: they want more students taking these tests/going to college. Meanwhile:
-# 3) only the most motivated, ambitious few in some of these other states are taking the SAT (to go out of state).
+# 2) Spendier states may have a regression to the mean, of sorts: they want more students taking these tests/going to college. 
+# 3) Meanwhile, only the most motivated, ambitious few in some of these other states are taking the SAT (to go out of state).
 # Some quick and dirty quartiles by the percentage of the state taking the SAT will show a Simpson reversal.
 
 Guber99 %>%
@@ -104,7 +104,9 @@ Illiteracy30
 # FWIW, consider the time frame here. The public good of education has always been unequally allocated by race and immigrant status.
 # Further, some basic background of which Europeans were migrating to the U.S. and why will underscore what you see here.
 
-# for context: fbwhite = "foreign born white" (i.e. immigrant), nwhite = native-born white, fpwhite = white from "foreign/mixed parentage"
+# for context: fbwhite = "foreign born white" (i.e. immigrant),
+# nwhite = native-born white, 
+# fpwhite = white from "foreign/mixed parentage"
 Illiteracy30 %>%
   summarize_if(is.numeric, sum) %>%
   gather(var) %>%
@@ -123,8 +125,8 @@ Illiteracy30 %>%
   ggplot(.,aes(foreignp, illiterate)) + geom_point() +
   geom_smooth(method = "lm")
 
-# Why? Simple: immigrants were moving to places with lower literacy rates, which generally had more economic opportunity (e.g. NY, NJ)
-# Basically, ecological correlations are not substitutes for individual correlations
+# Why? Simple: immigrants were moving to places with lower illiteracy rates, which generally had more economic opportunity (e.g. NY, NJ)
+# Basically, ecological correlations are not substitutes for individual correlations.
 
 # Central limit theorem -----
 # Central limit theorem says:
@@ -140,7 +142,10 @@ Illiteracy30 %>%
 Therms18 %>%
   ggplot(.,aes(fttrump)) + geom_bar()
 
-# Ugly, right? The mean is almost 20 points removed from the median and the standard deviation is bigger than it.
+# Just so we're on the same page: higher values indicate "warmer" attitudes toward Trump (i.e. more favorable attitudes). 
+# Lower values indicate "colder" attitudes toward Trump (i.e. less favorable attitudes).
+
+# These data are ugly, right? The mean is almost 20 points removed from the median and the standard deviation is bigger than it.
 Therms18 %>% select(fttrump) %>%
   na.omit %>%
   summarize_all(list(mean = mean, 
@@ -166,7 +171,7 @@ trumpsamples <- tibble(
            })) 
 # ^ this might take a few seconds. You're doing a million samples, after all.
 
-#  Let's plot the distribution of our sample means.
+# Let's plot the distribution of our sample means.
 # Here's a histogram underneath a density function of the normal distribution with the parameters derived from the simulations.
 trumpsamples %>%
   ggplot(.,aes(samplemean)) + geom_histogram(binwidth=.5,aes(y=..density..)) +
@@ -176,28 +181,31 @@ trumpsamples %>%
                           sd=sd(trumpsamples$samplemean))) +
   xlab("Sample Mean") + ylab("Density") 
 
+# Looks "normal", right?
+
 # Before going too much further, let's talk about a normal distribution.
 # Underlying concept: data routinely cluster around some central tendency and deviations from it are less common.
 # We owe the articulation/formalization of this concept to Carl Friedrich Gauss, who discovered this bell curve function.
 # In Gauss' formulation: f(x) = (1/sqrt(2*pi*sigma^2))exp({-(x - mu)^2/2*sigma^2}) where mu is the mean and sigma is the variance.
 # Some important properties of the normal density function/Gaussian distribution:
-# 1) The tails are asymptote to zero.
+# 1) The tails are asymptote to zero. They approach it but don't touch it.
 # 2) The kernel inside the exponent is a basic parabola. The negative sign flips it downward.
-# 3) It's denoted as a function and not a probability because it is a continuous distribution. The probability of any one value is near zero.
+# 3) It's denoted as a function and not a probability because it is a continuous distribution. 
+#    ^ The probability of any one value is near zero.
 # 4) The distribution is perfectly symmetrical. x is as far from mu as -x is from mu.
 # 5) x is unrestricted. It can be any value.
 # 6) mu defines the central tendency
 # 7) sigma defines how short/wide the distribution is.
-# 8) A special case occurs when mu is zero and sigma is 1. The formula becomes a lot simpler.
+# 8) A special case occurs when mu is zero and sigma is 1. The formula becomes a lot simpler. I'll belabor that bit later.
 
 
 # Anywho, how did we do?
 mean(fttrump)
 mean(trumpsamples$samplemean)
-# not bad. We were off by around 1/1000th of a point.
+# not bad. We were off by around 1/1000th of a point. A million is a lot, but not infinity after all.
 
 
-# Central limit theorem shows its ideally to take a shitload of samples to guess a population parameter from it.
+# Central limit theorem shows its ideal to take a shitload of samples to guess a population parameter from it.
 # Sometimes, that's not practical. You really can't take infinity samples of the United States in a time-invariant way.
 # So, there's another way: get a good-sized random sample. If you understand random sampling error, you'll know you can't do
 # much about the variation inherent in the population. In our case, these data are ugly as hell. What you can do, however, is 
@@ -237,7 +245,8 @@ moresamples %>%
 # It's a "bang for your buck" thing. Fewer than 1000 observations and your random sampling error starts to get appreciably bigger.
 # Any more than that and, generally, you might find yourself careening into Literary Digest Poll territory.
 # To be clear: others do some large-N surveys quite well, but increasing the sample size just to increase it does incentivize some non-random sampling.
-# Plus, it's more expensive and the "payout" from a larger sample size may not be worth the cost. It's why you get that sweet spot you routinely observe.
+# Plus, it's more expensive and the "payout" from a larger sample size may not be worth the cost. 
+# It's why you get that sweet spot you routinely observe from opinion polls.
 
 # I mentioned above that a special case of the normal distribution occurs when mu is zero and sigma is 1.
 # It allows for an easier summary of the distribution and the areas underneath it.
@@ -343,7 +352,7 @@ oursamplesummaries %>%
          p = 1-pnorm(abs(z)))
 
 # Here's how you'd interpret this: if mu where actually 40.0 (which it is, even if you see it rounded), the probability of 
-# that we observed our x-bar of 41.5 (rounded in the output you see) is around .355
+# that we observed our x-bar of 41.5 (rounded in the output you see) is around .355.
 # That's kind of a probable result. It's obviously not the population mean, but it's in orbit and a probabilistic draw from the population.
 
 # What if we were to test against a claim that Trump's thermometer rating is actually 73.88?
@@ -360,13 +369,14 @@ oursamplesummaries %>%
 
 # What about 50?
 # Source: Trump weirdly brags about 50% approval rating, when he can find a poll that shows it, when no other president would brag about that.
-# You can do the same thing.
+# You can do the same thing, with same caveat that approval rating != thermometer rating, but alas...
 
 oursamplesummaries %>%
   mutate(z = (mean - 50)/sem,
          p = 1-pnorm(abs(z)))
 
-# The sample statistic we got suggests that, if Trump's thermometer rating is truly 50, the sample mean we observed is more than 2 standard errors from it.
+# The sample statistic we got suggests that, if Trump's thermometer rating is truly 50, 
+# the sample mean we observed is more than 2 standard errors from it.
 # The probability of us observing it is .0174. That's highly unlikely.
 # So, we reject the claim that Trump's thermometer rating is 50 (in fact, we know it's not) and suggest our sample mean is 
 # closer to what it actually is. Which is true. We've been playing god this entire time.
