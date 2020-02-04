@@ -28,3 +28,7 @@
   dirname: causality
   tldr: "On association and causality: the tools to evaluate the former and the framework to think about the latter."
 
+- title: "Random Assignment and Experiments"
+  filename: random-assignment-experiments
+  dirname: random-assignment-experiments
+  tldr: "Random assignment and experiments constitute the 'gold standard' for causal identification."
