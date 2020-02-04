@@ -1,0 +1,137 @@
+---
+title: "Random Assignment and Experiments"
+subtitle: POST 8000  -- Foundations of Social Science Research for Public Policy
+author: Steven V. Miller
+institute: Department of Political Science
+titlegraphic: /Dropbox/teaching/clemson-academic.png
+date: 
+fontsize: 10pt
+output:
+ beamer_presentation:
+    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
+    latex_engine: xelatex
+    dev: cairo_pdf
+    fig_caption: true
+    slide_level: 3
+make149: true
+mainfont: "Open Sans"
+titlefont: "Titillium Web"
+---
+
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE, warning=F)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='cache/')
+
+knitr::opts_chunk$set(
+                  fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      }
+                  )
+```
+
+```{r loadstuff, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+library(tidyverse)
+library(stevemisc)
+library(post8000r)
+
+```
+
+# Random Assignment and Experiments
+## Introduction
+### Goal for Today
+
+*Elaborate on the 'gold standard' for causal inference research, with its benefits and limitations.*
+
+## Observational vs. Experimental Research
+### Observational vs. Experimental Research
+
+Observational research: involves a comparison of units subjected to different treatments.
+
+- More common, more flexible. But difficult to isolate causal effects.
+
+Experimental research: units under study are randomly assigned to treatments.
+
+- satisfies key questions about observational research design
+
+
+### Experiments
+
+Experiments are more effective at addressing causality.
+
+- Want to explain social phenomena like medical researchers testing therapeutic care.
+- Satisfies insights from Rubin's potential outcomes framework
+- Researcher control over conditions isolates confounding systematic factors.
+- Random assignment isolates systematic differences from random differences.
+
+### Random Assignment and Causal Inference
+
+Random assignment (e.g. coin-flipping) means each unit has same chance to be in particular group (e.g. control or treatment).
+
+- All groups are equal in expectation, beyond treatment(s).
+- Control group behaves as treatment group(s) without treatment, as counterfactual.
+- Various tests (e.g. *t*-test) can assess differences between control and treatment(s).
+
+
+### The Utility of Experiments (Roth, 1995)
+
+1. *"Speaking with theorists":* provides an experimental test for a theoretical model.
+2. *"Searching for facts":* generates new data to explore aspects of previous experiments.
+3. *"Whispering in the ears of princes":* isolates causal effects, certainly of interest to policymakers.
+
+
+### Types of Experiments
+
+There are numerous ways of assessing causal effects. One typology:
+
+1. "Between subjects": units randomly assigned to distinct treatment/control groups.
+2. "Within subjects": units observed before and after receiving a treatment.
+
+## Validity Concerns
+### Validity Concerns
+
+Experiments ideally maximize internal validity, if (possibly) at the expense of external validity.
+
+### Internal Validity
+
+Internal validity: stimulus faithly administered, as implemented in the design. Concerns:
+
+- Noncompliance
+- Attrition
+
+
+### External Validity
+
+External validity: results generalizable from the "lab" to the "real world." Concerns:
+
+- Convenience sampling (esp. college students)
+- Hawthorne effect
+
+## Types of Experiments
+### Types of Experiments
+
+Experiments are super-flexible. Some types you'll encounter:
+
+1. Lab experiments
+    - Maximize internal validity, prioritized over external validity
+    - Typically prone to convenience sampling.
+2. Survey experiments
+    - Balance internal/external validity concerns
+    - Typically higher *n* with more representativeness
+    - Concerns: spillover, less agency over treatment
+3. Field experiment
+    - Same pros/cons as survey experiments, but with typically less control over treatment administration.
+    - Cons (spillover, treatments) even more pronounced
+4. Natural experiment
+    - i.e. an exogenous shock to a panel design
+5. Quasi-experiment
+    - Treatments/controls with no randomization, or control over the treatment.
+
+## Discussion   
+### Discussion
+
+1. What's more important: internal or external validity?
+2. Think of your research: what type of experiment is feasible for you? What would it look like?
+
