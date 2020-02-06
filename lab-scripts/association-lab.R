@@ -4,9 +4,10 @@
 # Steve Miller
 # Date: 29 January 2020
 
-#  Let's get started with updating/installing some packages -----
+# Let's get started with updating/installing some packages -----
 # update it again, just in case.
 # Certainly, by time I wrote this, I added a few new data sets from the previous lab.
+
 devtools::install_github("svmiller/post8000r")
 
 
