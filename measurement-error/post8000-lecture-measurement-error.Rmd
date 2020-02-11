@@ -1,0 +1,129 @@
+---
+title: "Measurement Error"
+subtitle: POST 8000  -- Foundations of Social Science Research for Public Policy
+author: Steven V. Miller
+institute: Department of Political Science
+titlegraphic: /Dropbox/teaching/clemson-academic.png
+date: 
+fontsize: 10pt
+output:
+ beamer_presentation:
+    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
+    latex_engine: xelatex
+    dev: cairo_pdf
+    fig_caption: true
+    slide_level: 3
+make149: true
+mainfont: "Open Sans"
+titlefont: "Titillium Web"
+---
+
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE, warning=F)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='cache/')
+
+knitr::opts_chunk$set(
+                  fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      }
+                  )
+```
+
+```{r loadstuff, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+library(tidyverse)
+library(stevemisc)
+library(post8000r)
+
+```
+
+# Measurement Error
+## Introduction
+### Goal for Today
+
+*Discuss what to avoid in your research design (i.e. measurement error).*
+
+
+### On Error
+
+Error is a fundamental part of a lot of research.
+
+- e.g. random sampling error, random differences between treatment and control.
+
+Thus, KKV argue to reduce error to "manageable proportions." (p. 150)
+
+## Typss of Error
+### The Two Types of Error
+
+1. Systematic
+    - Definition: a chronic, consistent distortion of a measure in a predictable way.
+2. Random
+    - Definition: distortions in the recorded value that is neither a function of the “true” signal being measured, nor predictable.
+
+### Common Types of Systematic Error
+
+1. Selection bias
+2. Omitted variable bias
+3. Related: endogeneity
+
+
+### Common Types of Random Measurement Error
+
+1. Miscoding
+2. Including irrelevant variables (i.e. garbage can modeling)
+
+### Missing Data
+
+Missing data is a unique kind of measurement error. Types:
+
+1. Missing completely at random (MCAR)
+2. Missing at random (MAR)
+3. Missing not at random (MNAR)
+
+## Effects of Error
+### Effects of Systematic Measurement Error
+
+- Invalidity
+- Bias in our descriptive inferences
+- Potential bias in our causal inferences
+- Type 1 error
+
+### Effects of Random Measurement Error
+
+
+- Inefficiency
+- Unreliability
+- Type 2 error
+- Increased variance
+
+### Effects of Missing Data
+
+MCAR: inefficiency
+
+- Typically requires no correction unless missingness > 10% of the data.
+
+MAR: bias, but fixable
+
+- Missingness depends on known/measured quantities.
+- Underlying assumption of multiple imputation.
+
+MNAR: bias, but unsalvagable
+
+- Silver lining: we typically assume MNAR is actually MAR.
+- We can eventually find the reasons why
+
+### Some Caveats on Random Measurement Error
+
+- Random error in the DV: creates more noise, greater difficulty in extracting a signal (huge errors)
+- Random error in an IV: collapses effect gradually to zero
+        - Potential spillover with other IVs, if they're correlated.
+
+
+## Discussion
+### Discussion
+
+1. What's worse: Type 1 or Type 2 error?
+2. When is omitted variable bias not a bias at all?
+3. How do you "know" when you have a biased measure?
