@@ -54,7 +54,7 @@ Error is a fundamental part of a lot of research.
 
 Thus, KKV argue to reduce error to "manageable proportions." (p. 150)
 
-## Typss of Error
+## Types of Error
 ### The Two Types of Error
 
 1. Systematic
@@ -118,7 +118,8 @@ MNAR: bias, but unsalvagable
 
 - Random error in the DV: creates more noise, greater difficulty in extracting a signal (huge errors)
 - Random error in an IV: collapses effect gradually to zero
-        - Potential spillover with other IVs, if they're correlated.
+    
+    - Potential spillover with other IVs, if they're correlated.
 
 
 ## Discussion
