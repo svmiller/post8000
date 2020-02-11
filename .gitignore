@@ -29,6 +29,7 @@ cache
 readings*
 sample-syllabi*
 _private
+0-private
 
 # Ignore some jekyll stuff
 _site
