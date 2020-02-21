@@ -55,7 +55,7 @@ rownames(Cor) <- colnames(Cor) <- vars
 
 A <- cor2data(Cor, 1000, 8675309) %>% tbl_df() # Jenny I got your number...
 
-A$y <- with(Data, 1 + x1 + .5*e)
+A$y <- with(A, 1 + x1 + .5*e)
 
 summary(M1 <- lm(y ~ x1, data=A))
 
