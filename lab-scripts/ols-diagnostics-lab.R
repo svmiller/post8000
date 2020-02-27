@@ -31,14 +31,14 @@ ESSBE5
 summary(M1 <- lm(trstplc ~ agea + female + eduyrs +  hincfel + plcpvcr, data=ESSBE5))
 
 # The results suggest that there are no gender differences, but:
-# older respondents are less likely to trust the police, but that effect looks tiny even given the scale of the variable.
+# older respondents are less likely to trust the police
 # more educated people are more likely to trust the police
 # those who feel less secure in their income (given how that's defined) are less likely to trust the police
 # The more confident the respondent is about the ability of the police to prevent crime, the higher the trust.
 
-# One diagnostic the authors recommend doing with these data are comparing a LOESS smoother with a linear model for each variable.
+# One diagnostic the authors recommend doing with these data is comparing a LOESS smoother with a linear model for each variable.
 # To be clear: the IVs here are mostly discrete. Gender is binary. The DV has 11 different values. This won't look pretty
-# But, it's a place to start. Here's how you can do that in R.
+# But, it's a place to start and even this can be useful. Here's how you can do that in R.
 
 ESSBE5 %>%
   # Select only the variables we need
@@ -59,7 +59,8 @@ ESSBE5 %>%
   geom_smooth(method="loess", color="black")
 
 # How you should interpret a plot like this: how much does the LOESS smoother and the LM smoother differ?
-# My takeaway: not a whole lot. Be mindful the LOESS smoother will want to travel to the outlier (see that cornball obs where a respondent has 40+ years of education)
+# My takeaway: not a whole lot. Be mindful the LOESS smoother will want to travel to the outlier 
+# (see that cornball obs where a respondent has 40+ years of education, c'mon, fam)
 # Also helpful in determining outliers, it seems.
 
 # If you see any type of "U" shape, this implies a non-linear effect of x on y
@@ -77,7 +78,8 @@ summary(M2 <- lm(trstplc ~ agea*plcpvcr, data=ESSBE5))
 
 # Here's how you should both interpret this, with a soapbox pitch for how you should approach interactions.
 # The coefficient for age is the effect of increasing age with plcpvcr is ZERO (i.e. police, per the respondent, are completely unsuccessful in preventing crime)
-# The coefficient for plcpvcr is the effect of increasing confidence in the crime prevention of the police when age is ZERO. You can already see a problem
+# The coefficient for plcpvcr is the effect of increasing confidence in the crime prevention of the police when age is ZERO. 
+# ^ You can already see a problem
 # The coefficient for agea:plcpvcr is the estimated change in y when both age and the plcpvcr variable increase.
 
 # Two things come to mind here:
@@ -103,7 +105,7 @@ ESSBE5 %>%
   ggplot(.,aes(plcpvcr, meantrst,color=agecat,linetype=agecat)) +
   scale_x_continuous(breaks = seq(0, 11)) + geom_line(size=1.1)
 
-# I offer this as only illustrative of potential interactions, and not a whole here as substantive takeaways.
+# I offer this as only illustrative of potential interactions, and not a whole lot here as substantive takeaways.
 # BUT, if you wanted to do that, I think you can tell a story of what's happening here.
 # You might tell a story here that different age groups interpret crime prevention differently
 # Older folk see it as a vehicle to trust because it's good job performance.
@@ -119,7 +121,8 @@ ESSBE5 %>%
 TSD
 ?TSD
 
-# This is a simple/fake time-series data set. You can think of this as analogous to some kind of economic trend like GDP, which is nigh-everywhere increasing.
+# This is a simple/fake time-series data set. 
+# You can think of this as analogous to some kind of economic trend like GDP, which is nigh-everywhere increasing.
 # Thus, there's a fundamental time component to y here. In fact, I'm deliberately modeling that.
 # y, in this data set, is a linear function of a base intercept of 20 + .25*year + .25*x1 + .5*x2 + error.
 # So, you want to explain the systematic effects of x1 and x2 on y. They're certainly there, but time is naturally increasing y as well.
@@ -210,10 +213,13 @@ summary(M6 <- lm(y ~ x1 + x2, data=TSCSD))
 
 summary(M7 <- lm(y ~ x1 + x2 + factor(country) + factor(year), data=TSCSD))
 
-# Hot #take, I *despise* this approach in most applications. If you have some covariate that is a group-level effect that varies across groups, don't do this.
-# Estimation-wise, it's not a problem at all if you covariates are just individual-level and all you really have are different intercepts.
+# Hot #take, I *despise* this approach in most applications. 
+# If you have some covariate that is a group-level effect that varies across groups, don't do this.
+# Estimation-wise, it's not a problem at all if your covariates are just individual-level and all you really have are different intercepts.
 # That's effectively what we have here.
 # However, fixed effects can mislead you greatly if you have coefficients that vary by groups, or you have group-level covariates.
+# Further, and with an eye toward group-level variables: they artificially decrease your SEs because you're not really modeling the "groups."
+# Multilevel models are more conservative, but more honest.
 
 # That hot #take aside, a fixed effect approach takes all the sources of spatial/temporal heterogeneity and isolates them as variables.
 # The coeffiicent that emerges is typically uninteresting by itself (another grievance of mine).
@@ -234,8 +240,10 @@ summary(M7 <- lm(y ~ x1 + x2 + factor(country) + factor(year), data=TSCSD))
 # ^ nailed it.
 
 # Okay, let's talk about heteroskedasticity.
-# Heteroskedasticity is a problem in which the residuals are non-constant and typically a function of something (whether OVB or model misspecification)
+# Heteroskedasticity is a problem in which the residuals are non-constant and typically a function of something 
+# (whether OVB or model misspecification)
 # You'll know it when you see it: the "cone of shame."
+# ^ I think I have Jenny to thank for this expression.
 
 # Here's a way of mimicking this:
 
@@ -261,11 +269,10 @@ H %>%
 
 # How you can fis this?
 # Well, there are a lot of tools and, as far as I learned them, they're more for comparison rather than fixing, per se.
-# Toward that end, I'm going to give a canoical case of heteroskedasticity appearing in nature in the CP77 data set from post8000r
+# Toward that end, I'm going to give a canonical case of heteroskedasticity appearing in nature in the CP77 data set from post8000r
 
 CP77
-?CP77 # Note, some state abbs here look obviously wrong (e.g. DY, NB). Don't blame me. Blame someone else. :P I ganked it from the robustbase package.
-
+?CP77
 
 summary(M9 <- lm(edexppc ~ region + urbanpop + incpc + pop, data=CP77))
 
@@ -285,6 +292,7 @@ bptest(M9)
 # Yup. See the p-value.
 # Okay, what can we do?
 # The good news here, if you can call it that, is heteroskedasticity targets what we can say about the SEs.
+# Granted, there's an implication for the confidence of it, but it's not about the coefficient.
 # We can use the vcovHC() function from the sandwich package to get, we hope, the "correct" SEs:
 
 
@@ -341,10 +349,11 @@ summary(M10 <- lmrob(edexppc ~ region + urbanpop + incpc + pop, data=CP77))
 # More likely, though: you might get a state to appear a few times in a given sample.
 
 set.seed(8675309) # Jenny, I got your number...
+# from modelr
 CP77 %>% 
-  modelr::bootstrap(1000) -> bootCP77
+  bootstrap(1000) -> bootCP77
 
-# Here's the first one, or at least a summary of it. Notice how Kansas appears three times in this first one.
+# Here's the first one, or at least a summary of it. Notice how Kentucky appears three times in this first one.
 bootCP77 %>% slice(1) %>% pull(strap) %>% as.data.frame() %>% group_by(state) %>% summarize(n =n())
 
 # Now, for each one, let's do 1,000 regressions on each of those, and store it in the bootCP77 object.
@@ -373,7 +382,7 @@ bootCP77$tidy[[1000]]
 bootCP77 %>%
   pull(tidy) %>%
   map2_df(., 
-          seq(1, resamples), 
+          seq(1, 1000), 
           ~mutate(.x, resample = .y)) -> tidiedbootCP77
 
 # And, to summarize this further, we get the sd of the *estimates* as a robust standard error
@@ -384,7 +393,8 @@ tidiedbootCP77 %>%
   left_join(broom::tidy(M9), .) %>%
   select(term:std.error, bse, everything())
 
-# Superlatives of this approach: super flexible. Bootstrapping SEs, once you get proficient with pipe-oriented programming, can do a lot of cool things.
+# Superlatives of this approach: super flexible.
+# Bootstrapping SEs, once you get proficient with pipe-oriented programming, can do a lot of cool things.
 # Downside: possibly time-consuming, depending on your data.
 
 # No matter, different approaches to heteroskedasticity gives very different SEs.
