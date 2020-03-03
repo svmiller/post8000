@@ -43,3 +43,8 @@
   filename: ols
   dirname: ols
   tldr: "A quick-and-dirty discussion of ordinary least squares regression."
+
+- title: "Instrumental Variables"
+  filename: instrumental-variables
+  dirname: instrumental-variables
+  tldr: "On instrumental variables, what they do, their 'weirdness', and when to use them."
