@@ -65,7 +65,7 @@ What could be the problem here?
 
 We contend education is exogenous to earnings, but it's endogenous to a variety of factors.
 
-### What is Endeogeneity?
+### What is Endogeneity?
 
 Endogeneity is when a covariate in the regression is correlated with the error term ($\epsilon$). Causes:
 
