@@ -1,0 +1,194 @@
+---
+title: "Regression Discontinuity Design"
+subtitle: POST 8000  -- Foundations of Social Science Research for Public Policy
+author: Steven V. Miller
+institute: Department of Political Science
+titlegraphic: /Dropbox/teaching/clemson-academic.png
+date: 
+fontsize: 10pt
+output:
+ beamer_presentation:
+    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
+    latex_engine: xelatex
+    dev: cairo_pdf
+    fig_caption: true
+    slide_level: 3
+make149: true
+mainfont: "Open Sans"
+titlefont: "Titillium Web"
+---
+
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE, warning=F)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='cache/')
+
+knitr::opts_chunk$set(
+                  fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      }
+                  )
+```
+
+```{r loadstuff, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+library(tidyverse)
+library(stevemisc)
+library(post8000r)
+library(knitr)
+
+```
+
+# Regression Discontinuity Design
+## Introduction
+### Goal for Today
+
+*Discuss regression discontinuity design (RDD) as a means to causal inference.*
+
+### Introduction
+
+RDD allows us to estimate causal treatment effects in non-experimental settings.
+
+- It exploits precise knowledge of the rules determining treatment.
+- Identification is based on the idea that some rules are arbitrary and provide good quasi-experiments.
+
+Recent flurry of applied economics research using RDD:
+
+- Seemingly mild assumptions (Hahn, Todd, and van der Klaauw 2001)
+- More credible than other non-experimental identification strategies (Lee 2008) 
+
+### Origins: Thistlethwaite and Campbell (1960)
+
+Question: what is the effect of merit awards on future academic outcomes?
+
+- However, awards were allocated on the basis of test scores.
+
+There's a cutoff point $c$.
+
+- Below which: no award. Above which: award.
+
+### Origins: Thistlethwaite and Campbell (1960)
+
+Couldn't you just compare those with/without award?
+
+- No: factors that influence the test score are also related to future academic outcomes.
+
+*But* you could compare individuals just above and below the cutoff point $c$.
+
+- That gives you the estimated causal effect of a particular treatment.
+
+###
+
+```{r rdd60-example, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
+# RDD60 %>%
+#   filter(testscore %in% as.character(1:20)) %>%
+#   mutate(testscore = as.integer(testscore)) %>%
+#   # select(testscore:intellectualism) %>%
+#   select(-nmeritschol, -nresp, -nsampl) %>%
+#   gather(variable, value, -meritcerc, -testscore) %>%
+#   ggplot(aes(x = testscore, y = value, group = meritcerc)) +
+#   facet_wrap(~ variable, ncol = 2, scale = "free_y") +
+#   geom_vline(xintercept = 10, colour = "white", size = 2) +
+#   geom_point() +
+#   geom_smooth(method = "lm") +
+#   labs(x = "Aribtrary test scores of students in arbitrary units",
+#        y = "")
+
+RDD60 %>%
+    filter(testscore %in% as.character(1:20)) %>%
+    mutate(testscore = as.integer(testscore))  %>%
+    ggplot(.,aes(testscore, schol, group=meritcerc)) +
+    theme_steve_web() +
+    geom_vline(xintercept = 10.5, color = "gray77", size=2) +
+    geom_point() +
+    annotate("label", x = 0, y = 65, label = "No Certificate of Merit", hjust = 0, family="Open Sans") +
+    annotate("label", x = 20, y = 65, label = "Certificate of Merit Winners", hjust = 1, family="Open Sans") +
+    geom_smooth(method = "lm") +
+    scale_x_continuous(breaks = seq(1:20)) +
+    labs(x = "Aptitude Score Interval (1:20)",
+         y = "Percent in Interval Reporting Scholarships",
+         title = "An Example of a Regression Discontinuity Design from Thistlethwaite and Campbell (1960)",
+         subtitle = "Notice the different effect for both groups, but more importantly notice the discontinuity.",
+         caption = "Data: Thistlethwaite and Campbell (1960)")
+```
+
+<!-- ### Psst... This is a Simple Interaction -->
+
+<!-- ```{r, results="asis"} -->
+
+<!-- RDD60 %>% -->
+<!--     filter(testscore %in% as.character(1:20)) %>% -->
+<!--     mutate(testscore = as.integer(testscore)) %>% -->
+<!--      lm(schol ~ testscore*meritcerc, data = .) %>% -->
+<!--     broom::tidy() %>% -->
+<!--     mutate_if(is.numeric, list(~round(.,3))) %>% -->
+<!--     kable(.) -->
+
+<!-- ``` -->
+
+
+<!-- ### Psst... This is a Simple Interaction -->
+
+<!-- ```{r, results="asis"} -->
+
+<!-- RDD60 %>% slice(11:12) %>% -->
+<!--     select(1:3, schol) %>% -->
+<!--     kable(.) -->
+
+<!-- ``` -->
+
+## Intuition and Identification
+### The Intuition Behind RDD (In This Case)
+
+- Assignment mechanism is known.
+- The probability of treatment jumps to 1 if test score $\ge c$:
+    - We call this a **sharp** discontinuity.
+- Individuals cannot manipulate their assignment variable.
+- Individuals near cutoff are comparable/similar, save for that one distinction.
+
+Thus, the discontinuous jump in outcome variables at $c$ amounts to the causal effect of merit award.
+
+
+### Identification in RDD
+
+First:
+
+- All other factors determining the outcome variable should be evolving smoothly with respect to the assignment variable.
+- If other factors (variables) also jump at the cutoff point, then the estimates of treatment effect will be biased.
+
+Second:
+
+- Since RD estimate requires data away from $c$, the estimate will be dependent on a chosen functional form.
+
+## Sharp and Fuzzy
+### Sharp and Fuzzy RDDs
+
+Thistlethwaite and Campbell (1960) is a clear case of a "sharp" RDD.
+
+- Discontinuity precisely determines treatment (i.e. $p(treatment)$ jumps to 1 at $c$).
+- Equivalent to random assignment.
+
+Social Security is a nice example of a sharp design in the wild.
+
+- You can elect to take it earlier, but after a certain threshold, you have to take it.
+- (Or at least there's no benefit from delaying payment)
+
+### Sharp and Fuzzy RDDs
+
+"Fuzzy" RDDs are when treatments are just highly correlated with treatments.
+
+- Probability of treatment jumps by less than one when $x$ crosses the threshold $c$.
+
+"Fuzzy" situations make the assignment rule-as-IV an appropriate solution.
+
+## Conclusion
+### Conclusion
+
+A regression discontinuity design is a way of undertaking causal inference, usually of some policy intervention.
+
+- It can provide robust, convincing estimates of causal impacts under fairly weak conditions or minimal assumptions.
+
+The nature of the intervention will determine whether an RDD is appropriate.
+
+- Caveat: even when it is, data demands are often great
