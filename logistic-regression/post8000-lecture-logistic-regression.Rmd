@@ -303,7 +303,7 @@ $$
 	\textrm{Probability} = \frac{\textrm{Odds}}{1 + \textrm{Odds}} 
 $$
 
-In R, for when $x$ = 0, $pr(y = 1 | x = 0) =$.
+In R, for when $x$ = 0, $pr(y = 1 | x = 0)$:.
 
 ```{r}
 yintercept <- pull(broom::tidy(M2)[1,2])
