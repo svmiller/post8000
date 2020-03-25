@@ -157,7 +157,7 @@ invlogit(coefM3)
 # 2) The "divide by 4" rule
 # Gelman and Hill (2006, 82) have one nice rule of thumb. They call it the "divide by 4" rule.
 # tl;dr: the logistic curve is steepest at the center. The slope of the curve (i.e. the derivative of the logistic function) is maximized
-# at the point where Be^0/(1 + e^0)^2 = B/4. Thus, B/4 8s the *maximum* difference in p(y = 1) for a one-unit change in x.
+# at the point where Be^0/(1 + e^0)^2 = B/4. B/4 is the *maximum* difference in p(y = 1) for a one-unit change in x.
 # Thus, the "divide by 4" rule gets you an *upper bound* of the predictive difference. (Note: does not apply to intercept/constant, obviously)
 
 # Indeed, it's not bad as a rule of thumb:
