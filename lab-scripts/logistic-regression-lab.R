@@ -201,26 +201,40 @@ Penn %>%
 # square root of number of obs in the model
 nbins <- floor(sqrt(nobs(M2)))
 
-# Let's create some bins
-Penn %>%
-  mutate(bins = cut(fitted, breaks = unique(quantile(fitted, (1:nbins-1)/nbins,na.rm=T)))) -> Penn
+# Then, across these number of bins, we're going to look for the corresponding obs location in the fitted values.
+breaks.index <- floor(length(M2$fitted.values) * (1:(nbins - 1)) / nbins)
+# The breaks that emerge will coincide with those fitted values
+breaks <- unique(c(-Inf, sort(M2$fitted.values)[breaks.index], Inf))
 
-Penn %>%
-  na.omit %>%
-  group_by(bins) %>%
-  summarize(meanresid = mean(resid, na.rm=T),
-            meanfit = mean(fitted, na.rm=T),
-            sdresid = sd(resid, na.rm=T),
+# ^ Interest of full disclosure: I need to think about how I want to make this more flexible.
+# This is a Steve problem for future classes, but this will converge on what arm::binnedplot will give you.
+# Also need to think about how to allow you to do this across x-vals as well.
+# You could install the performance package if you'd like
+# install.packages(c("parameters","performance","easystats","see"))
+# I think that'd allow you to do it, but my goal in this class is to get you to install as few packages as possible.
+
+
+Penn %>% select(fitted, resid) %>% na.omit %>%
+  mutate(bin = as.numeric(cut(M2$fitted.values, breaks))) %>% 
+  group_by(bin) %>% 
+  summarize(min = min(fitted, na.rm=T),
+            max = max(fitted, na.rm=T),
             n = n(),
+            meanfit = mean(fitted, na.rm=T),
+            meanresid = mean(resid, na.rm=T),
+            sdresid = sd(resid, na.rm=T),
             se = 1.96*sdresid/sqrt(n),
             inbounds = ifelse(between(meanresid, -se, se), 1, 0)) -> Bins
 
+
 # Let's check to see where we're out of bounds:
+# I've always been told the ideal interpretation here is that you want 95% of your bins "in bounds."
+# We won't have that here, it seems. Let's see where:
 Bins %>%
   filter(inbounds == 0)
 
 # Does look like our model isn't a great fit at 1) the tail ends of the distribution where the probabilities are touching 0 or 1.
-# Also, we have that one odd-ball outlier in the .741-.787 bin.
+# Also, we have that one odd-ball outlier in the .741-.784 bin.
 # FWIW, don't fret the outliers that close to the bounds of 0 and 1. Not ideal, but not terribly problematic.
 
 # You could importantly plot them as well.
@@ -231,7 +245,8 @@ Bins %>%
   geom_ribbon(aes(ymin = -Inf, ymax = -se), alpha = .1 , fill = "red") +
   geom_ribbon(aes(ymin = se, ymax = Inf), alpha = .1 , fill = "red") +
   geom_line(aes(y = se), colour = "grey70") +
-  geom_line(aes(y = -se), colour = "grey70") 
+  geom_line(aes(y = -se), colour = "grey70") +
+  geom_hline(yintercept = 0, linetype = "dashed")
 
 # When you see a plot like this, check for a pattern. There really isn't much one to speak of. At least I don't think.
 # However, if you're worried your model might not be the best fit given what you see from this plot, consider the following:
@@ -306,6 +321,13 @@ anova(M5, M2, test="Chisq")
 # You can learn a lot about the Trump vote (at least among Pennsylvania whites) as a function of racism (here: cognitive and empathetic).
 # The full model (M2) produces statistically significant results for both of them, each with relatively large magnitude effects.
 # Makes sense M2 would be the better fit than M5, no? That's what the ANOVA is telling you here.
+
+# A likelihood ratio test will tell you the same thing, btw, with the exact same statistic
+# from lmtest
+lrtest(M5, M2)
+# ^ one note above: this is a likelihood ratio test. I've previously been discussing deviance,
+# but, incidentally, the log likelihood of a GLM * - 2 returns the deviance.
+# If you ever see, anywhere in your travels, a statistic of "-2LL", it's the deviance.
 
 # FWIW, few people (in my experience) ask to see ANOVA. You can pitch model comparison here as an error rate stat.
 
