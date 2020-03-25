@@ -317,4 +317,6 @@ Penn %>%
             errorrateM2 = mean((fittedM2 > .5 & votetrump == 0) | fittedM2 <.5 & votetrump == 1, na.rm=T),
             errorrateM5 = mean((fittedM5 > .5 & votetrump == 0) | fittedM5 <.5 & votetrump == 1, na.rm=T))
 
-# Implications: M2 is a better fit than M5 deviance-wise. Error rate wise, M5 is a bit worse than M2. Not terribly so, though.
+# Implications: M2 is a better fit than M5 deviance-wise. 
+# Error rate wise, M5 is a bit worse than M2. Not terribly so, though. 
+# But I'm confident the difference in the error rate is a "significant" one, if you will.
