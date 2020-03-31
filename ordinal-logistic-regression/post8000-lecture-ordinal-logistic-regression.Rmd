@@ -1,0 +1,309 @@
+---
+title: "Ordinal Logistic Regression"
+subtitle: POST 8000  -- Foundations of Social Science Research for Public Policy
+author: Steven V. Miller
+institute: Department of Political Science
+titlegraphic: /Dropbox/teaching/clemson-academic.png
+date: 
+fontsize: 10pt
+output:
+ beamer_presentation:
+    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-beamer.tex
+    latex_engine: xelatex
+    dev: cairo_pdf
+    fig_caption: true
+    slide_level: 3
+make149: true
+mainfont: "Open Sans"
+titlefont: "Titillium Web"
+---
+
+```{r setup, include=FALSE, cache=F, message=F, warning=F, results="hide"}
+knitr::opts_chunk$set(cache=TRUE, warning=F)
+knitr::opts_chunk$set(fig.path='figs/')
+knitr::opts_chunk$set(cache.path='cache/')
+
+knitr::opts_chunk$set(
+                  fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      }
+                  )
+```
+
+```{r loadstuff, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+library(tidyverse)
+library(stevemisc)
+library(post8000r)
+library(knitr)
+library(ordinal)
+# Consider some of this code:
+# http://users.ox.ac.uk/~jesu0073/Lecture%203/LogisticRegression.pdf
+invlogit <- function(x) {1/(1 + exp(-x))}
+
+
+n <- 10000
+set.seed(8675309)
+D = tibble(x1 = rnorm(n),
+       x2 = rnorm(n),
+       b1 = 1,
+       b2 = .5,
+       logodds1 = 1 + b1*x1 + b2*x2,
+       logodds2 = .05  + b1*x1 + b2*x2,
+       logodds3 = -.05 + b1*x1 + b2*x2,
+       logodds4 = -1 + b1*x1 + b2*x2,
+       p2to5 = invlogit(logodds1),
+       p3to5 = invlogit(logodds2),
+       p4to5 = invlogit(logodds3),
+       p5 = invlogit(logodds4),
+       p1 = 1 - p2to5,
+       p2 = p2to5 - p3to5,
+       p3 = p3to5 - p4to5,
+       p4 = p4to5 - p5) %>%
+  rowwise() %>%
+  mutate(y = as.numeric(sample(
+         x = c(1:5),
+         size = 1,
+         replace = F,
+         prob = c(p1, p2, p3, p4, p5)))) %>% ungroup() %>%
+  select(y, everything())
+
+summary(clm(ordered(y) ~ x1 + x2, data = D))
+summary(lm(y ~ x1 + x2, data = D))
+
+```
+
+# Ordinal Logistic Regression
+## Introduction
+### Goal for Today
+
+*Discuss ordinal logistic regression (i.e. what to do when your DV is ordered-categorical).*
+
+## Order Without Precision
+### Order Without Precision
+
+You may want to explain ordered-categorical responses like:
+
+- Patient quality of life (excellent, good, fair, poor)
+- Political philosophy (very liberal:very conservative on a five-point scale)
+- Government spending (too low, about right, too high)
+- Likert items (strongly agree:strongly disagree, five point-scale)
+
+Problem: order is implied, but without precision.
+
+- A vague magnifier of "very" separates "very liberal" from "liberal."
+- "Strongly" separates "strongly agree" from "agree."
+
+Scales are discrete, which will again break the assumptions of OLS.
+
+### Simulated Ordinal Data
+
+Observe again this simulated ordinal data, `D`.
+
+```{r}
+D %>% select(y, x1, x2)
+```
+
+
+### Simulated Ordinal Data
+
+This simple `D` data frame is simulated where:
+
+- $y$ is a five-item ordered-categorical variable (similar to a Likert item).
+- $x1$ and $x2$ are random-normal with means 0 and SDs of 1.
+- The effect of $x1$ on $y$ is 1.
+- The effect of $x2$ on $y$ is .5.
+
+*Importantly*: $y$ is sampled from individual probabilities for each observation.
+
+- Probability is determined by cumulative logits.
+- tl;dr: data aren't simulated as an OLS model.
+
+### Simulated Ordinal Data
+
+```{r}
+M1 <-lm(y ~ x1 + x2, D)
+broom::tidy(M1) %>%
+  mutate_if(is.numeric,~round(.,2))%>% 
+  kable(.,"markdown")
+```
+
+Not bad, but not correct.
+
+###
+
+```{r fitted-resid-plot-m1, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
+D %>%
+    mutate(fitted = fitted(M1),
+           resid = resid(M1)) %>%
+    ggplot(.,aes(fitted, resid)) + geom_point()  +
+    theme_steve_web() +
+    labs(x = "Fitted Values",
+         y = "Residuals",
+         title = "The Fitted-Residual Plot from the OLS Model We Just Ran",
+         subtitle = "Patterns shouldn't emerge from a fitted-residual plot, but they will with discrete DVs like this.")
+
+```
+
+###
+
+```{r qqplot-m1, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
+D %>%
+    mutate(resid = resid(M1)) %>%
+    ggplot(.,aes(sample=resid)) + 
+    geom_qq()  + theme_steve_web() +
+    labs(x = "Theoretical Quantiles",
+         y = "Sample Quantiles",
+         title = "The Q-Q Plot from the OLS Model We Just Ran",
+         subtitle = "The Q-Q plot is a little more sanguine about what we did, but notice that bend in the middle.")
+```
+
+### The Right Tool for the Right Job
+
+```{r}
+require(ordinal)
+D$y_ord = ordered(D$y)
+M2 <- clm(y_ord ~ x1 + x2, data = D)
+broom::tidy(M2) %>%
+    mutate_if(is.numeric, ~round(., 2)) %>%
+  filter(coefficient_type == "beta") %>%
+    kable(., "markdown")
+```
+
+### What We Just Did
+
+This was an ordinal logistic regression. Related names/terms:
+
+- "Proportional odds logistic regression"
+- "Cumulative link model"
+
+
+## Conceptualizing an Ordinal Logistic Regression
+### Conceptualizing an Ordinal Logistic Regression
+
+
+
+1. There is an observed ordinal variable $Y$.
+2. There is an underlying, *un*observed latent variable $Y^*$ that is continuous.
+
+###
+
+```{r ordered-response-latent-variable, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
+ ggplot(data.frame(x = c(-2.5, 2.5)), aes(x)) +
+    stat_function(fun = dnorm,
+                    xlim = c(-2.5,2.5), size=0,
+                    geom = "area", fill="#F66733", alpha=0.7) +
+  geom_segment(x=-1.5, y=0, xend=-1.5, yend=dnorm(1.5,0,1), color="#522d80", linetype="dashed") +
+  geom_segment(x=-.5, y=0, xend=-.5, yend=dnorm(0.5,0,1), color="#522d80", linetype="dashed") +
+  geom_segment(x=.5, y=0, xend=.5, yend=dnorm(0.5,0,1), color="#522d80", linetype="dashed") +
+  geom_segment(x=1.5, y=0, xend=1.5, yend=dnorm(1.5,0,1), color="#522d80", linetype="dashed") +
+  stat_function(fun = dnorm, color="#522d80", size=1.5) +
+  annotate(geom = "text", x = -2, y = 0.01,
+               label = "1", size =4.5, color="#522d80") +
+  annotate(geom = "text", x = -1, y = 0.01,
+               label = "2", size =4.5, color="#522d80") +
+  annotate(geom = "text", x = 0, y = 0.01,
+               label = "3", size =4.5, color="#522d80") +
+  annotate(geom = "text", x = 1, y = 0.01,
+               label = "4", size =4.5, color="#522d80") +
+  annotate(geom = "text", x = 2, y = 0.01,
+               label = "5", size =4.5, color="#522d80") +
+  theme_steve_web() +
+  scale_x_continuous(breaks = c(-1.5,-.5, .5, 1.5),
+                     labels = c("K1","K2","K3","K4")) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  labs(title = "An Ordered Response and its Latent Variable",
+       subtitle = "The idea is there is an underlying latent variable, but we're only observing five collapsed values of it.",
+       x = "Values of an Unobserved Latent Variable")
+  
+```
+
+### Conceptualizing an Ordinal Logistic Regression
+
+$Y^*$ has various threshold points $\kappa$.
+
+- The value of $Y$ is observed whether you've passed a certain threshold.
+
+For example, when number of categories = 5:
+
+- $Y_i$ = 1 if $Y^*_{i}$ is $\le$ $\kappa_1$
+- $Y_i$ = 2 if $\kappa_1 \le Y^*_{i} \le \kappa_2$ 
+- $Y_i$ = 3 if $\kappa_2 \le Y^*_{i} \le \kappa_3$ 
+- $Y_i$ = 4  if $\kappa_3 \le Y^*_{i} \le \kappa_4$ 
+- $Y_i$ = 5 if $Y^*_{i}$ is $\ge$ $\kappa_4$
+
+### Conceptualizing an Ordinal Logistic Regression
+
+In the population, the continuous latent variable $Y^*$ is equal to
+
+$$
+Y^* = \sum_{k=1}^{K}\beta_{k}X_{ki} + \epsilon_{i} = Z_{i} + \epsilon_{i} 
+$$
+
+Of note: that random disturbance term has a standard logistic distribution.
+
+### Conceptualizing an Ordinal Logistic Regression
+
+The ordinal logistic regression estimates part of the above.
+
+
+$$
+Z_i = \sum_{k=1}^{K}\beta_{k}X_{ki} = E(Y^*_{i} )
+$$
+
+Because $Z$ is not a perfect measure of $Y^*$, there are prediction errors.
+
+- But, knowing the distribution of the error term, you can calculate those probabilities.
+
+### Conceptualizing an Ordinal Logistic Regression
+
+What you need to estimate from this design: the $\kappa$s, the $\beta$s in order to compute $Z_i = \sum_{k=1}^{K}\beta_{k}X_{ki}$.
+
+- Note: there is no intercept term in this extension of the logistic model.
+
+For shorthand we teach this as a "parallel lines" model.
+
+- The ordinal logistic regression estimates one equation over all levels of the response variable.
+- The estimate that emerges communicates the natural logged odds of going up (or down) a "level", all else equal.
+
+## Assumptions/Diagnostics
+### Assumptions/Diagnostics
+
+Ordinal logistic regression is a GLM, so much still applies from logistic regression.
+
+- e.g. deviance, log-likelihood, MLE
+
+One important assumptions: parallel lines (proportional odds).
+
+- The slope estimate between each pair of outcomes across two response levels are assumed to be the same regardless of which partition we consider.
+
+
+### Assumptions/Diagnostics
+
+There are no shortage of tests for this:
+
+- Brant test
+- LR test
+- Wald test
+
+Implication: violating the assumption means the ordinal logistic model is too restrictive.
+
+- Consider a multinomial GLM instead.
+
+## Conclusion
+### Conclusion
+
+If your DV is ordered-categorical, considered an ordinal logistic regression.
+
+- OLS works much better with ordered-categorical DVs than binary DVs, but that's less the point.
+    - Feel free to compare OLS with it, though OLS would be "wrong" in a non-trivial way.
+- Think of these as situations where $Y^*$ is assumed but only a finite $Y$ iis observed.
+
+Ordinal logistic regression better models the nature of the data, but:
+
+- check for parallel lines/proportional odds.
+- coefficient interpretation is a little weirder.
+    - my take: be prepared to communicate quantities of interest as probabilities.
