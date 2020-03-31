@@ -58,3 +58,8 @@
   filename: logistic-regression
   dirname: logistic-regression
   tldr: "OLS may be the workhorse, but logistic regression might be more common. Here's a walkthrough of logistic regression."
+
+- title: "Ordinal Logistic Regression"
+  filename: ordinal-logistic-regression
+  dirname: ordinal-logistic-regression
+  tldr: "A primer on ordinal logistic regression (i.e. what to do when your DV is ordered, but still has finite observations)."
