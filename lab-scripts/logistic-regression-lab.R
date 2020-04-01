@@ -24,7 +24,7 @@ TV16 %>%
 # Let's try a linear model for this, wherein we are estimating a white person's Trump vote as a function of:
 # the person's age, gender, education (if they have a college diploma), household income,
 # partisanship (D to R), ideology (L to R), whether they're a born-again Christian,
-# and the cognitive racism and emapthetic racism variables
+# and the cognitive racism and emthetic racism variables
 # Read the blog post for more description about what these are.
 M1 <- lm(votetrump ~ age + female + collegeed + famincr + 
            pid7na + ideo + bornagain + lcograc + lemprac,
@@ -215,6 +215,7 @@ breaks <- unique(c(-Inf, sort(M2$fitted.values)[breaks.index], Inf))
 
 
 Penn %>% select(fitted, resid) %>% na.omit %>%
+  # mutate(bin = ntile(fitted, nbins))
   mutate(bin = as.numeric(cut(M2$fitted.values, breaks))) %>% 
   group_by(bin) %>% 
   summarize(min = min(fitted, na.rm=T),
