@@ -106,10 +106,9 @@ summary(M4)
 nominal_test(M4)
 # Much betta https://66.media.tumblr.com/6437f1bc98d5d0952a1edd19b9e4241e/1932ca80ea201e4f-5d/s640x960/a558c99f1fa3f6d0377ccfc48966917a8a94c8f2.gif
 
+# You can do the same thing and the same interpretation of the coefficient output as you did above.
+# More values in the DV, though, mean more thresholds to sift through.
 
-
-
-# So, the probability of being a -3 to a -2:3 is .001, at least in the model.
 
 # HOT #take coming up: I'm of the mentality you should always run an ordinal logistic regression if that's the DV you're handed.
 # I will throw something at you if you try running an OLS on a five-item Likert because that's just not the data you have.
