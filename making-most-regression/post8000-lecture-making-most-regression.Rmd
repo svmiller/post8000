@@ -48,7 +48,7 @@ library(knitr)
 
 ### Making the Most of Regression
 
-Regression modelling is also storytelling.
+Regression modeling is also storytelling.
 
 - Your audience is not going to 100% understand what you're doing.
 - That won't stop them from asking questions.
@@ -79,7 +79,8 @@ You know by now the "constant" or "y-intercept" is not a coefficient.
 
 Your audience is going to want to interpret it.
 
-- Worse yet: it's going to want to interpret something that probably makes no sense as you've been doing it.
+- Worse yet: your audience is going to want to interpret something that probably makes no sense as you've been doing it.
+- 0 is typically not an available or plausible response in raw regression inputs.
 
 ### What's a Bigger Effect?
 
@@ -162,7 +163,7 @@ What's the biggest effect, as a magnitude? You won't know.
 
 All variables work on a different scale.
 
-- `percoled` has a minimum of 20.8 (WV) and a maximum of 90.5 (DC).
+- `percoled` has a minimum of 20.8 (WV) and a maximum of 42.7 (MA).
 - `gdp16` has a minimum of 31,659 (VT) and a maximum of 2,657,798 (CA).
 - `sunempr12md` has a minimum of -1 (NV) and a maximum of .4 (OH).
 - `south` is a dummy/fixed effect and can only be 0 or 1.
@@ -171,7 +172,7 @@ All variables work on a different scale.
 
 Statisticians recommend scaling your *non-binary* IVs, but Gelman (2008) has a better idea: **scale by two standard deviations instead of just one.**
 
-- The transformed variable will have a mean of 0 and a SD of .5
+- The transformed variable will have a mean of 0 and a SD of .5.
 - Regression coefficient would communicate estimated change in $y$ for change across ~47.7% of data in $x$.
 
 Sometimes this is what you want to communicate:
@@ -243,7 +244,7 @@ broom::tidy(M2) %>%
 *Notice what didn't change.*
 
 - Scaling the other variables doesn't change the binary IVs.
-- The *t*-statistics doen't change either even as the coefficients and standard errors change.
+- The *t*-statistics don't change either even as the coefficients and standard errors change.
 
 
 ## Quantities of Interest
@@ -338,7 +339,7 @@ This is a mouthful! Let's break the process down step-by-step.
 3. Obtain simulated parameter vector from estimating systematic component.
 4. Simulate the outcome by taking random draw from the stochastic component.
 
-Do this *m* times (typically *m* = 1000) to estimate full probability distribution of $Y_c$.
+Do this *m* times (typically *m* = 1000) to estimate the full probability distribution of your quantity of interest.
 
 ### How Do You Do This?
 
