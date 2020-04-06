@@ -63,3 +63,9 @@
   filename: ordinal-logistic-regression
   dirname: ordinal-logistic-regression
   tldr: "A primer on ordinal logistic regression (i.e. what to do when your DV is ordered, but still has finite observations)."
+
+- title: "Making the Most of Regression"
+  filename: making-most-regression
+  dirname: making-most-regression
+  tldr: "You can't just run a regression and call it a day. Help yourself tell the story from your model by scaling inputs and doing post-estimation simulation."
+
