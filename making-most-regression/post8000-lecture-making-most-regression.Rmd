@@ -269,7 +269,7 @@ You need to relate your analysis to both me and your grandma.
 - I will obviously know/care more about technical details.
 - Grandma may not, but she may be a more important audience than me.
 
-Her inquiries are likely be understandable. Examples from the above analysis:
+Her inquiries will probably be understandable. Examples from the above analysis:
 
 - What's Trump's expected vote share in a better-educated Southern state?
 - What's Trump's expected vote share in a better-educated state whose unemployment rate increased?
