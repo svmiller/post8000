@@ -233,7 +233,7 @@ broom::tidy(M2) %>%
 
 - The typical state not in the South had an estimated Trump vote share of 47.65%. The intercept is much more informative.
     - Caveat: states are weighted equally, even as there are more Californians than South Carolinians.
-    - i.e. you could've added Trump's SC votes to his CA tally and he's still lose CA by >3 million votes.
+    - i.e. you could've added Trump's SC votes to his CA tally and he'd still lose CA by >3 million votes.
 - The education variable looks to have the largest effect when everything is on a mostly common scale.
     - i.e. the effect of going from, say, a standard deviation below the mean to a standard deviation above the mean is an estimated decrease in Trump's vote share by 14.93 points.
 - The unemployment variable and the GDP variable look to have similar magnitude effects (albeit in absolute terms).
