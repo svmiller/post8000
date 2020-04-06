@@ -67,5 +67,5 @@
 - title: "Making the Most of Regression"
   filename: making-most-regression
   dirname: making-most-regression
-  tldr: "You can't just run a regression and call it a day. Help yourself tell the story from your model by scaling inputs and doing post-estimation simulation."
+  tldr: "You can't just run a regression and call it a day. Help yourself explain your model by scaling inputs and doing post-estimation simulation."
 
