@@ -88,7 +88,7 @@ Data %>%
   group_by(generation) %>%
   summarize(medianage = median(age)) %>% na.omit %>% arrange(medianage) %>% pull(medianage) -> genmedage
 
-# Basically: the typical Gen Zer is 18 in this sample. The typical Millennial is 29.
+# Basically: the typical Gen Zer is 19 in this sample. The typical Millennial is 29.
 # The typical Gen Xer is 44. The typical Boomer is 60. The typical Greatest or Silent is 76.
 genmedage
 
@@ -186,7 +186,7 @@ simsAge %>%
   # geom_pointrange() creates point summary with those ymin and ymax
   geom_pointrange() +
   geom_hline(yintercept = .5, linetype = "dashed") +
-  scale_x_discrete(labels = c("Typical Gen Z Age (18)", "Typical Millennial Age (29)",
+  scale_x_discrete(labels = c("Typical Gen Z Age (19)", "Typical Millennial Age (29)",
                               "Typical Gen X Age (44)", "Typical Boomer Age (60)",
                               "Typical Greatest/Silent Age (76)")) +
   coord_flip() +
@@ -269,3 +269,4 @@ simsIR %>%
 # However, ideology's upper bound overlaps cognitive racism considerably. It's estimated first difference is more diffuse.
 # You can't say for certain that cognitive racism had a larger effect, but the estimate is larger and more precise.
   
+Data %>% filter(is.na(generation))
