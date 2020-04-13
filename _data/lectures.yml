@@ -69,3 +69,7 @@
   dirname: making-most-regression
   tldr: "You can't just run a regression and call it a day. Better explain your model by scaling inputs and doing post-estimation simulation."
 
+- title: "The Basics of Bayesian Inference"
+  filename: bayesian-inference
+  dirname: bayesian-inference
+  tldr: "Conditional probability through Bayes is uncontroversial. Inference from it is, but it's novel and worth discussion."
