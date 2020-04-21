@@ -73,3 +73,8 @@
   filename: bayesian-inference
   dirname: bayesian-inference
   tldr: "Conditional probability through Bayes is uncontroversial. Inference from it is, but it's novel and worth discussion."
+
+- title: "Ethics and Replication"
+  filename: ethics-replication
+  dirname: ethics-replication
+  tldr: "A discussion of the emerging ethical problems in social science research and the importance of replication."
