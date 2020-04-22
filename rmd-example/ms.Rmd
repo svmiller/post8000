@@ -1,0 +1,205 @@
+---
+output: 
+  word_document:
+    reference_docx: ext/svm-rmarkdown-word.docx
+title: "An Example R Markdown Document"
+author: "Handsome B. Wonderful"
+date: "4/22/2020"
+abstract: "Sed sit amet lacus in velit blandit varius. Vestibulum vestibulum id arcu in porttitor. Integer gravida nibh nec dolor tempor tincidunt. Aenean condimentum nibh massa, ac facilisis ante luctus vel. Etiam et felis posuere, maximus velit quis, pulvinar eros. Praesent leo nunc, bibendum nec suscipit eget, convallis sed nibh. Fusce non dolor eleifend, consectetur urna a, cursus felis. Pellentesque a eleifend dui."
+bibliography: ext/refs.bib
+csl: ext/apsa.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE,
+                      message=FALSE, warning=FALSE,
+                      fig.path='figs/',
+                      cache.path = '_cache/',
+                      fig.process = function(x) {
+                      x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+                      if (file.rename(x, x2)) x2 else x
+                      })
+```
+
+```{r source, include=FALSE}
+
+library(tidyverse)
+library(huxtable)
+library(knitr)
+
+Data <- readRDS("data/data.rds")
+Models <- readRDS("data/models.rds")
+Sims <- readRDS("data/sims.rds")
+tabs_figs <- readRDS("data/tabs_figs.rds")
+```
+
+# Introduction
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam placerat justo a placerat dignissim. Etiam ornare imperdiet vehicula. Mauris egestas laoreet sapien. Nullam tempor rhoncus diam, sed efficitur arcu suscipit eu. Proin id dui et turpis hendrerit placerat. Aenean rhoncus dictum ipsum in eleifend. Curabitur condimentum sollicitudin efficitur.
+
+<!--  Example on how to use citations coming up -->
+
+You all should cite Steven V. Miller more. I hear that guy is really cool! Check out some of his solo work [e.g. @miller2018etttc; @miller2017etst; @miller2017ieea; @miller2017etjc; @miller2013tdpi]. One cool finding from @miller2017etjc is that terrorism decreases judicial confidence in those European countries whose judiciaries are the most independent. That's kind of an important finding in the wake of the *Charlie Hebdo* terror attack. It should be cited more. And also Steve should be given more cash and prizes, and possibly a Tony award too for good measure.
+
+<!-- In your R Markdown file in RStudio, hit Ctrl-Shift-C (possibly Cmd-Shift-C for you Mac users?) to comment out an entire paragraph (wherever you happen to be in the document) -->
+
+<!-- Pellentesque a turpis massa. Donec feugiat, nisi ac dictum rutrum, libero leo maximus nisl, eget ultricies libero justo eget urna. Ut id neque et dui aliquam varius in sit amet lectus. Etiam at malesuada felis. Nam augue erat, auctor vitae porttitor non, congue sit amet eros. Proin vitae magna ex. Cras bibendum lacus ac faucibus maximus. Ut blandit justo nulla, non imperdiet enim cursus a. In eget iaculis nisi, non ornare diam. Curabitur gravida magna ut sapien maximus, at commodo risus faucibus. Vivamus imperdiet sem in est euismod, vel varius dolor aliquet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In tempus justo vel neque dignissim luctus. Vestibulum molestie pellentesque ex nec rhoncus. -->
+
+Pellentesque euismod neque diam, nec euismod ex cursus in. Suspendisse non lacinia mauris. Nunc eu purus et purus rhoncus tristique eget at felis. Suspendisse tincidunt elit quis sem porta semper. Proin id leo neque. Curabitur tincidunt consequat ultrices. Sed lobortis hendrerit mauris in gravida. Fusce eget sapien sit amet leo condimentum dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget tincidunt elit. Aliquam id cursus tellus. Integer in dui quis enim pulvinar finibus ut a sapien. Fusce ut dignissim nisi. Quisque fringilla tincidunt cursus.
+
+We'll discuss "chunks" soon, but you can do stuff in line too. For example, the approximate value of pi is `r pi`. 3*4 = `r 3*4`. I'll give an example of how to make this a bit more useful next.
+
+Aliquam erat volutpat. Etiam venenatis purus at lobortis finibus. Integer laoreet mattis nunc, at tristique nisi mattis vitae. Donec interdum justo eget est venenatis, ac placerat ipsum euismod. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed vitae facilisis neque. Quisque suscipit congue vestibulum. Maecenas egestas quis nulla ut tincidunt. Etiam ac elementum neque, semper volutpat nisl. Suspendisse eu pellentesque nulla. Aenean urna sapien, laoreet ac augue eget, tristique imperdiet dui.
+
+# Literature Review
+
+Phasellus viverra lacinia hendrerit. Quisque bibendum, odio sed varius posuere, purus enim ornare metus, vel lobortis sem tellus non est. Aenean vel dui facilisis, viverra nisl eu, semper lacus. Integer erat magna, semper vitae elementum a, consectetur a purus. Curabitur at porta tortor. Nunc id bibendum purus. Aliquam erat volutpat. Nullam nec risus arcu. Nullam dolor felis, tincidunt in augue id, sodales ultricies ante. Nunc pellentesque augue purus, non dictum nulla ultricies vel.[^fn1]
+
+[^fn1]: I have a footnote to add here.
+
+Mauris laoreet felis sit amet ex rhoncus, a tristique diam malesuada. Aenean lobortis lectus at quam congue dapibus. Sed sit amet dolor id ligula cursus imperdiet sed sit amet enim. Nulla facilisi. Curabitur et sapien a dui tristique rutrum. Etiam porttitor vel arcu vel semper. Mauris maximus elit sed efficitur rhoncus. Quisque ex neque, accumsan quis vulputate non, semper id mi. Cras tortor nisl, posuere eget velit vitae, pharetra vulputate diam. Quisque sodales, velit at hendrerit commodo, tortor mauris dignissim neque, in facilisis nibh massa eget lectus. Duis ut nulla metus.
+
+Phasellus ultricies elementum lacus vel bibendum. Aliquam scelerisque leo ac dictum facilisis. Aenean risus justo, mollis volutpat justo eget, vehicula consequat leo. Ut facilisis magna erat, vitae tempor ex tincidunt eget. Pellentesque accumsan purus sed sodales vehicula. Integer a venenatis nisl. Vivamus lacinia orci eu elit rutrum bibendum. Cras eget ipsum vitae neque feugiat semper. Mauris commodo fringilla consectetur. In a faucibus massa.
+
+Integer pretium mattis rhoncus. Duis a vehicula eros. Aenean libero ligula, blandit ullamcorper lacus sit amet, tristique hendrerit turpis. Morbi nec arcu sed orci ullamcorper pulvinar vel at erat. Suspendisse potenti. Proin at dictum nisl. Vestibulum sed ultrices leo. Donec auctor enim ac ullamcorper porttitor. Nullam rutrum tincidunt elit et congue. Mauris viverra placerat tincidunt.
+
+Donec auctor justo vel lorem vestibulum suscipit. Sed mattis, sem sed congue placerat, mi libero consequat purus, eget luctus turpis tortor vel elit. Quisque vitae nisi a ipsum sollicitudin maximus. Vestibulum lectus arcu, vehicula sed semper sed, vehicula pretium mi. Aliquam sagittis velit ut nibh pharetra, a ultrices nisi convallis. Cras a dictum velit. Donec in leo lobortis, malesuada leo ultricies, rutrum ipsum. Etiam ut sodales urna. Quisque lobortis eget dui non tincidunt. Nullam in cursus nisl. Donec pretium velit quis nibh feugiat, eget consectetur lectus pulvinar. Proin imperdiet urna et est pharetra scelerisque. Praesent pretium lacus vel interdum varius. Nullam consequat mauris felis, id lacinia nulla posuere ac. Donec sit amet pretium nisl.[^anotherfootnote]
+
+[^anotherfootnote]: I'm hungry.
+
+
+Nam elementum massa nec libero interdum, a facilisis ante scelerisque. Suspendisse rutrum dui vel ante venenatis, at porta velit venenatis. Sed a ornare nisi, venenatis facilisis nibh. In vestibulum tellus dolor, quis blandit elit tincidunt ut. Phasellus consequat mauris odio, a aliquam risus varius a. In hac habitasse platea dictumst. Nulla non mattis enim. Mauris facilisis augue vel dapibus volutpat. Sed vehicula pretium arcu. Integer eu lectus mauris. Duis vestibulum urna odio, non cursus arcu luctus ac. Cras gravida lacus ut turpis molestie, quis vestibulum tortor facilisis.
+
+Curabitur vehicula, nisl a iaculis dapibus, dui dui volutpat ex, et bibendum ex urna dapibus sapien. Nullam sodales feugiat ex sit amet finibus. Sed vulputate sollicitudin nunc, nec vehicula lacus ultrices non. Suspendisse aliquam vel nisl et finibus. Etiam viverra felis tortor, id facilisis orci ornare id. Mauris lobortis eleifend libero sit amet fermentum. Ut tempus lobortis dui non pretium. Quisque ut dolor vitae orci finibus egestas at quis mauris. Cras magna magna, hendrerit lacinia quam eget, ultrices hendrerit mi. Duis et condimentum ligula. Fusce feugiat erat in velit commodo, vel blandit ipsum ultricies. Cras id metus condimentum, egestas justo non, suscipit tortor.
+
+Sed at justo mauris. Cras eu mi diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a quam eget urna condimentum congue a nec nibh. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis auctor finibus diam, vitae vestibulum nibh blandit viverra. Ut sit amet luctus eros. Integer imperdiet efficitur sollicitudin. Duis ut leo tristique, tristique libero eget, commodo ex. Suspendisse vitae interdum mauris, ut tincidunt justo. Proin turpis felis, imperdiet nec accumsan vitae, congue ut leo.
+
+Nunc scelerisque massa quis orci pellentesque, vel elementum massa auctor. Etiam fringilla eget ligula vel accumsan. Sed nec nisi eget ante tempor mattis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh augue, fringilla at ex ut, imperdiet scelerisque nunc. Nulla sit amet vestibulum mi. Maecenas varius condimentum dolor, nec luctus tellus vehicula sed. Proin at pharetra ex.
+
+Praesent sit amet posuere dolor. Proin finibus porttitor diam eget egestas. Aenean eget felis nulla. Integer et pretium leo. Suspendisse aliquet nunc purus, ut vehicula quam sodales non. Sed nec risus ultrices, lobortis metus in, mattis tellus. Nunc condimentum libero consectetur est efficitur, et tincidunt ex faucibus. Nunc commodo odio sed facilisis congue. Suspendisse vel mi mollis, maximus nunc et, venenatis elit. Fusce non pulvinar lacus. Phasellus mattis quam diam, ut vehicula elit posuere vitae. Praesent mattis tincidunt felis et pulvinar. Ut auctor nibh lacus, vel dignissim orci laoreet eget. Proin tincidunt fringilla tellus eu ultrices.
+
+# Theory
+
+Nullam ultricies risus dapibus lectus dictum, vitae dictum enim consequat. Sed sollicitudin eros non mauris volutpat, non finibus quam rhoncus. Aenean arcu nulla, malesuada at viverra eget, commodo ac quam. Cras efficitur tellus id arcu cursus aliquet. Duis id justo mi. Sed sit amet tincidunt nunc. In mattis mattis sapien in porttitor. Vivamus rhoncus, augue ut bibendum egestas, nunc eros semper sapien, a ullamcorper sem mi sed tortor. Fusce dapibus imperdiet metus, ac placerat orci euismod in. Integer eu semper nunc. Morbi sodales ipsum a erat malesuada, nec hendrerit massa molestie. Sed aliquet orci sed dolor rutrum hendrerit. Quisque ligula quam, luctus vitae ipsum iaculis, luctus rutrum tellus. Nunc pharetra sem facilisis urna ullamcorper lacinia.
+
+Suspendisse a molestie augue. Cras rhoncus, est ultrices lobortis aliquam, enim lacus vulputate leo, ac mollis sapien diam ac orci. Vivamus a ligula arcu. Phasellus aliquam velit velit, a semper dui finibus at. Integer mattis velit ac risus finibus, ut consequat tortor suscipit. Etiam venenatis fermentum tellus, sit amet auctor ex lacinia sed. Aenean id posuere velit, nec pharetra massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi non elit sit amet nulla dignissim fermentum aliquam faucibus nulla.
+
+Pellentesque et libero vel mi interdum faucibus. Proin vel ligula ipsum. Etiam ac sem a magna sagittis lacinia. Cras pulvinar in orci in mollis. Nulla facilisi. Curabitur iaculis velit in commodo ornare. Ut bibendum laoreet leo at elementum. Nam gravida id nisl mollis cursus.
+
+Integer molestie ligula eget lacus molestie maximus. Etiam vehicula, neque vitae feugiat viverra, ex libero mollis dolor, non tempor arcu dolor quis lacus. Nunc ut congue lorem, quis sagittis quam. Vestibulum imperdiet, ante et efficitur pharetra, arcu justo tempor velit, a fermentum enim mauris a diam. Curabitur lobortis lorem justo. Integer id tincidunt libero, eu consequat tellus. Cras sollicitudin nunc nec justo suscipit sodales. Vivamus fringilla ipsum vitae rutrum tincidunt. Mauris semper efficitur ornare. Maecenas id nibh eu ipsum volutpat ultrices.
+
+Ut sodales, est consequat malesuada auctor, lacus est cursus tortor, ut iaculis justo justo faucibus sem. Phasellus consequat dui in libero sodales interdum. Nam in suscipit ante, laoreet dictum purus. Pellentesque efficitur sollicitudin dui in bibendum. Curabitur vel bibendum mi. Ut et tincidunt nulla. Integer blandit malesuada feugiat. Nulla in orci nibh. In ornare pretium tincidunt. Aliquam sodales tincidunt molestie. Ut in tincidunt leo. Proin iaculis eros sed euismod volutpat. Integer magna nisl, accumsan sit amet lectus ac, laoreet laoreet nulla. Quisque vitae dui faucibus, consectetur ante non, fringilla augue. Vestibulum egestas purus sit amet rhoncus fermentum.
+
+Nulla blandit, ligula quis hendrerit tristique, nisl tellus feugiat est, ac feugiat diam ex tristique felis. Mauris tempor malesuada nibh a suscipit. Nunc et ornare velit. Donec at augue mauris. Nunc sodales congue congue. In in diam in nisl condimentum imperdiet. Sed laoreet quam tellus, in convallis felis ullamcorper quis. Fusce vel rutrum lorem. Praesent tempus, tellus aliquet dapibus euismod, diam orci tincidunt justo, sit amet ornare lacus sapien vel nisi. Cras placerat enim quis commodo ullamcorper. Donec maximus lorem vel sapien interdum maximus. Sed eget velit dui. Maecenas in euismod arcu. Morbi diam est, hendrerit ac tristique quis, dignissim eget diam.
+
+Phasellus aliquam est enim, ac ullamcorper risus ultrices quis. Integer ac porta elit, non interdum sapien. Duis pulvinar maximus arcu, eget scelerisque tellus imperdiet quis. Donec ultricies sapien et nisl vestibulum dignissim. Pellentesque euismod sed purus eget accumsan. In hac habitasse platea dictumst. Quisque posuere ante sit amet est gravida, eu luctus tellus scelerisque. Aliquam fringilla odio id tortor pulvinar, eget porta magna tincidunt. Phasellus commodo fermentum odio, eget aliquam elit interdum quis.
+
+Suspendisse pharetra eget lectus non sodales. Morbi pharetra ligula id tortor facilisis, vel imperdiet elit gravida. Sed ac urna at urna placerat maximus. Donec placerat posuere nibh, in condimentum est condimentum at. In hac habitasse platea dictumst. Ut vulputate ante eget magna mollis, et sodales ipsum interdum. Praesent elementum neque nec erat fringilla, sed venenatis ante pellentesque. Curabitur posuere placerat ex, a congue nulla feugiat nec. Nunc diam erat, ornare eu ex vel, viverra pharetra enim. Cras pulvinar tortor ac porttitor maximus. Nam blandit enim at pulvinar lacinia. In ut nunc nisl. Phasellus sed nisi ac erat efficitur congue in a sem. Aenean interdum malesuada orci ut luctus. Proin aliquet, lectus eget cursus tristique, massa neque rhoncus augue, ut placerat mi turpis ut risus.
+
+Praesent in nisi ante. Etiam convallis scelerisque gravida. Suspendisse quis venenatis sapien. Mauris lacus nibh, egestas quis aliquet nec, rutrum ac eros. Proin a lectus augue. Sed id faucibus mi. Fusce mattis id est in lobortis. Fusce iaculis augue tortor, nec malesuada libero tristique sit amet. Etiam sodales eget ex viverra euismod. Suspendisse porttitor elit rutrum leo lobortis mollis. Proin ac dolor metus. Donec tempor bibendum pulvinar.
+
+# Research Design
+
+Sed fringilla, metus ut ornare volutpat, massa sem venenatis dui, et pellentesque turpis sapien eget lectus. Nulla non finibus turpis, ut maximus leo. Phasellus efficitur nunc non tempor consectetur. Donec porttitor non felis quis pulvinar. Fusce vitae dui vitae neque auctor aliquam. Sed tristique ex non mauris ultrices ultricies. Vestibulum a feugiat justo, sed placerat nunc. Mauris rutrum congue risus, ut molestie mi maximus a. Proin rhoncus lacus et ligula tempus aliquet. Ut blandit ultricies orci, a lobortis libero volutpat sed. Etiam vulputate ante id magna dictum auctor. Duis eu nibh vitae elit ultricies volutpat ut sed turpis. Nullam lobortis viverra bibendum. Curabitur in quam tristique enim pharetra fermentum.
+
+Morbi non magna mi. Morbi congue massa placerat, facilisis ipsum ut, tempus velit. Phasellus sagittis leo et luctus dapibus. Mauris leo lorem, gravida eget lacus non, molestie suscipit dolor. Phasellus blandit volutpat magna euismod venenatis. Praesent justo augue, vestibulum sit amet luctus nec, ornare ut ligula. Maecenas velit quam, facilisis eget egestas ac, sodales eget lorem. Cras eu ante pulvinar ex porttitor molestie in in sem.
+
+Here's a table for no particular reason. Here are the past five final scores in the Ohio State-Michigan series.
+
+| **Season** | **Ohio State** | **Michigan**  | **Venue**  |
+|:----------:|:--------------:|:-------------:|:----------:|
+|  2015     | 42  | 13  | Michigan Stadium  |
+| 2016      | 30  | 27  |  Ohio Stadium |
+| 2017      | 31  | 20  |  Michigan Stadium |
+|  2018     | 62  | 39  |  Ohio Stadium |
+| 2019      | 56  | 27  | Michigan Stadium  |
+
+Table: Lose Forever, Michigan
+
+Phasellus ut vulputate nibh. Sed eu placerat lacus. Fusce dignissim eget justo id bibendum. Morbi convallis iaculis tortor eu finibus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse metus eros, feugiat et orci a, venenatis sagittis sem. Morbi laoreet, leo id molestie iaculis, sapien velit rhoncus eros, iaculis convallis velit erat eget nisi. Vestibulum condimentum ligula vel condimentum condimentum. Nullam sodales posuere odio. Pellentesque tempus, odio ac hendrerit porta, felis nulla molestie libero, eu fermentum nisl tortor et nisi. Duis lobortis urna magna, nec tempor elit ultricies ut. Pellentesque fringilla cursus purus vitae iaculis. Nulla facilisi. Suspendisse potenti. Nunc consequat dui at feugiat rutrum.
+
+Maecenas justo tortor, porttitor id volutpat at, posuere id erat. In magna libero, sollicitudin et pulvinar nec, ullamcorper sit amet libero. Nam in erat mattis mi sagittis vestibulum. Donec id malesuada massa, a maximus velit. Cras dignissim sapien sed luctus viverra. Maecenas ullamcorper mi et ex tincidunt, mollis malesuada lorem auctor. Sed dui risus, vulputate id ullamcorper eu, pellentesque sed metus. Vivamus urna nisl, ornare hendrerit auctor consequat, fringilla vel mauris. Praesent dolor enim, iaculis ut porta vel, ullamcorper nec nisi. Curabitur tortor felis, eleifend vitae metus sed, auctor eleifend tortor. Integer at diam ac leo rhoncus rhoncus. Aliquam odio lacus, tempor mattis maximus a, malesuada tincidunt dui. Curabitur in convallis nisl, in efficitur eros. Cras eu nisl aliquam libero laoreet sodales. Nunc non ipsum non mauris pellentesque dictum in eget dui.
+
+Proin convallis rutrum semper. Mauris id turpis vitae tortor cursus ultricies. Vestibulum eleifend at velit eu tincidunt. Vivamus egestas luctus dui in vehicula. Maecenas efficitur turpis quis risus convallis, nec tincidunt turpis consectetur. Praesent elementum ac elit at pretium. Vestibulum scelerisque nulla est, et auctor dolor suscipit nec. Donec sed blandit nulla. Duis consectetur leo ullamcorper, iaculis massa sed, commodo risus. Cras vitae turpis quis orci pretium sagittis. Suspendisse hendrerit luctus commodo. Maecenas quam libero, malesuada sit amet ornare non, blandit in lorem. Mauris tortor libero, faucibus at urna ut, lacinia mollis ligula.
+
+Sed justo ex, lacinia eu diam id, semper scelerisque libero. Nullam risus sapien, bibendum vitae augue sit amet, suscipit convallis enim. Duis malesuada sagittis posuere. Donec imperdiet justo lacus, ut accumsan felis pharetra sit amet. Proin ut nibh sodales, ornare nisl in, tempus ante. Suspendisse sed varius risus, sed ullamcorper leo. Maecenas sit amet elit ante. Pellentesque laoreet interdum nisi id pulvinar. Integer blandit ante eu ex luctus dignissim. Phasellus elit felis, scelerisque at felis in, tempus ultrices libero. In in rutrum est.
+
+# Results
+
+Nam vel malesuada libero, eget finibus turpis. Morbi convallis, quam nec tincidunt aliquam, diam lacus bibendum purus, porttitor egestas mi sapien ac mi. Nullam ultrices vel massa quis suscipit. Fusce at metus auctor, egestas nulla vitae, lacinia ante. Nulla vel enim ac massa auctor porta at efficitur neque. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+
+Here's a regression table.
+
+```{r, echo=F}
+tabs_figs$tab_reg %>%
+  set_width(., .99) %>%
+  set_col_width(., 1, .01) %>% 
+  set_position(.,"center") %>%
+  huxtable::as_flextable()
+```
+
+Donec condimentum tempor diam. Duis velit elit, sagittis ac bibendum ut, molestie nec enim. Fusce tellus justo, feugiat a congue quis, consequat in libero. Suspendisse potenti. Quisque posuere mi sit amet ipsum venenatis, nec scelerisque lectus dapibus. Duis imperdiet cursus sem, quis dictum mi feugiat porttitor. Maecenas congue, est in imperdiet laoreet, lacus odio faucibus libero, a dictum orci velit at tellus. Pellentesque dapibus velit purus, at placerat tellus imperdiet nec. Etiam porta nec leo a iaculis. Suspendisse vestibulum fermentum augue, vel gravida arcu sodales eget. Proin sed tortor maximus, egestas tortor vitae, tincidunt sapien. In sed urna ut arcu consequat feugiat ac nec elit. Aliquam pellentesque rutrum bibendum. Duis accumsan suscipit orci, sed dapibus lectus ullamcorper in. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+
+Integer nec gravida purus. Curabitur feugiat volutpat blandit. Donec suscipit, erat nec sodales maximus, nunc nunc tincidunt lacus, ut congue nisl magna eget eros. Nulla risus massa, euismod tristique molestie sit amet, mattis ut nibh. Pellentesque molestie est eu vulputate tincidunt. Donec ultrices sed risus vel pulvinar. In magna odio, dictum eu elementum nec, suscipit dictum nulla.
+
+Duis neque turpis, porta id tortor et, laoreet tristique lectus. Maecenas sem neque, tincidunt quis nisi nec, suscipit consequat orci. Pellentesque varius tortor et lorem lobortis dignissim. Pellentesque congue varius magna in finibus. Morbi interdum vitae sem quis pellentesque. Etiam massa lacus, luctus non pretium vel, blandit et orci. Fusce odio risus, rhoncus sit amet pellentesque a, pulvinar a mauris. Praesent in euismod ante. Nunc non hendrerit eros, ut tempor neque. Aenean tincidunt lectus massa. Suspendisse a malesuada lorem. Sed neque ante, eleifend vitae odio vel, egestas aliquam nulla. Sed mattis congue est.
+
+Pellentesque faucibus fermentum elit, id ultrices nunc posuere et. Pellentesque pulvinar nisi eu sem bibendum, ac efficitur diam condimentum. Aliquam sollicitudin elementum eleifend. Vivamus rutrum venenatis tristique. Donec elementum lorem in tellus consectetur, ac consectetur ex rutrum. Maecenas sed mauris lectus. Suspendisse sit amet malesuada eros. Aliquam ultricies quam sit amet congue hendrerit. Cras malesuada, dolor et sodales interdum, mi erat imperdiet ex, eget sollicitudin ipsum purus eleifend mi.
+
+Etiam in finibus nibh. Suspendisse sed ultricies orci. Nam nec mauris et diam tristique pellentesque. Phasellus sit amet nunc nulla. Donec purus nunc, commodo quis ligula vitae, accumsan varius turpis. Curabitur vulputate sodales fringilla. Donec tellus nibh, hendrerit a sem non, pharetra dictum ligula. Nulla varius euismod nisl, id interdum nisi sagittis cursus. Pellentesque lobortis lacinia viverra. Duis euismod eleifend sem. Integer risus nibh, porta vel semper quis, tristique id urna. Sed ut pulvinar leo. Aliquam magna augue, molestie vel fringilla id, sagittis sed neque. Morbi quis vulputate tellus, eu sollicitudin turpis. Vivamus viverra enim at aliquet hendrerit.
+
+Praesent sem lacus, feugiat sed rutrum non, ultrices eu magna. Cras ac consectetur lorem, id faucibus felis. Nunc tristique elit non leo malesuada, et posuere nibh finibus. Quisque interdum feugiat lacus mollis interdum. Ut sem mi, molestie nec dignissim et, fringilla vel nisi. Nunc in tortor auctor, auctor nisl vitae, rutrum nibh. Ut molestie, tellus ut pretium blandit, augue diam dapibus ex, a laoreet ipsum arcu vel neque. Morbi rutrum metus urna, non congue mi aliquam ut. Nam commodo ut turpis eu gravida. Pellentesque ipsum neque, pretium nec tortor ut, fringilla malesuada lacus. Donec vitae egestas risus.
+
+Aenean facilisis, diam at dapibus vehicula, elit mauris malesuada ante, eu ultricies quam ex in turpis. Nulla vel velit in diam porta ornare at eget mi. Mauris suscipit sapien vel diam bibendum tempor. Donec nec lacus eu lectus facilisis maximus. Morbi varius suscipit dapibus. Nam eu elit facilisis, efficitur massa eget, posuere massa. Maecenas felis eros, imperdiet sit amet rhoncus at, condimentum vel lorem. Sed consequat molestie libero vitae ornare. Aliquam urna lorem, luctus quis risus eget, tempus hendrerit quam. Integer eu nisl id ex eleifend tristique. Curabitur quis egestas turpis. Nam eu posuere nisi, eget viverra tellus. Phasellus scelerisque neque turpis, at aliquet libero auctor eget.
+
+Etiam quam nulla, malesuada quis purus vel, interdum pharetra sem. Pellentesque facilisis, est at rhoncus varius, lacus ipsum lacinia massa, non tristique erat urna sit amet urna. Aliquam tortor mauris, accumsan ut tellus et, gravida cursus nunc. Pellentesque fermentum tincidunt dolor, a interdum ipsum bibendum quis. Phasellus aliquam lobortis fermentum. Curabitur eu mollis magna. Nulla sollicitudin rutrum gravida. Maecenas elementum urna lectus, eget pulvinar tortor eleifend a. Integer at massa vel mauris varius scelerisque.
+
+Praesent condimentum fermentum nibh in condimentum. Integer eget quam dictum, eleifend enim id, pellentesque leo. Etiam eget arcu est. Aliquam at metus a sapien placerat interdum vel vel erat. Donec tristique, nulla sed vulputate pharetra, tellus neque vehicula ipsum, sit amet tristique nunc elit ut ante. Nulla quis libero quis ante sodales ornare. Nulla elit elit, laoreet in est et, consequat scelerisque velit. Ut viverra nisl at augue dignissim, sit amet pellentesque nunc pellentesque. Nulla et condimentum tortor. Phasellus ut risus quis est sagittis vestibulum non at ante. Aliquam a odio eu lectus luctus fermentum sit amet blandit leo. Nulla facilisi. Suspendisse tortor nibh, blandit in blandit ut, vulputate nec mi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+## Quantities of Interest
+
+Nunc fermentum mi et ligula interdum ultrices. Morbi commodo lorem vehicula quam aliquam, viverra vulputate augue molestie. Morbi ullamcorper aliquet orci id ullamcorper. Aenean iaculis, quam id vehicula tempus, nibh mi hendrerit turpis, ac vulputate felis erat ut risus. In hac habitasse platea dictumst. Vivamus condimentum eget justo eu fermentum. Sed vel enim maximus, porta nisi id, pellentesque mi. Cras lobortis nunc eu sapien convallis dapibus. Fusce id auctor odio. Mauris a pharetra risus. Suspendisse non dignissim nunc, ac consectetur ipsum.
+
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam dignissim velit ut cursus iaculis. Suspendisse dolor dui, iaculis non massa ut, eleifend luctus augue. Morbi cursus luctus purus mollis lacinia. Curabitur eu lorem accumsan, dictum nisl a, fringilla lectus. Duis eget consequat ipsum. Maecenas aliquam est metus. Maecenas egestas erat libero, et auctor orci iaculis semper. Etiam quam orci, facilisis dignissim convallis quis, consequat id neque.
+
+Vestibulum elementum, diam vel malesuada hendrerit, odio magna consectetur leo, sed ullamcorper tellus augue eu lorem. Morbi tristique velit magna, porttitor mollis libero lobortis vel. Integer condimentum orci eu sodales tincidunt. Donec et lacus lobortis, convallis dolor in, scelerisque purus. Nam vehicula facilisis imperdiet. Sed efficitur laoreet leo in fringilla. Aliquam convallis, justo nec facilisis lacinia, tortor enim viverra erat, non hendrerit sapien metus eleifend metus. Aliquam placerat leo eu massa hendrerit consequat nec sit amet arcu. Phasellus interdum felis sed ex ornare tristique. Quisque placerat libero in purus ornare, sit amet posuere lectus venenatis. Nulla sagittis ex ac felis suscipit fermentum. Phasellus non mattis velit. Vivamus consequat tortor vel risus tristique, a convallis justo pharetra. Quisque sodales justo non egestas hendrerit.
+
+```{r, echo=F}
+tabs_figs$tab_fd %>%
+  kable(.,
+        col.names = c("Mean First Difference", "Lower Bound", "Upper Bound", "Number of Negative First Differences"),
+        caption = "First Differences of Being Born Again on Voting for Donald Trump Among Midwestern White Voters ",
+        align=c("c"))
+# Note: you'll want to manually fix the relative width (I'd think) in your Word doc.
+  
+```
+
+Duis vel ligula suscipit, gravida magna vitae, faucibus eros. Sed commodo tellus nisl, a feugiat nunc dictum nec. Nam egestas lacus quis sem vestibulum, sit amet condimentum sem eleifend. Maecenas suscipit pulvinar purus non cursus. Etiam convallis, mi sit amet lobortis luctus, eros dolor hendrerit enim, eu convallis tortor lorem ut ligula. Nullam a felis porta, blandit leo quis, pretium tellus. Etiam viverra elit mi, in dapibus ex condimentum sit amet. Donec mauris purus, tempus in neque vitae, mattis placerat dui. Curabitur libero lorem, interdum vitae ipsum lacinia, scelerisque tincidunt lacus. Sed tincidunt consectetur rutrum. Duis sollicitudin arcu sed ligula faucibus dictum. Donec elementum odio nulla, sed condimentum ex dignissim nec. Integer dui orci, hendrerit a enim sed, consequat vehicula ipsum.
+
+Cras nisi diam, elementum efficitur mattis quis, egestas et nunc. Suspendisse odio ipsum, accumsan gravida pellentesque eget, egestas a tellus. Fusce nec fermentum erat, sed tempus purus. Vivamus ut turpis vitae ante pharetra tempus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur ac dolor sit amet lorem lobortis luctus at at justo. Nunc sollicitudin viverra metus, eu tempus turpis dictum id. Sed eu suscipit metus.
+
+```{r fig-effect-cognitive-racism-partisanship, fig.width=11, fig.height = 7, echo=F, fig.cap="The Effect of Cognitive Racism on the Likelihood of Voting for Donald Trump in 2016, by Partisanship"}
+
+tabs_figs$fig_crp
+
+```
+
+Etiam elit arcu, mollis vel interdum ut, commodo et orci. Nam mollis nibh in venenatis lacinia. Duis id erat eget diam efficitur bibendum quis in quam. Quisque dapibus commodo nibh, eu venenatis purus rutrum id. Vestibulum et nunc in nunc viverra pellentesque nec id ipsum. Vestibulum ullamcorper nulla ut tellus faucibus, luctus eleifend purus dictum. Sed non turpis in ante fringilla auctor sit amet ac felis. Etiam viverra iaculis lacus, non feugiat erat. Fusce id est tincidunt, varius diam nec, elementum nisl. Cras volutpat ante elit, ut dictum justo elementum eget. Pellentesque porttitor quis metus id suscipit. Proin molestie mi quis est finibus blandit. Vestibulum eu nulla eu libero facilisis suscipit eu sed elit. Integer dapibus varius dui, in congue ex sollicitudin in.
+
+Donec quis sodales lorem. Morbi metus justo, euismod vitae dignissim vel, dignissim a magna. Nam nec fringilla ex, vel dignissim tortor. Donec volutpat lorem at nisi tempus, in ultrices urna consequat. Duis consequat tincidunt arcu ut vulputate. Nam nec massa ac urna rutrum eleifend vitae at tellus. Phasellus venenatis quis mi sit amet ornare. Nam condimentum posuere augue, ac pellentesque nisl rhoncus vitae. Vestibulum at consectetur erat.
+
+# Conclusion
+
+Morbi hendrerit sagittis mi, vehicula rutrum lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec pellentesque malesuada quam, ut auctor lectus pretium ac. Sed aliquet enim magna, ut molestie enim egestas ut. Cras semper mauris turpis, a condimentum odio tincidunt ac. Proin pellentesque urna ut felis eleifend, et laoreet sapien congue. Etiam neque erat, laoreet quis lectus nec, imperdiet bibendum tortor. Ut ut porta ipsum, vitae euismod tortor. Aliquam sagittis turpis at arcu euismod, faucibus feugiat tortor cursus. Cras eros est, blandit non tellus ac, eleifend eleifend nulla. Etiam luctus mauris arcu, in condimentum urna bibendum non. Nunc euismod est tellus, a congue leo semper ac. Cras tempus eu purus sed consectetur. Duis vitae venenatis nisi, ut placerat urna. Pellentesque laoreet felis in pharetra lobortis.
+
+Morbi vel turpis id purus facilisis iaculis id at mi. Proin laoreet velit non mollis pellentesque. Donec orci lectus, elementum eu metus at, elementum viverra nisi. Duis non neque lectus. Vestibulum gravida dignissim dictum. Fusce interdum tempus turpis, et dictum lectus tincidunt quis. Donec laoreet vestibulum velit, elementum blandit lorem vulputate sit amet. Sed sollicitudin efficitur eros, et lacinia lectus. Cras sed metus fermentum nunc venenatis dignissim. Nullam congue lorem eget venenatis vestibulum. Etiam gravida mi nulla, at gravida lectus cursus fringilla. Cras vestibulum, mauris vitae blandit facilisis, quam nisi commodo felis, et cursus sem erat nec mauris. Duis scelerisque porta ex in viverra. Aliquam erat volutpat. Pellentesque ut elementum tortor. Aliquam erat volutpat.
+
+Proin eget tellus scelerisque, interdum eros id, facilisis leo. Aliquam a laoreet ex. Aenean risus diam, rhoncus sit amet tincidunt sed, consectetur vel purus. Pellentesque imperdiet aliquam ipsum sit amet vulputate. Nulla iaculis bibendum orci nec pulvinar. Maecenas sed egestas erat. Praesent ut turpis efficitur, hendrerit nisl et, pellentesque diam. Sed lobortis ex volutpat turpis fringilla tempor. Donec mattis leo at tellus placerat blandit. Etiam sed odio augue. Vivamus pellentesque elit sit amet eros aliquam, et pretium urna scelerisque. Aenean ornare cursus velit, lobortis lacinia tortor consequat vitae. Pellentesque a mauris tincidunt, scelerisque lacus et, fermentum elit. Sed arcu turpis, blandit id vehicula vitae, rhoncus ac dolor. Nulla ac varius massa. Quisque massa lectus, facilisis sed consectetur et, mollis vitae tortor.
+
+Nulla faucibus, mauris quis scelerisque mattis, risus nulla accumsan risus, in fringilla orci tortor congue ligula. Duis varius condimentum ullamcorper. Nulla in mauris erat. Phasellus a ipsum ac ligula facilisis hendrerit. In mollis turpis vitae cursus porttitor. Donec sed odio posuere, viverra nibh quis, dignissim odio. Curabitur tempor ullamcorper quam, quis mollis dui egestas consectetur. In ut aliquet dui. Morbi facilisis consectetur ligula, id ullamcorper ante gravida non. Sed placerat at mi eu euismod. Mauris dui odio, commodo id nisi cursus, gravida semper tortor. In pulvinar fringilla ligula, sit amet euismod est. Integer in dictum neque, sed faucibus neque. 
+
+\newpage
+
+# References
+
+<!-- All the CSL files you could ever want are here: https://github.com/citation-style-language/styles -->
