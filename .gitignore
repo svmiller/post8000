@@ -39,3 +39,9 @@ _site
 
 # don't ignore the .gitignore file
 !.gitignore
+.Rproj.user
+
+# Other stuff...
+.rdb
+.rdx
+.RData
