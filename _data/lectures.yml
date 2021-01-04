@@ -8,73 +8,73 @@
   dirname: scientific-research
   tldr: "A brief introduction to thinking about and discussing scientific research."
 
-- title: "LAB: Intro to R and Rstudio"
-  filename: intro-r-rstudio
-  dirname: intro-r-rstudio
-  tldr: "a tidyverse-oriented lab for introducing students to R and Rstudio."
-
-- title: "Descriptive Inference"
-  filename: descriptive-inference
-  dirname: descriptive-inference
-  tldr: "A brief discussion on moving from interpretation to inference, at least thinking of 'inference' statistically."
-
-- title: "LAB: Some Basics of Descriptive Inference"
-  filename: descriptive-inference-lab
-  dirname: descriptive-inference-lab
-  tldr: "Central tendency, dispersion, levels of measurement, and more, all in R."
-
-- title: "Causality"
-  filename: causality
-  dirname: causality
-  tldr: "On association and causality: the tools to evaluate the former and the framework to think about the latter."
-
-- title: "Random Assignment and Experiments"
-  filename: random-assignment-experiments
-  dirname: random-assignment-experiments
-  tldr: "Random assignment and experiments constitute the 'gold standard' for causal identification."
-
-- title: "Measurement Error"
-  filename: measurement-error
-  dirname: measurement-error
-  tldr: "Measurement error is unwelcome. Different forms of it can make our inferences unreliable or, worse yet, bias them."
-
-
-- title: "OLS Regression"
-  filename: ols
-  dirname: ols
-  tldr: "A quick-and-dirty discussion of ordinary least squares regression."
-
-- title: "Instrumental Variables"
-  filename: instrumental-variables
-  dirname: instrumental-variables
-  tldr: "On instrumental variables, what they do, their 'weirdness', and when to use them."
-
-- title: "Regression Discontinuity Design"
-  filename: rdd
-  dirname: rdd
-  tldr: "A brief discussion on RDDs, both sharp and fuzzy."
-
-- title: "Logistic Regression"
-  filename: logistic-regression
-  dirname: logistic-regression
-  tldr: "OLS may be the workhorse, but logistic regression might be more common. Here's a walkthrough of logistic regression."
-
-- title: "Ordinal Logistic Regression"
-  filename: ordinal-logistic-regression
-  dirname: ordinal-logistic-regression
-  tldr: "A primer on ordinal logistic regression (i.e. what to do when your DV is ordered, but still has finite observations)."
-
-- title: "Making the Most of Regression"
-  filename: making-most-regression
-  dirname: making-most-regression
-  tldr: "You can't just run a regression and call it a day. Better explain your model by scaling inputs and doing post-estimation simulation."
-
-- title: "The Basics of Bayesian Inference"
-  filename: bayesian-inference
-  dirname: bayesian-inference
-  tldr: "Conditional probability through Bayes is uncontroversial. Inference from it is, but it's novel and worth discussion."
-
-- title: "Ethics and Replication"
-  filename: ethics-replication
-  dirname: ethics-replication
-  tldr: "A discussion of emerging ethical issues in social science research and the importance of replication."
+# - title: "LAB: Intro to R and Rstudio"
+#   filename: intro-r-rstudio
+#   dirname: intro-r-rstudio
+#   tldr: "a tidyverse-oriented lab for introducing students to R and Rstudio."
+# 
+# - title: "Descriptive Inference"
+#   filename: descriptive-inference
+#   dirname: descriptive-inference
+#   tldr: "A brief discussion on moving from interpretation to inference, at least thinking of 'inference' statistically."
+# 
+# - title: "LAB: Some Basics of Descriptive Inference"
+#   filename: descriptive-inference-lab
+#   dirname: descriptive-inference-lab
+#   tldr: "Central tendency, dispersion, levels of measurement, and more, all in R."
+# 
+# - title: "Causality"
+#   filename: causality
+#   dirname: causality
+#   tldr: "On association and causality: the tools to evaluate the former and the framework to think about the latter."
+# 
+# - title: "Random Assignment and Experiments"
+#   filename: random-assignment-experiments
+#   dirname: random-assignment-experiments
+#   tldr: "Random assignment and experiments constitute the 'gold standard' for causal identification."
+# 
+# - title: "Measurement Error"
+#   filename: measurement-error
+#   dirname: measurement-error
+#   tldr: "Measurement error is unwelcome. Different forms of it can make our inferences unreliable or, worse yet, bias them."
+# 
+# 
+# - title: "OLS Regression"
+#   filename: ols
+#   dirname: ols
+#   tldr: "A quick-and-dirty discussion of ordinary least squares regression."
+# 
+# - title: "Instrumental Variables"
+#   filename: instrumental-variables
+#   dirname: instrumental-variables
+#   tldr: "On instrumental variables, what they do, their 'weirdness', and when to use them."
+# 
+# - title: "Regression Discontinuity Design"
+#   filename: rdd
+#   dirname: rdd
+#   tldr: "A brief discussion on RDDs, both sharp and fuzzy."
+# 
+# - title: "Logistic Regression"
+#   filename: logistic-regression
+#   dirname: logistic-regression
+#   tldr: "OLS may be the workhorse, but logistic regression might be more common. Here's a walkthrough of logistic regression."
+# 
+# - title: "Ordinal Logistic Regression"
+#   filename: ordinal-logistic-regression
+#   dirname: ordinal-logistic-regression
+#   tldr: "A primer on ordinal logistic regression (i.e. what to do when your DV is ordered, but still has finite observations)."
+# 
+# - title: "Making the Most of Regression"
+#   filename: making-most-regression
+#   dirname: making-most-regression
+#   tldr: "You can't just run a regression and call it a day. Better explain your model by scaling inputs and doing post-estimation simulation."
+# 
+# - title: "The Basics of Bayesian Inference"
+#   filename: bayesian-inference
+#   dirname: bayesian-inference
+#   tldr: "Conditional probability through Bayes is uncontroversial. Inference from it is, but it's novel and worth discussion."
+# 
+# - title: "Ethics and Replication"
+#   filename: ethics-replication
+#   dirname: ethics-replication
+#   tldr: "A discussion of emerging ethical issues in social science research and the importance of replication."
