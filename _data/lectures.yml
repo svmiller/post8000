@@ -3,10 +3,10 @@
 #  dirname: untitled-lecture
 #  tldr: "This is just a sample .rmd file to illustrate the use of the lectures.yml file."
 
-- title: "What Is Scientific Research?"
-  filename: scientific-research
-  dirname: scientific-research
-  tldr: "A brief introduction to thinking about and discussing scientific research."
+# - title: "What Is Scientific Research?"
+#   filename: scientific-research
+#   dirname: scientific-research
+#   tldr: "A brief introduction to thinking about and discussing scientific research."
 
 # - title: "LAB: Intro to R and Rstudio"
 #   filename: intro-r-rstudio
