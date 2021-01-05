@@ -191,7 +191,7 @@ pwt_sample %>%
 #' I offer one caveat here. If you're applying a group-specific function (that you need just once), it's generally advisable to "ungroup()" (i.e. `ungroup()`)
 #' as the next function in your pipe chain. As you build together chains/pipes, the intermediate output you get will advise you of any "groups" you've declared
 #' in your data.
-
+#' 
 #' ### `summarize()`
 #' 
 #' `summarize()` creates condensed summaries of your data, for whatever it is that you want. Here, for example, is a kind of dumb way of seeing how many observations

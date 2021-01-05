@@ -504,6 +504,7 @@ summary {
 <li><a href="#glimpse-and-summary"><code>glimpse()</code> and <code>summary()</code></a></li>
 <li><a href="#select"><code>select()</code></a></li>
 <li><a href="#group_by"><code>group_by()</code></a></li>
+<li><a href="#summarize"><code>summarize()</code></a></li>
 <li><a href="#mutate"><code>mutate()</code></a></li>
 <li><a href="#filter"><code>filter()</code></a></li>
 </ul></li>
@@ -734,7 +735,10 @@ summary {
 ##   country   isocode  year   pop    hc  rgdpna labsh
 ##   &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 Australia AUS      1950  8.39  2.67 119510. 0.680</code></pre>
-<p>I offer one caveat here. If you’re applying a group-specific function (that you need just once), it’s generally advisable to “ungroup()” (i.e. <code>ungroup()</code>) as the next function in your pipe chain. As you build together chains/pipes, the intermediate output you get will advise you of any “groups” you’ve declared in your data. ### <code>summarize()</code></p>
+<p>I offer one caveat here. If you’re applying a group-specific function (that you need just once), it’s generally advisable to “ungroup()” (i.e. <code>ungroup()</code>) as the next function in your pipe chain. As you build together chains/pipes, the intermediate output you get will advise you of any “groups” you’ve declared in your data.</p>
+</div>
+<div id="summarize" class="section level3">
+<h3><code>summarize()</code></h3>
 <p><code>summarize()</code> creates condensed summaries of your data, for whatever it is that you want. Here, for example, is a kind of dumb way of seeing how many observations are in the data. <code>nrow(pwt_sample)</code> works just as well, but alas…</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>pwt_sample <span class="op">%&gt;%</span></span>
 <span id="cb39-2"><a href="#cb39-2"></a><span class="st">  </span><span class="co"># How many observations are in the data?</span></span>
