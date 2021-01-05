@@ -1,6 +1,10 @@
 #' ---
 #' title: "An Intro to R, Rstudio, and '{tidyverse}'"
 #' author: Steven V. Miller
+#' output:
+#'    html_document:
+#'      toc: TRUE
+#'      highlight: zenburn
 #' ---
 
 #' # Configure Rstudio
@@ -257,7 +261,7 @@ pwt_sample %>%
   # give me the observations from the most recent year.
   filter(year == max(year))
 
-#' ### Don't Forget to Assign!
+#' ## Don't Forget to Assign!
 #' 
 #' When you're done applying functions/doing whatever to your data, don't forget to assign what you've done to an object. For simple cases, and for beginners, I recommend 
 #' thinking "left-handed" and using `<-` for object assignment (as we did above). When you're doing stuff in the pipe, my "left-handed" thinking prioritizes the starting data
