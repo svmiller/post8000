@@ -1,6 +1,8 @@
 #' ---
 #' title: "An Intro to R, Rstudio, and '{tidyverse}'"
-#' author: Steven V. Miller
+#' author: Steven V. Miller, [svmiller.com](http://svmiller.com)
+#' date: 5 January 2021
+#' abstract: "This is a lab script for [POST 8000](http://post8000.svmiller.com), a graduate-level quantitative methods for public policy class that I teach at Clemson University. It will not be the most sophisticated R-related write-up of mine---check [my blog](http://svmiller.com/blog) for those---but it should be useful for discussion around the associated R script for the week's 'lab' session."
 #' output:
 #'    html_document:
 #'      css: lab-script.css

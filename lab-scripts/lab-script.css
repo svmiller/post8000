@@ -12,3 +12,15 @@ body {
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Titillium Web', serif;
 }
+
+h1.title {
+	text-align: center;
+}
+
+h4.author {
+	text-align: center;
+}
+
+h4.date {
+	text-align: center;
+}
