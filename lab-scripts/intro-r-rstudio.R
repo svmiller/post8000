@@ -3,6 +3,7 @@
 #' author: Steven V. Miller
 #' output:
 #'    html_document:
+#'      css: lab-script.css
 #'      toc: TRUE
 #'      toc_float:
 #'        collapsed: false
