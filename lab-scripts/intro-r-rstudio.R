@@ -4,6 +4,9 @@
 #' output:
 #'    html_document:
 #'      toc: TRUE
+#'      toc_float:
+#'        collapsed: false
+#'        smooth_scroll: false
 #'      highlight: zenburn
 #' ---
 
@@ -44,9 +47,9 @@ getwd()
 #' ## Create "Objects"
 #' 
 #' Next, let's create some "objects." R is primarily an "object-oriented" programming language. 
-#' In as many words, inputs create outputs that may be assigned to objects in the workspace. You can go nuts here. Of note: I've seen R programmers use "=", "-> "<-" 
-#' interchangeably for object assignment, but I've seen instances where "=" doesn't work as intended for object assignment. "->" is an option and I use it for assignment
-#' for some complex objects in a "pipe" (more on that later). For simple cases (and for beginners), lean on "<-".
+#' In as many words, inputs create outputs that may be assigned to objects in the workspace. You can go nuts here. Of note: I've seen R programmers use `=`, `->`, and `<-` 
+#' interchangeably for object assignment, but I've seen instances where `=` doesn't work as intended for object assignment. `->` is an option and I use it for assignment
+#' for some complex objects in a "pipe" (more on that later). For simple cases (and for beginners), lean on `<-`.
 #' 
 
 a <- 3
@@ -129,7 +132,7 @@ names(pwt_sample)
 #' there's only so much I can teach within the limited time I have. That said, I'm going to focus on the following functions available in the `{tidyverse}` that totally rethink
 #' base R. These are the "pipe" (`%>%`), `glimpse()` and `summary()`, `select()`, `group_by()`, `summarize()`, `mutate()`, and `filter()`.
 #' 
-#' ### The Pipe (%>%)
+#' ### The Pipe (`%>%`)
 #' 
 #' I want to start with the pipe because I think of it as the most important function in the `{tidyverse}`. The pipe---represented as `%>%`---allows you to chain together
 #' a series of functions. The pipe is especially useful if you're recoding data and you want to make sure you got everything the way you wanted (and correct) before assigning
