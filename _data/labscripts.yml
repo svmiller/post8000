@@ -1,3 +1,7 @@
 - title: "An Intro to R, Rstudio, and {tidyverse}"
   filename: intro-r-rstudio
-  tldr: "a tidyverse-oriented lab for introducing students to R and Rstudio."
+  tldr: "A tidyverse-oriented lab for introducing students to R and Rstudio."
+
+- title: "Some Basics of Descriptive Inference"
+  filename: descriptive-inference
+  tldr: "A lab session on things like modes, medians, means, and variable types."
