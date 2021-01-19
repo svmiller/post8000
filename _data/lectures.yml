@@ -13,11 +13,11 @@
 #   dirname: intro-r-rstudio
 #   tldr: "a tidyverse-oriented lab for introducing students to R and Rstudio."
 # 
-# - title: "Descriptive Inference"
-#   filename: descriptive-inference
-#   dirname: descriptive-inference
-#   tldr: "A brief discussion on moving from interpretation to inference, at least thinking of 'inference' statistically."
-# 
+- title: "Descriptive Inference"
+  filename: descriptive-inference
+  dirname: descriptive-inference
+  tldr: "A brief discussion on moving from interpretation to inference, at least thinking of 'inference' statistically."
+
 # - title: "LAB: Some Basics of Descriptive Inference"
 #   filename: descriptive-inference-lab
 #   dirname: descriptive-inference-lab

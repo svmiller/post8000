@@ -35,7 +35,7 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(cache=FALSE)
 library(tidyverse)
 library(stevemisc)
-library(post8000r)
+library(stevedata)
 
 ```
 
@@ -76,17 +76,14 @@ KKV build on the "model" metaphor to formalize research design. Definitions firs
 
 ### An Example from the General Social Survey (2018)
 
-My `post8000r` package has a `gss_spending` data frame from the GSS in 2018.
+My `gss_spending` package has a `gss_spending` data frame from the GSS in 2018.
 
 - **Data collection**: a probability sample of individuals living in the U.S.
 - **Variable**: (take your pick of various demographic attributes and attitudes toward spending programs)
 - **Unit**: individuals living in the U.S.
 - **Observation**: a numeric value (again, take your pick, type `?gss_spending` in R for more information).
     - example: `race` = 1 for white people, 2 for black people, 3 for other.
-    
-```{r}
-gss_spending %>% distinct(race)
-```
+
 
 ### Summarizing Historical Detail
 
