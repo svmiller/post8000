@@ -213,7 +213,7 @@ pwt_sample %>%
   group_by(year) %>%
   gather(Category, value, Median:Mean) %>%
   ggplot(.,aes(year,value, color=Category, linetype=Category)) +
-  geom_line() +
+  geom_line(size=1.1) +
   scale_x_continuous(breaks = seq(1950, 2020, by =5)) +
   scale_y_continuous(labels = scales::comma) +
   theme(legend.position = "bottom") +
@@ -224,7 +224,7 @@ pwt_sample %>%
        subtitle = "A mean that further separates from the mean suggests a worsening skew problem.")
 
 #' A related calculation for interval-level variables is the standard deviation. The standard deviation (which requires the mean) gives 
-#' an estimate of just how much dispersion is around the mean. Higher stadnard deviation = more dispersion around the mean. You can calculate
+#' an estimate of just how much dispersion is around the mean. Higher standard deviation = more dispersion around the mean. You can calculate
 #' it with the `sd()` function in R, again being mindful of NAs. Here would be how to calculate the mean real GDP and standard deviation for
 #' the GDP variable for each year.
  
@@ -232,7 +232,7 @@ pwt_sample %>%
   group_by(year) %>%
   mutate(rgdpb = rgdpna/1000) %>%
   summarize(meanrgdpb = mean(rgdpb, na.rm = T),
-            sd = sd(rgdpb,na.rm=T))
+            sd = sd(rgdpb,na.rm=T)) 
 
 #' # An Aside: On "Dummy" Variables
 #' 
@@ -267,7 +267,7 @@ gss_spending %>%
 #' That said, we often describe age by reference to an average and we can (provided there are no major issues of skew) understand an average income. Certainly, practicioners
 #' would go-go-gadget a mean on those variables. Here's a general rule of thumb that I haven't seen anyone formalize out loud (even if there's supporting scholarship you'll 
 #' read for this) but nonetheless guides how we do this. First, check the number of possible values. Second, check the skew. If you have at least 5---I would caution at least 7,
-#' even to 10)---distinct values, you can *start* to think of it as interval. However, check the distribution of th variable. If you have a major skew problem, *don't* treat it
+#' even to 10)---distinct values, you can *start* to think of it as interval. However, check the distribution of the variable. If you have a major skew problem, *don't* treat it
 #' as interval and consider another approach to modeling your variable.
 #' 
 #' Age is technically ordinal, but there are typically a wide number of distinct ages in survey data spanning from 18 to the 80s and beyond.
