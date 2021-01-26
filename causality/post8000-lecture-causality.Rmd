@@ -35,7 +35,7 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(cache=FALSE)
 library(tidyverse)
 library(stevemisc)
-library(post8000r)
+# library(post8000r)
 
 ```
 
@@ -49,7 +49,7 @@ library(post8000r)
 ### The Problem, in Quotes
 
 - "That correlation is not causation is perhaps the first thing that must be said." - Barnard, 1982 (p. 387)
-- "If statistics cannot relate cause effect, they add to the rhetoric." - Smith, 1980 (p. 1000 [stylized by me])
+- "If statistics cannot relate cause and effect, they add to the rhetoric." - Smith, 1980 (p. 1000 [stylized by me])
 
 ## Associational Inference
 ### Associational Inference
