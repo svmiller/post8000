@@ -23,10 +23,10 @@
 #   dirname: descriptive-inference-lab
 #   tldr: "Central tendency, dispersion, levels of measurement, and more, all in R."
 # 
-# - title: "Causality"
-#   filename: causality
-#   dirname: causality
-#   tldr: "On association and causality: the tools to evaluate the former and the framework to think about the latter."
+- title: "Causality"
+  filename: causality
+  dirname: causality
+  tldr: "On association and causality: the tools to evaluate the former and the framework to think about the latter."
 # 
 # - title: "Random Assignment and Experiments"
 #   filename: random-assignment-experiments
