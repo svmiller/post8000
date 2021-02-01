@@ -11,5 +11,5 @@
   tldr: "A lab session on associational techniques/limitations and a basic discussion of inference."
 
 - title: "Random Assignment and Experiments"
-  filename: random-assignment-experiments
+  filename: random-assignment-experiments-lab
   tldr: "A lab session on random assignment with a partial replication of some of Chapter 1 of Mastering 'Metrics."
