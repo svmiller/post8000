@@ -114,7 +114,7 @@ broom::tidy(prop.test(x = c(145, 178), n = c(323, 362)))
 mm_nhis
 
 #' Let's go explore these data some. First, let's start with the health index, which is a numeric vector for a health index,
-#' broadly understood, that ranges from 1-5. I have some misgivings about communicating this via mean. I'll belabor that reservation
+#' broadly understood, that ranges from 1-5. I have some misgivings about communicating this via means. I'll belabor that reservation
 #' more in a few weeks. However, let's go look at the health index as a function of having health insurance (yes or no, 1 or 0) by both 
 #' men and women.
 #' 
@@ -213,6 +213,7 @@ Listie %>%
 #' 
 #' Next up, let's replicate the information summarized in Table 1.3 and Table 1.4 from the Rand health insurance experiment. I have these data as 
 #' `mm_randhie` in `{stevedata}`.
+
 ?mm_randhie
 
 #' Importantly: `mm_randhie` is a *list* of two data frames. The first is the baseline data. You can see that here. Note the double brackets for isolating
@@ -267,7 +268,7 @@ mm_randhie[[1]] %>%
 #' of gummy worms before bedtime. I mean, yeah, they're not good for you and they're right to say "don't do that",
 #' but they'll make you occasionally feel good and they'll cure what ails you. So... yeah.
 #' 
-#' Anywho,  for each of these interval variable and, within those, each other plan type, I'm going to filter the baseline data to just the catastrophic
+#' Anywho, for each of these interval variables and, within those, each other plan type, I'm going to filter the baseline data to just the catastrophic
 #' folk (and the other plan type), select just the plantype and interval variable, and do a *t*-test. I'm going to tidy the results of that and put it
 #' into one of my favorite data frame names (`hold_this`). Thereafter, I'll populate the `baseline_comparisons` tibble through a row-bind.
 
