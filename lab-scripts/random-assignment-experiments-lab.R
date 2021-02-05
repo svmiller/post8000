@@ -72,7 +72,7 @@ D %>% group_by(treat) %>% tally()
 set.seed(8675309)
 D %>% 
   mutate(female = c(rep(0, 362), rep(1, 323)),
-         quantile = ntile(id, 10)) %>% 
+         quantile = ntile(id, 10)) %>%
   rowwise() %>%
   mutate(age = case_when(
     quantile %in% c(1, 10) ~ runif(1, 18, 29),
@@ -126,7 +126,7 @@ mm_nhis %>%
   mutate(diff = mean_hlth - lag(mean_hlth))
 
 #' Minus some rounding, or perhaps some weighting, we basically reproduced the means from the top row of Table 1.1. The difference in means
-#' for having health insurance is about .278 for women and about .382 for men.
+#' for having health insurance is about .278 for men and about .382 for women.
 #' 
 #' Notice that the presence of a standard error in parentheses around the difference in Table 1.1 implies they're communicating the difference in
 #' means via *t*-test. You can also do that even as it takes some acclimation with the *t*-test. Basically, the default output in the `t.test()` function
