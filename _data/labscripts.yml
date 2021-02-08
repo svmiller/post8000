@@ -13,3 +13,7 @@
 - title: "Random Assignment and Experiments"
   filename: random-assignment-experiments-lab
   tldr: "A lab session on random assignment with a partial replication of some of Chapter 1 of Mastering 'Metrics."
+
+- title: "Measurement Error"
+  filename: measurement-error-lab
+  tldr: "A lab session on what weird things measurement error can do to our inferences."
