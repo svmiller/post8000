@@ -33,12 +33,12 @@
   dirname: random-assignment-experiments
   tldr: "Random assignment and experiments constitute the 'gold standard' for causal identification."
 # 
-# - title: "Measurement Error"
-#   filename: measurement-error
-#   dirname: measurement-error
-#   tldr: "Measurement error is unwelcome. Different forms of it can make our inferences unreliable or, worse yet, bias them."
-# 
-# 
+- title: "Measurement Error"
+  filename: measurement-error
+  dirname: measurement-error
+  tldr: "Measurement error is unwelcome. Different forms of it can make our inferences unreliable or, worse yet, bias them."
+
+
 # - title: "OLS Regression"
 #   filename: ols
 #   dirname: ols
