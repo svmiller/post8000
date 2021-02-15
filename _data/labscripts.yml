@@ -18,3 +18,6 @@
   filename: measurement-error-lab
   tldr: "A lab session on what weird things measurement error can do to our inferences."
 
+- title: "OLS Regression"
+  filename: ols-lab
+  tldr: "A lab session on basic OLS and how to unpack it."
