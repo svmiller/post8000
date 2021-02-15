@@ -202,8 +202,9 @@ summary(M2 <- lm(medexppc ~ gdppc, data=subset(Newhouse77, country !="Greece")))
 #' Basic takeaway maps to what Newhouse reports. Higher GDP per capita > higher per capita medical care expenditures. This holds with or without Greece.
 #' 
 #' Question, for my own curiosity: is Greece that much an outlier? It doesn't really look like it. It's an outlier in that it scores low on both the DV
-#' and the IV and not necessarily that it's removed from what would be expected, given the data. Greece is pretty easy to identify here. But, again, it's
-#' very much in line with what would be expected.
+#' and the IV and not necessarily that it's removed from what would be expected, given the data. If Greece is a problem observation, shouldn't the U.S. be
+#' a problem observation as well? Greece scores as low as the U.S. scores high on both the IV and DV. Let's plot the data (which you should always do for simple cases like this).
+#' Greece is pretty easy to identify here. But, again, it's very much in line with what would be expected.
 
 Newhouse77 %>% 
   ggplot(.,aes(gdppc, medexppc)) + 
@@ -217,8 +218,9 @@ Newhouse77 %>%
 #' I guess Greece is kind of an outlier, but the biggest influencers here seem to be Sweden and the United States (with Norway picking up bronze, if you will). 
 #' Let's kick them out, see what happens.
 
-summary(lm(medexppc ~ gdppc, data=subset(Newhouse77, country != "Sweden")))
+summary(lm(medexppc ~ gdppc, data=subset(Newhouse77, country != "Norway")))
 summary(lm(medexppc ~ gdppc, data=subset(Newhouse77, country != "United States")))
+summary(lm(medexppc ~ gdppc, data=subset(Newhouse77, country != "Sweden")))
 
 #' Nothing materially seems to change. So, how about this to assess the model fit. We'll do what's called a "leave one out" approach here, or at least we'll do it informally.
 #' We'll write a simple script that just punts one observation out, repeat the regression, and we'll present what happens to the effect of GDP per capita on per capita
