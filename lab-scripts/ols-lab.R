@@ -95,7 +95,7 @@ A %>%
             meanresid = mean(resid))
 
 
-#' ## The Basic Diagnostic Checks for Beginners.
+#' ## The Basic Diagnostic Checks for Beginners
 #' 
 #' Always, always, always do some diagnostics on your OLS model.  This will, in practice, mean looking at your residuals and extracting your fitted variables.
 #' Let's do that:
@@ -276,7 +276,7 @@ plot(M1, which=3)
 #' Finally, the residuals-leverage plot.
 plot(M1, which=5) 
 
-#' oof, this really wants to call out the U.S. and Sweden as outliers, along with Norway. Well, fine. Let's remove them and see what happens.
+#' Oof, this really wants to call out the U.S. and Sweden as outliers, along with Norway. Well, fine. Let's remove them and see what happens.
 
 summary(lm(medexppc ~ gdppc, data=subset(Newhouse77, country != "United States" & country != "Sweden" & country != "Norway")))
 
@@ -284,7 +284,8 @@ summary(lm(medexppc ~ gdppc, data=subset(Newhouse77, country != "United States" 
 #' 
 #' 
 #' Finally, let's calculate elasticities from Table 3 and, goddamn, it's been a hot minute since I've seen regression elasticities. I don't think
-#' you'll see this much in your travels. Alas, let's do it for max reproducibility.
+#' you'll see this much in your travels. Indeed, the discussion here is very much in line with economics and the income elasticity of demand. 
+#' Alas, let's do it for max reproducibility.
 
 tibble(gdppc = c(mean(Newhouse77$gdppc), 3416, 4000, 5000, 6000)) -> newdat # i.e. I smell an error since I know 3416 is not the actual mean.
 
@@ -298,6 +299,9 @@ newdat %>%
          el2 = m2coef*(gdppc)/pred2)
 
 
+#' The results suggest that an implied income (regression) elasticity above 1 suggests medical care is a luxury good and not a normal good. I will, umm, not waste time on that
+#' particular point and its implications here.
+#' 
 #' Finally, here are the alternative estimations from Table 4. Of note: the I() wrapper in a regression is great for embedding on-the-fly transformations of the data.
 #' You don't need it for on-the-fly log transformations. I recommend just creating additional columns.
 
