@@ -57,7 +57,7 @@ Cor <- matrix(cbind(1, 0.001,
                     0.001, 1), nrow=2)
 rownames(Cor) <- colnames(Cor) <- vars
 
-A <- cor2data(Cor, 1000, 8675309) %>% tbl_df() # Jenny I got your number...
+A <- cor2data(Cor, 1000, 8675309) %>% as_tibble() # Jenny I got your number...
 
 #' We'll set up a simple situation where the outcome `y` is a function of this formula. The expected value of `y` is 1 when `x1` is 0. The errors are kind of "skinny" too,
 #' at least relative to the effect of `x1`.
