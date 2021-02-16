@@ -39,10 +39,10 @@
   tldr: "Measurement error is unwelcome. Different forms of it can make our inferences unreliable or, worse yet, bias them."
 
 
-# - title: "OLS Regression"
-#   filename: ols
-#   dirname: ols
-#   tldr: "A quick-and-dirty discussion of ordinary least squares regression."
+- title: "OLS Regression"
+  filename: ols
+  dirname: ols
+  tldr: "A quick-and-dirty discussion of ordinary least squares regression."
 # 
 # - title: "Instrumental Variables"
 #   filename: instrumental-variables
