@@ -21,3 +21,7 @@
 - title: "OLS Regression"
   filename: ols-lab
   tldr: "A lab session on basic OLS and how to unpack it."
+  
+- title: "OLS Regression Diagnostics"
+  filename: ols-diagnostics-lab
+  tldr: "A lab session on diagnostic checks for OLS and what to do if you flunk one."
