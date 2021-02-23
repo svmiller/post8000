@@ -112,6 +112,8 @@ ESSBE5 %>%
 #' are miserable, depressed bastards. If you look at that "shape of happiness" chart, maybe you can do something like create an age bracket for the 16-35 group, another for the 
 #' 36-60 group, and another for the 61 and above group. Treat that as a fixed effect, possibly with the 36-60 people as the baseline.
 #' 
+#' There's a mixed effects model comment I want to add here, but that really is more of an advanced topic.
+#' 
 #' # Normality
 #' 
 #' OLS assumes the *errors* are normally distributed. This is often conflated with an assumption that the outcome variable is normally distributed. That's not quite what it is.
@@ -179,7 +181,7 @@ ESSBE5 %>%
 #' However, you may have a data set that does not look like this.
 #' 
 #' In other words, this assumption is going to be violated like mad in any design that has a time-series, spatial, or multilevel component.
-#' For students new to this stuff, you can probably anticipate ahead of time when your errors are no longer independent of
+#' For students new to this stuff, you should be able to anticipate ahead of time when your errors are no longer independent of
 #' each other.
 #' 
 #' The implications of non-independent errors---aka "serial correlation" or "autocorrelation"---are 
@@ -385,9 +387,11 @@ bptest(M6)
 #' ...and we passed. DC alone will flunk a Breusch-Pagan test in this application. If you have a simple case like this where it's just one observation that is messing with an
 #' overall picture, you can punt it out.
 #' 
-#' The textbook solution is a weighted least squares (WLS) estimation. Here: run the model, get the absolute values of the residuals, and use them as weights for a re-estimation.
-#' 
-#' 
+#' The textbook solution is a weighted least squares (WLS) estimation. The process here is a little convoluted and there is a simple wrapper for it 
+#' somewhere (I'm sure), but here's what the process looks like. 1) Run the model (which we already did). 2) Gank the residuals and fitted values. 3) 
+#' Regress the absolute value of the residuals on the fitted values of the original model. 4) Extract *those* fitted values. 5) Square them and 6)
+#' divide 1 over those values. 7) Finally, apply those as weights in the linear model once more for a re-estimation.
+
 
 af_crime93 %>%
   mutate(wts =  1/fitted(lm(abs(residuals(M5))~fitted(M5)) )^2) -> af_crime93
@@ -406,18 +410,26 @@ broom::tidy(M5) %>% mutate(cat = "OLS") %>%
 
 summary(M8 <- feols(violent ~ poverty + single + metro + white + highschool, data=af_crime93, se = "hetero"))
 
+#' Let's compare these heteroskedasticity corrected standard errors with the naive OLS standard errors.
+
+broom::tidy(M5) %>% mutate(cat = "OLS") %>%
+  bind_rows(., broom::tidy(M8) %>% mutate(cat = "HCSE")) %>%
+  arrange(term)
+
+#' The biggest inferential implications are for the `white` coefficient, but do note the *t*-statistics for `single` and `metro` dropped considerably as well.
+#' 
 #' You could also go back to some basics and acknowledge that outliers (i.e. DC) and right-skewed data are responsible for flunking the assumption of homoskedastic
 #' error variances. We could transform the data to impose some kind of normality here. First, let's check if we have any 0s here.
 
 af_crime93 %>% summary
 
 #' We don't. So, let's log-transform the DV and regress that on the *x* variables.
-#' 
 
 summary(M9 <- lm(log(violent) ~ poverty + single + metro + white + highschool, data=af_crime93))
 bptest(M9) 
 
-#' And we passed. Barely, but I'll count that. The log-transformed DV does have the effect of suggesting there is no poverty effect.
+#' And we passed. Barely at the .10 level, but I'll count that. Here, log-transforming the DV helped considerably.
+#' The log-transformed DV does have the effect of suggesting there is no poverty effect.
 #' 
 #' Finally, we can do what I think is one of the greatest parlor tricks in statistics: bootstrapping. I'm going to have to punt on the theory and exact principles
 #' of bootstrapping to classic texts, but the intuition here is, in the absence of a true "population", to treat the sample as a population of sorts and sample, *with replacement*
@@ -468,9 +480,9 @@ tidybootCrime %>%
 
 bootsums
 
-#' You can compare the results of this bootstrapped summary to your "main" model. I'm a little uncomfortable with the idea of recalculating *t*-stats and *p*-values
-#' for bootstrapped models because you should be able to just summarize them as a distribution. Alas, let's humor ourselves here. Btw, we have 45 degrees of freedom.
-#' 
+#' You can compare the results of this bootstrapped summary to your "main" model. FWIW, you can bootstrap the coefficient as well but most practical interest is in what bootstrapping
+#' does in comparison to the standard error of your OLS model. So, it might make more sense to just compare the standard errors.
+
 broom::tidy(M5) %>%
   mutate(cat = "OLS") %>%
   bind_rows(., bootsums %>% rename(estimate = boot_est, `std.error` = boot_se) %>% mutate(cat = "Bootstrapped")) %>%
