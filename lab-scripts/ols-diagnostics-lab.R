@@ -177,7 +177,8 @@ ESSBE5 %>%
 #' 
 #' This one is a biggie. OLS assumes that observations are sampled independently and that any pair of errors are unrelated to each other. In formal terms, this
 #' assumption seems kind of Greek to students. In practice, think of it this way. A lot of the theoretical intuition behind OLS is assuming something akin to a simple random
-#' sample of the population. You probably learned central limit theorem by this point and [how you can simulate that](http://svmiller.com/blog/2020/03/normal-distribution-central-limit-theorem-inference/.
+#' sample of the population. You probably learned central limit theorem by this point and 
+#' [how you can simulate that](http://svmiller.com/blog/2020/03/normal-distribution-central-limit-theorem-inference/).
 #' However, you may have a data set that does not look like this.
 #' 
 #' In other words, this assumption is going to be violated like mad in any design that has a time-series, spatial, or multilevel component.
@@ -257,7 +258,7 @@ dwtest(M2)
 #' 
 #' ## Checking the Homoskedasticity Assumption
 #' 
-#' A our ol' pal, the fitted-residual plot, should be illustrative for most things. First, let's show what it looks like in an ideal case.
+#' Our ol' pal, the fitted-residual plot, should be illustrative for most things. First, let's show what it looks like in an ideal case.
 
 set.seed(8675309)
 tibble(
@@ -317,7 +318,7 @@ ks.test(resid(M4), y=pnorm)
 #' ## Potential Fixes for Heteroskedasticity
 #' 
 #' There is no shortage of fixes for heteroskedasticity. First, I want to bring in a new data set that I love using for this purpose because it's super illustrative
-#' of what heteroskedasticity will look in a simple case. `af_crime93` comes via Table 9.1 of the 3rd edition of Agresti and Finlay's 
+#' of what heteroskedasticity will look like in a simple case. `af_crime93` comes via Table 9.1 of the 3rd edition of Agresti and Finlay's 
 #' *Statistical Methods for the Social Sciences*. The data come from the *Statistical Abstract of the United States* and most variables were measured in 1993.
 #' 
 #' I have this in the proto version of my `{stevedata}` package right now, but you can load it off the course website.
