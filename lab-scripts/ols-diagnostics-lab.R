@@ -178,8 +178,8 @@ ESSBE5 %>%
 #' This one is a biggie. OLS assumes that observations are sampled independently and that any pair of errors are unrelated to each other. In formal terms, this
 #' assumption seems kind of Greek to students. In practice, think of it this way. A lot of the theoretical intuition behind OLS is assuming something akin to a simple random
 #' sample of the population. You probably learned central limit theorem by this point and 
-#' [how you can simulate that](http://svmiller.com/blog/2020/03/normal-distribution-central-limit-theorem-inference/).
-#' However, you may have a data set that does not look like this.
+#' [how you can simulate that](http://svmiller.com/blog/2020/03/normal-distribution-central-limit-theorem-inference/). However, you may have a data set that does not 
+#' look like this.
 #' 
 #' In other words, this assumption is going to be violated like mad in any design that has a time-series, spatial, or multilevel component.
 #' For students new to this stuff, you should be able to anticipate ahead of time when your errors are no longer independent of
