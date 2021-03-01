@@ -25,3 +25,7 @@
 - title: "OLS Regression Diagnostics"
   filename: ols-diagnostics-lab
   tldr: "A lab session on diagnostic checks for OLS and what to do if you flunk one."
+  
+- title: "Instrumental Variables"
+  filename: instrumental-variables-lab
+  tldr: "A lab session on instrumental variable analysis."
