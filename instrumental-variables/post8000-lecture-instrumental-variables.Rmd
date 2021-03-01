@@ -118,6 +118,30 @@ $z$ cannot be correlated with $y$.
 
 Absent this exclusion restriction, the $x$, $y$, and $z$ setup reduces to an omitted variable problem.
 
+### A Comment on Exclusion
+
+Hot #take: this is always a leap of faith and anyone who tells you otherwise is effectively lying to you.
+
+- There is no formal test for this assumption.
+    - A correlation test will be illustrative, but not definitive.
+    - It'll also be a tough task with real-world data.
+- "Only through" is a strong assumption!
+    - It precludes separate correlations through other IVs and the DV.
+    
+Several prominent instruments have struggled with this assumption upon further review.
+
+- Prominently: settler mortality (Acemoglu et al., 2001) and rainfall (take your pick).
+
+
+###
+
+![](rain-rain-go-away.png)
+
+
+###
+
+![](weather-violations.png)
+
 ### Exogeneity
 
 $z$ is independent of all other factors and is randomly assigned.
@@ -129,7 +153,7 @@ IVs in the social sciences range from the intuitive to the weird:
 
 - Card (1990): the draft ($z$) fixes the relationship between military service ($x$) and earnings ($y$).
 - Levitt (1985): election cycles ($z$) fix relationship between police patrol hours ($x$) and the crime rate ($y$).
-- Various: cigarette taxes ($z$) fix relationship betwen smoking ($x$) and various health outcomes ($y$).
+- Various: cigarette taxes ($z$) fix relationship between smoking ($x$) and various health outcomes ($y$).
 - Miguel et al. (2004): rainfall ($z$) fixes relationship between economic shocks ($x$) and civil conflict ($y$).
 
 
@@ -143,7 +167,7 @@ If it's obvious that it should matter...
 And if it's not obvious... 
 
 - how the blue hell did you think of it/find it?
-- how do you defend the exclusion restriction?
+- how do you defend the exclusion restriction (i.e. that it goes through $x$)?
 
 ### Via Scott Cunningham (p. 213 of *The Mixtape*)
 
@@ -170,10 +194,12 @@ IV regression is a lot simpler than it lets on.
 
 You'll see this described as **two-stage least squares (2SLS)** regression.
 
-###
+- This will be Thursday's lab.
 
-![](drake-1.png)
+<!-- ### -->
 
-###
+<!-- ![](drake-1.png) -->
 
-![](drake-2.png)
+<!-- ### -->
+
+<!-- ![](drake-2.png) -->
