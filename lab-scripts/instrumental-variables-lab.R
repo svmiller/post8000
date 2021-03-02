@@ -87,7 +87,7 @@ Cor <- matrix(cbind(1, 0, 0, 0,
                     0, -0.5, 0, 1),nrow=4)
 rownames(Cor) <- colnames(Cor) <- vars
 
-Fake <- cor2data(Cor, 1000, 8675309) %>% tbl_df() # Jenny I got your number...
+Fake <- cor2data(Cor, 1000, 8675309) %>% as_tibble() # Jenny I got your number...
 
 #' Now, let's make an outcome variable, again keeping in mind the exclusion restriction. Here, we will create an outcome variable (`y`) as follows.
 #' The y-intercept (i.e. when `control` and `treat` are 0) is about 5. Both the control variable and the treatment variable have a coefficient of .5 (i.e.
