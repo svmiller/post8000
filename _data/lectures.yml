@@ -49,10 +49,10 @@
   dirname: instrumental-variables
   tldr: "On instrumental variables, what they do, their 'weirdness', and when to use them."
 
-# - title: "Regression Discontinuity Design"
-#   filename: rdd
-#   dirname: rdd
-#   tldr: "A brief discussion on RDDs, both sharp and fuzzy."
+- title: "Regression Discontinuity Design"
+  filename: rdd
+  dirname: rdd
+  tldr: "A brief discussion on RDDs, both sharp and fuzzy."
 # 
 # - title: "Logistic Regression"
 #   filename: logistic-regression

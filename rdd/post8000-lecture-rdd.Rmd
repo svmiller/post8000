@@ -149,6 +149,8 @@ RDD60 %>%
 
 Thus, the discontinuous jump in outcome variables at $c$ amounts to the causal effect of merit award.
 
+- i.e. the local average treatment effect (LATE)
+
 
 ### Identification in RDD
 
@@ -181,6 +183,21 @@ Social Security is a nice example of a sharp design in the wild.
 - Probability of treatment jumps by less than one when $x$ crosses the threshold $c$.
 
 "Fuzzy" situations make the assignment rule-as-IV an appropriate solution.
+
+## The Promise/Pitfalls of RDD
+### The Promise of RDD
+
+RDD has a lot of promise for researchers.
+
+- Intuition for eliminating selection bias is appealing.
+- Potential applications *everywhere*.
+
+### The Pitfalls of RDD
+
+- It's greedy, often information-poor.
+- Breaks in the real world are never super obvious and clear.
+- Potentially prone to manipulation.
+
 
 ## Conclusion
 ### Conclusion
