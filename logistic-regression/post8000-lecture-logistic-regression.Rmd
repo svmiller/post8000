@@ -35,34 +35,10 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(cache=FALSE)
 library(tidyverse)
 library(stevemisc)
-library(post8000r)
+library(stevedata)
 library(knitr)
 
-set.seed(8675309)
-xvals <- c(rep(0, 2000), rep(1, 2000), rep(2, 2000), rep(3, 2000), rep(4, 2000))
-tibble(x = xvals,
-       y = rbinom(10000, 1, (exp(-2.8 + 1.4*x) / ( 1 + exp(-2.8 + 1.4*x))) )) -> D
-
-glm_times = data.frame()
-
-for(i in 1:100) {
-  main_call <- system.time(M <- glm(y ~ x, data=D, family=binomial(link="logit")))
-  times <- as.data.frame(t(data.matrix(main_call)))
-  glm_times = rbind(glm_times, times)
-}
-
-glm_times %>% mutate(model = "Logistic Regression") -> glm_times
-
-lm_times = data.frame()
-
-for(i in 1:100) {
-  main_call <- system.time(M <- lm(y ~ x, data=D))
-  times <- as.data.frame(t(data.matrix(main_call)))
-  lm_times = rbind(lm_times, times)
-}
-
-lm_times %>% mutate(model = "OLS Regression") -> lm_times
-
+Timings <- readRDS("run-times.rds")
 
 ```
 
@@ -99,15 +75,15 @@ Most social/political phenomena are typically "there"/"not there."
 
 ### The Problem of Binary DVs
 
-Observe this simple data frame, `D`.
+Observe this simple data frame, `fakeLogit` from `{stevedata}`.
 
 ```{r}
-D 
+fakeLogit
 ```
 
 ### The Problem of Binary DVs
 
-This simple `D` data frame is simulated where:
+This simple `fakeLogit` data frame is simulated where:
 
 - `x` is a five-item ordered categorical variable [0:4].
 - `y` is a binary variable with only 0s and 1s.
@@ -124,7 +100,7 @@ This simple `D` data frame is simulated where:
 Here's what OLS produces.
 
 ```{r}
-M1 <- lm(y ~ x, D)
+M1 <- lm(y ~ x, fakeLogit)
 broom::tidy(M1) %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
     kable(., "markdown")
@@ -136,7 +112,7 @@ Not even close.
 ###
 
 ```{r fitted-resid-plot-m1, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
-D %>%
+fakeLogit %>%
     mutate(fitted = fitted(M1),
            resid = resid(M1)) %>%
     ggplot(.,aes(fitted, resid)) + geom_point()  +
@@ -152,7 +128,7 @@ D %>%
 ### 
 
 ```{r qqplot-m1, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
-D %>%
+fakeLogit %>%
     mutate(resid = resid(M1)) %>%
     ggplot(.,aes(sample=resid)) + 
     geom_qq()  + theme_steve_web() +
@@ -165,7 +141,7 @@ D %>%
 ### The Right Tool for the Right Job
 
 ```{r}
-M2 <- glm(y ~ x, D, family=binomial(link = "logit"))
+M2 <- glm(y ~ x, fakeLogit, family=binomial(link = "logit"))
 broom::tidy(M2) %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
     kable(., "markdown")
@@ -201,20 +177,20 @@ Ever hear of something like "the odds are 4 to 1 against" an event occurring?
 ### Probability and Odds in Our Data
 
 ```{r}
-D %>%
+fakeLogit %>%
     group_by(x) %>%
     summarize(sum = sum(y),
               length = length(y),
               p = sum/length,
               # q is often substituted as notation for 1 - p
               q = 1 - p, 
-              odds = p/q) -> sumD
+              odds = p/q) -> summaries
 ```
 
 ### Probability and Odds in Our Data
 
 ```{r, echo=F}
-sumD %>%
+summaries %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
     kable(.,"markdown")
 ```
@@ -233,17 +209,18 @@ A percentage change in odds is also a useful way of seeing a consistent pattern 
 
 ### Odds Ratio and Percentage Change in Odds
 
+\small
 ```{r}
-sumD %>%
+summaries %>%
     mutate(oddsr = odds/lag(odds, 1),
-           pcodds = (odds - lag(odds, 1))/lag(odds, 1)*100) -> sumD
+           pcodds = (odds - lag(odds, 1))/lag(odds, 1)*100) -> summaries
 ```
-
+\normalsize
 
 ### Percentage Change in Odds
 
 ```{r, echo=F}
-sumD %>%
+summaries %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
     kable(.,"markdown")
 ```
@@ -257,7 +234,7 @@ Another more sophisticated/flexible way: logits (i.e. natural logged odds).
 ### Logit (Natural Logged Odds)
 
 ```{r, echo=T}
-sumD %>%
+summaries %>%
     mutate(logit = log(odds)) %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
     kable(.,"markdown")
@@ -269,7 +246,7 @@ Now do you see it?
 ### Compare M2 with the Previous Table
 
 ```{r, echo=F}
-M2 <- glm(y ~ x, D, family=binomial(link = "logit"))
+M2 <- glm(y ~ x, fakeLogit, family=binomial(link = "logit"))
 broom::tidy(M2) %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
     kable(., "markdown")
@@ -376,10 +353,10 @@ MLE replaces the OLS principle.
 ###
 
 ```{r  glm-lm-times-plot, echo=F, eval=T, fig.width = 14, fig.height = 8.5, warning = F, message = F}
-bind_rows(glm_times, lm_times) %>%
+Timings %>%
     tbl_df() %>%
     group_by(model) %>%
-    ggplot(.,aes(elapsed,  fill=model)) +
+    ggplot(.,aes(value,  fill=model)) +
     geom_density(color="black") + theme_steve_web() +
     labs(x = "Elapsed Time (in Seconds)",
          y = "Density",
