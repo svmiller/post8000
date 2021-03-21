@@ -12,7 +12,8 @@
 #'        smooth_scroll: false
 #'      highlight: zenburn
 #' ---
-#' 
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+
 #' 
 #' # Elsewhere on My Website
 #' 
@@ -25,10 +26,8 @@
 #' # R Packages/Data for This Session
 #' 
 #' Packages will be fairly minimal for this lab session. `{tidyverse}` will be doing most things. `{stevedata}` 
-#' has our data. `{lmtest}` has some diagnostics for us. Let's load those now. I'm going to start with a `{knitr}`
-#' chunk to make the code output less verbose.
-
-knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+#' has our data. `{lmtest}` has some diagnostics for us. Let's load those now. The `{knitr}`
+#' chunk above will make the code output less verbose.
 
 library(tidyverse)
 library(stevedata)
