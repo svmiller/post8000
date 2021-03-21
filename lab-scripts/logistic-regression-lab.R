@@ -100,16 +100,16 @@ ks.test(resid(M1), y=pnorm)
 plot(M1, which=2)
 
 #' To be clear, the normality assumption is about the *errors* and not the dependent variable, even as the normality
-#' assumption of the errors does kidn of imply that the conditional distribution of the dependent variable is normal.
+#' assumption of the errors does kind of imply that the conditional distribution of the dependent variable is normal.
 #' 
 #' No matter, I want you to take stock of what happened here: the fitted-residual plot is a mess, the errors are
 #' not normally distributed, and the errors are heteroskedastic. That's on you (well: me) for running an OLS
-#' model on a binary dependent variable and asking it to make sense for me.
+#' model on a binary dependent variable and asking it to make sense.
 #' 
 #' An econometrician may object that this is still fine. After all, the normality assumption is a strong one
 #' and the implication for violating it is not as severe as the other ones. Further, heteroskedasticity
 #' is more about the variance of the estimator and not the estimate itself. Further, the logistic curve is 
-#' kind of "normal"/linear in the middle. Under those conditions, you can still think of the coefficients
+#' kind of linear in the middle. Under those conditions, you can still think of the coefficients
 #' as communicating changes in probability.
 #' 
 #' My retort to that is that it's not clear to me you necessarily should when the fitted values from the model
@@ -128,12 +128,12 @@ Penn %>%
 
 #' I'm willing to be flexible and open to interpretation about linear models on things like four-item DVs (definitely don't), 
 #' five-item Likerts (enh, also don't do that...) or seven-item ordinal variables (I'm listening...),  or ordinal items on a 
-#' larger scale like 10 points (about where I'd be). Under those circumstances, check your `y`-hats.
+#' larger scale like 10 points (about where I'd be). 
 #' 
-#' Anything outside the bounds of the scale should caution you against using OLS with the nature of the dependent
-#' variable you have. When all `y`-hats are within that scale, you might spin a ball of yarn to me about 
-#' how the discrete nature of the DV are our only measurements of some underlying continuum. 
-#' I'm willing to hear those out, under those circumstances. However, the answer, for me, is *always* NO when 
+#' Under those circumstances, check your `y`-hats. Anything outside the bounds of the scale should caution you against 
+#' using OLS with the nature of the dependent variable you have. When all `y`-hats are within that scale, 
+#' you might spin a ball of yarn to me about how the discrete nature of the DV are our only measurements of some underlying 
+#' continuum. I'm willing to hear those out, under those circumstances. However, the answer, for me, is *always* NO when 
 #' it comes to linear models on binary DVs. Instead, use a model designed for the distribution of the dependent
 #' variable. You can use a probit model, though I prefer the logistic regression and will discuss it here.
 #' 
@@ -175,9 +175,9 @@ broom::tidy(M1) %>%
 #' 
 #' The intuition here is simple: you have a logit. You want a probability. Inverse the logit as an odds ratio to
 #' get that probability you want. My only misgiving with this is that it's not so simple as monkeying with the coefficient.
-#' You'll need the intercept as well, along with anything else in your model. Thus, you should *resist the urge to 
-#' do this manually with more complicated models that have multiple covariates.* You will make errors. I'll show you
-#' how to do this in the "making most of regression" lecture.
+#' You'll need the intercept as well, along with anything else in your model. Thus, you should 
+#' *resist the urge to do this manually with more complicated models that have multiple covariates.* You will make errors. 
+#' I'll show you how to do this in the "making most of regression" lecture.
 #' 
 #' Nevertheless, let's do a simple exercise here with just one covariate: the college education variable. FWIW,
 #' I selected just this one covariate because it too is binary so the calculation is simple. Further, the coefficient
@@ -211,8 +211,10 @@ plogis((interceptM3 + coefM3)) - plogis(interceptM3)
 
 plogis(coefM3)
 
-#' Consider this a tentative estimate too. Truly, esp. for GLMs, quantities of interest 
-#' are what you need to more fully communicate the effects you want. We'll get to that.
+#' That would be wrong.
+#' 
+#' Consider what I just offered a tentative estimate too. Truly, esp. for GLMs, quantities of interest 
+#' are what you need to more fully communicate the effects you want. We'll get to that in a few weeks.
 #' 
 #' ## The "Divide by 4" Rule
 #' 
@@ -269,6 +271,10 @@ broom::tidy(M2) %>%
   bind_cols(., as_tibble(confint(M2))) %>%
   mutate_at(vars(2:ncol(.)), exp)
 
+#' The point is well-taken that my code is clumsily exponentiating the *p*-value as well. You should not do that. I'm only 
+#' doing this to show you can exponentiate the logit as an odds ratio, if that is more flexible and intuitive for you. For me,
+#' they're not. I've always found logits more intuitive than odds ratios. I encourage getting more comfortable with logits too.
+#' 
 #' # Model Checking for Logistic Regression
 #' 
 #' There are various tools for model checking the logistic regression. The application differs from OLS but the approaches should
@@ -341,7 +347,7 @@ Bins %>%
 #' and consideration. Basically, if you're worried your model might not be the best fit given what you see from this
 #' plot, consider the following points.
 #' 
-#' 1. You might have some hidden interactions you should fine. Think especially of those large residuals as illustrative of that.
+#' 1. You might have some hidden interactions you should find. Think especially of those large residuals as illustrative of that.
 #' 2. You may have some outliers, a non-linear pattern, or one of your covariates may have a skew. Under those conditions,
 #' think of some kind of transformation (logarithmic, square root) or allowing an effect to be non-linear.
 #' 
@@ -349,7 +355,7 @@ Bins %>%
 #' 
 #' ## Predictive Accuracy
 #' 
-#' You can evaluate a logistic regression model by checking for predctive accuracy. You will see this done a lot
+#' You can evaluate a logistic regression model by checking for predictive accuracy. You will see this done a lot
 #' in "machine learning" applications. Herein, the model is "checked" not for fit, per se, but for "validation."
 #' 
 #' First, notice how our fitted values are predicted probabilities of observing a 1? Let's create two summaries to see
