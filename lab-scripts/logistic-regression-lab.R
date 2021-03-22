@@ -254,7 +254,7 @@ broom::tidy(M2) %>%
 #' statistical significance).
 #' 
 #' 
-#' ## Odds ratios
+#' ## Odds Ratios
 #'
 #' Odds ratios may also be useful ways of summarizing a logistic regression.
 #' I encourage you to get flexible with logits, but odds ratios have an advantage over probabilities because they can scale up infinitely.
@@ -283,24 +283,22 @@ broom::tidy(M2) %>%
 #' ## Binned Residual Plots
 #' 
 #' First, you can get a binned residual plot. With OLS, you compare the fitted values and residuals with a scatterplot. With
-#' logistic regression, you get something similar, but recall the residuals are discete because the dependent variable
+#' logistic regression, you get something similar, but recall the residuals are discrete because the dependent variable
 #' is discrete.
 #' 
-#' First, let's get the fitted values and residuals.
+#' First, let's get the fitted values and residuals, both as type "response" (i.e. probabilities of a 1).
 
 Penn %>%
   mutate(fitted = predict(M2, type="response"),
          resid = residuals(M2, type = "response")) -> Penn
 
 #' Gelman and Hill have a rule of thumb for determining the size of the bins. For larger data sets (n >= 100, which we have here), 
-#' the number of bins are determined as the (rounded down, i.e. "floored") square root of number of obs in the model.
+#' the number of bins are determined as the (rounded down, i.e. "floored") square root of number of obs in the model. Then, 
+#' across these number of bins, we're going to look for the corresponding obs location in the fitted values.
+#' The breaks that emerge will coincide with those fitted values.
 #' 
 nbins <- floor(sqrt(nobs(M2)))
-
-#' Then, across these number of bins, we're going to look for the corresponding obs location in the fitted values.
 breaks.index <- floor(length(M2$fitted.values) * (1:(nbins - 1)) / nbins)
-
-#' The breaks that emerge will coincide with those fitted values
 breaks <- unique(c(-Inf, sort(M2$fitted.values)[breaks.index], Inf))
 
 #' In the interest of full disclosure: I need to think about how I want to make this more flexible. This is a Steve problem 
@@ -447,7 +445,7 @@ anova(M5, M2, test="Chisq")
 #' A likelihood ratio test will tell you the same thing, btw, with the exact same statistic. This comes by way of the `{lmtest}` package.
 lrtest(M5, M2)
 
-#' The major thing to note here is that this a a likelihood ratio test. I had previously been discussing the deviance. Incidentally,
+#' The major thing to note here is that this a likelihood ratio test. I had previously been discussing the deviance. Incidentally,
 #' the log likelihood of a GLM * -2 returns the deviance. If you ever see, anywhere in your travels, a statistic with a shorthand of 
 #' "-2LL", that's what that is. It's also communicating the deviance.
 #' 
