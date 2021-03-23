@@ -53,12 +53,12 @@
   filename: rdd
   dirname: rdd
   tldr: "A brief discussion on RDDs, both sharp and fuzzy."
-# 
-# - title: "Logistic Regression"
-#   filename: logistic-regression
-#   dirname: logistic-regression
-#   tldr: "OLS may be the workhorse, but logistic regression might be more common. Here's a walkthrough of logistic regression."
-# 
+
+- title: "Logistic Regression"
+  filename: logistic-regression
+  dirname: logistic-regression
+  tldr: "OLS may be the workhorse, but logistic regression might be more common. Here's a walkthrough of logistic regression."
+
 # - title: "Ordinal Logistic Regression"
 #   filename: ordinal-logistic-regression
 #   dirname: ordinal-logistic-regression
