@@ -108,7 +108,7 @@ summary(M1)
 #' ## Assessing the Proportional Odds Assumption
 #' 
 #' You should, at least in spirit, care about the proportional odds assumption that the slopes are the same at every level.
-#' There are any number of ways of testing this and I *really* wish there was a Brant test add-on for the ordinal package. There isn't 
+#' There are any number of ways of testing this and I *really* wish there was a Brant test add-on for the `{ordinal}` package. There isn't 
 #' (i.e. it's there for the `polr()` function in `{MASS}`, which I eschewed here).
 #' 
 #' Instead, you can do a nominal test, which is the `{ordinal}` package's way of saying "likelihood ratio test."
@@ -123,7 +123,7 @@ nominal_test(M1)
 #' 1. You can use this as a call for a multinomial model. This might even be advisable in this context. Basically, while my brain sees these variables as
 #' three-item ordered factors communicating implicit support for more government spending on this topic, the truth is there aren't many categories in the response.
 #' Thus, it might be advisable to fit a multinomial logit model (i.e. the GLM for nominal dependent variables) because this is really an unstructured response with just three
-#' categories awkwardly given to the respondent.. We won't discuss the multinomial logit model 
+#' categories awkwardly given to the respondent. We won't discuss the multinomial logit model 
 #' in class---the truth is I rarely see it in published work---but the model estimates the natural logged odds of being in one category versus some other 
 #' "baseline" response. Maybe it makes sense, in this context, to have the "about rights" as the baseline and assess the natural logged odds of being a 
 #' "too little" versus an "about right" or a "too much" versus an "about right."
@@ -261,7 +261,7 @@ predict(M1, newdata = newdat, se.fit=T) %>% # get predictions with standard erro
 #' the probability of being a "strongly disagree", a "neither agree nor disagree", and a "strongly agree." Those are quantities of interest that kind of present themselves
 #' in these applications. The ordinal model can help you with those. The OLS model really can't. The sign and significance may be unchanged, but that's also not the point.
 #' - **8+**: f*ck it, just go for it, provided there's no natural clumping of responses on some extreme in the distribution. Here'd be the more thorough interpretation. With
-#' more values on a still finite scae, you can start to think of the differences as "equally spaced out" where the observed responses rest on a continuum that makes a bit
+#' more values on a still finite scale, you can start to think of the differences as "equally spaced out" where the observed responses rest on a continuum that makes a bit
 #' more sense. The OLS model is still informative, if technically wrong. In our lecture, I showed how it performed okay with simulated data, even if it was discernibly
 #' off the true parameters (and that was for a five-item response variable). No one is going to give you too much grief and I won't either, 
 #' but you may want to consider some form of robust standard error correction to be safe.
