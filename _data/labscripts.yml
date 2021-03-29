@@ -34,3 +34,7 @@
   filename: logistic-regression-lab
   tldr: "A lab session on logistic regression: unpacking it and assessing it."
   
+- title: "Ordinal Logistic Regression"
+  filename: ordinal-logistic-regression-lab
+  tldr: "A lab session on ordinal logistic regression: unpacking it, assessing it, and when you should use it."
+  

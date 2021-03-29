@@ -1,128 +1,185 @@
-#
-# Ordinal Logistic Regression
-# -----------------------------------------------------
-# Steve Miller
-# Date: 1 April 2020
+#' ---
+#' title: "Ordinal Logistic Regression"
+#' author: Steven V. Miller, [svmiller.com](http://svmiller.com)
+#' date: 1 April 2021
+#' abstract: "This is a lab script for [POST 8000](http://post8000.svmiller.com), a graduate-level quantitative methods for public policy class that I teach at Clemson University. It will not be the most sophisticated R-related write-up of mine---check [my blog](http://svmiller.com/blog) for those---but it should be useful for discussion around the associated R script for the week's 'lab' session."
+#' output:
+#'    html_document:
+#'      css: lab-script.css
+#'      toc: TRUE
+#'      toc_float:
+#'        collapsed: false
+#'        smooth_scroll: false
+#'      highlight: zenburn
+#' ---
+#' 
+#' # R Packages/Data for This Session
+#' 
+#' I'm pretty sure we've yet to install the `{ordinal}` package, which I think is the best R package for handling ordinal models of all walks. The `{MASS}` package has a
+#' `polr()` function, and lots of other goodies, but a few things in it conflict with my preferred workflow. Plus, I think `{ordinal}` just has more goodies for ordinal models.
+#' I've already installed it, but let's wrap it in a simple function that will install it on your end if you've yet to install it. As always, `{tidyverse}` has our main
+#' workflow functions and `{stevedata}` has our data.
 
-# Let's get started with updating/installing some packages -----
-install.packages("ordinal")
+if_not_install <- function(packages) {
+  new_pack <- packages[!(packages %in% installed.packages()[,"Package"])]
+  if(length(new_pack)) install.packages(new_pack)
+}
 
-library(tidyverse)
-library(post8000r)
-library(ordinal)
+if_not_install(c("ordinal", "tidyverse", "stevedata"))
 
+#' Let's load the packages now.
 
-# Let's revisit an old data frame from earlier in the semester.
+library(tidyverse, quietly = TRUE)
+library(stevedata)
+library(ordinal) # Notice the function conflict here. The price of doing business
+
+#' # Attitudes About Spending in the GSS
+#' 
+#' Let's revisit an old data frame from earlier in the semester. You've seen these before. If you don't remember, they're attitudes recorded in the 2018
+#' General Social Survey about attitudes toward various spending programs in the United States. The bulk of the spending items are coded such that -1 = the
+#' respondent thinks we're spending too much on this particular topic, 0 = the respondent thinks the U.S. is spending "about (the) right" amount, and 1 = the
+#' responding thinks the country is spending too little on the topic. Conceptually, I think of these items as communicating attitudes about support for more
+#' spending on an ordered categorical scale. Higher values = a respondent implicitly thinking the U.S. should spend more on these topics.
 
 gss_spending
 ?gss_spending
 
-# First, let's do some recoding. 
-# collegeed = if respondent has an undergraduate or graduate degree.
-# pid7 = recoding that top category of other party supporters to be missing.
-# natfare_f: declaring that the natfare variable is an ordered factor.
-# You gotta do this for ordinal analyses.
+#' # Estimating an Ordinal Logistic Regression Model
+#' 
+#' 
+#' Last year's script, in the interest of full disclosure, did this kind of stream of consciousness. So, I already know what kind of weirdness I can 
+#' expect from these models. No matter, let's plow forward. First, I want to do some recoding here. Let's create a simple dummy variable that
+#' recodes the `degree` variable into a new one for those with a four-year college diploma. Let's make sure we drop the other party supporters 
+#' from the partisanship (`pid7`) variable. Finally, and this is important, let's declare some of these spending prompts to be ordered-categorical
+#' variables with the `ordered()` function that comes in base R. We'll focus on two prompts---attitudes
+#' toward spending on welfare (`natfare`) and attitudes about spending on social security (`natsoc`)---and 1) coerce both to be ordered-categorical
+#' variables and 2) add them together and coerce *that* to be an ordered-categorical variable. Basically, the `{ordinal}` functions require a
+#' dependent variable that is explicitly declared beforehand as an ordered factor. If you don't do this, the errors you get from the `{ordinal}` 
+#' function won't quite point you in this direction.
 
 gss_spending %>%
   mutate(collegeed = ifelse(degree >= 3, 1, 0),
          pid7 = ifelse(partyid == 7, NA, partyid),
-         natfare_f = ordered(natfare)) -> gss_spending
+         natfaresoc = natsoc + natfare,
+         natfare_f = ordered(natfare),
+         natsoc_f = ordered(natsoc),
+         natfaresoc_f = ordered(natfaresoc)) -> gss_spending
 
 
 
-# Let's assume we want to model attitudes toward welfare spending among white people as a function of these things:
-# age, sex (whether respondent is a woman), college education, income, partisanship (D to R), and ideology (L to C).
+#' Let's assume we want to model attitudes toward welfare spending among white people as a function of these things:
+#' age, sex (whether respondent is a woman), college education, income, partisanship (D to R), and ideology (L to C). You'd
+#' do this with the `clm()` function in the `{ordinal}` package even as the syntax you see looks like every other regression
+#' model you'd estimate in R.
 
-M2 <- clm(natfare_f ~ age + sex + collegeed + rincom16 + pid7 + polviews, data=subset(gss_spending, race == 1))
+M1 <- clm(natfare_f ~ age + sex + collegeed + rincom16 +
+            pid7 + polviews, data=subset(gss_spending, race == 1))
 
-summary(M2)
-# Prelim takeaways:
-# women are less likely than men to think about spending more on welfare.
-# Predictable effects of partisanship and ideology.
+summary(M1)
 
-# I tend to use very general language on coefficient interpretation for ordinal models, but if you want something more exact, here it is.
-# Observe the coefficient for polviews is ~-.269, as a logit.
-# Thus, the likelihood (natural logged odds) of observing a 1 versus a 0 or -1 decreases by about -.269 for a unit increase in polviews.
-# Related: the likelihood (natural logged odds) of observing a 0 versus a -1 decreases by about -.269 for a unit increase in polviews.
+#' Remember: interpreting coefficients in your "first step" is functionally identical to what you'd do from an OLS model. That is,
+#' you're looking for sign of coefficients and statistical significance. Here'd be the preliminary takeaways, none of which are
+#' particularly surprising beyond the gender effect. In these data, the statistically significant effects are for women, ideology,
+#' and partisanship and all three are negative. Women are less likely than me to think about spending more on welfare. The ideology
+#' and partisanship effects are unsurprising if you have at least a cursory understanding on American politics.
+#' 
+#' I tend to use very general language on coefficient interpretation for ordinal models, but if you want something more exact, here it is.
+#' Observe the coefficient for `polviews` is ~-.269, which, you'll recall, is a logit.
+#' Thus, the natural logged odds of observing a 1 versus a 0 or -1 decreases by about -.269 for a unit increase in the `polviews` variable.
+#' Related: the natural logged odds of observing a 0 versus a -1 decreases by about -.269 for a unit increase in the `polviews` variable.
+#' 
+#' ## A Love/Hate Comment on Thresholds in Ordinal Models
+#' 
+#' I'm generally loathe to talk about these things. They're not typically parameters of interest for how you're probably using an ordinal model.
+#' However, you'll want to provide them anyway. These thresholds or "cut points" are natural logged odds between two variables.
+#' So, in this case: the "coefficient" reading -1|0 is the natural logged odds of being a -1 versus a 0 or 1.
+#' The "coefficient" reading 0|1 is the natural logged odds of being a -1 or 0 versus a 1.
+#' The "|" is kind of misleading, especially if you're used to it as a strict logical operator.
+#' In this case, the "|" is like a cumulative cut point, or a way of saying it is.
+#'  
+#' Let's talk a bit about what's happening here. We call ordinal logistic regression an extension of (binary) logistic regression because:
+#' 
+#' 1. it's in spirit *multiple* (binary) logistic regressions of
+#' 2. the natural logged odds of appearing in a category or below it.
+#' 
+#' However, we are assuming the lines are in parallel to each other, separated by the thresholds. So, in this case, think of this model
+#' as kind of like two logistic regressions, each with identical betas. `logit(p(y == -1)) = -2.87 + B*X` and `logit(p(y <= 0)) = -1.4221 + B*X`.
+#' 
+#' ## Assessing the Proportional Odds Assumption
+#' 
+#' You should, at least in spirit, care about the proportional odds assumption that the slopes are the same at every level.
+#' There are any number of ways of testing this and I *really* wish there was a Brant test add-on for the ordinal package. There isn't 
+#' (i.e. it's there for the `polr()` function in `{MASS}`, which I eschewed here).
+#' 
+#' Instead, you can do a nominal test, which is the `{ordinal}` package's way of saying "likelihood ratio test."
+#' Think of this as a test of the hypothesis that relaxing the proportional odds (PO) assumption of parallel lines across all levels 
+#' of the response provides a better model fit. If the p < .05, you reject the hypothesis that relaxing the PO assumption does not improve model fit.
+#' In other words, one or more of the covariates may have non-constant effects at all levels.
 
-# ON THRESHOLDS:
-# I'm generally loathe to talk about these things. They're not typically parameters of interest for how you're probably using an ordinal model.
-# However, you'll want to provide them anyway.
-# These thresholds or "cut points" are natural logged odds between two variables.
-# So, in this case: the "coefficient" reading -1|0 is the natural logged odds of being a -1 versus a 0 or 1.
-# The "coefficient" reading 0|1 is the natural logged odds of being a -1 or 0 versus a 1.
-# The "|" is kind of misleading, especially if you're used to it as a strict logical operator.
-# In this case, the "|" is like a cumulative cut point, or a way of saying it is.
+nominal_test(M1)
 
-# Let's talk a bit about what's happening here. We call ordinal logistic regression an extension of (binary) logistic regression because:
-# 1) it's in spirit *multiple* (binary) logistic regressions of
-# 2) the natural logged odds of appearing in a category or below it.
-# However, we are assuming the lines are in parallel to each other, separated by the thresholds
-# So, in this case, think of M2 as kind of like two logistic regressions, each with identical betas.
-# logit(p(y == -1)) = -2.87 + B*X and logit(p(y <= 0)) = -1.4221 + B*X.
+#' You can interpret the above output in a few ways:
+#' 
+#' 1. You can use this as a call for a multinomial model. This might even be advisable in this context. Basically, while my brain sees these variables as
+#' three-item ordered factors communicating implicit support for more government spending on this topic, the truth is there aren't many categories in the response.
+#' Thus, it might be advisable to fit a multinomial logit model (i.e. the GLM for nominal dependent variables) because this is really an unstructured response with just three
+#' categories awkwardly given to the respondent.. We won't discuss the multinomial logit model 
+#' in class---the truth is I rarely see it in published work---but the model estimates the natural logged odds of being in one category versus some other 
+#' "baseline" response. Maybe it makes sense, in this context, to have the "about rights" as the baseline and assess the natural logged odds of being a 
+#' "too little" versus an "about right" or a "too much" versus an "about right."
+#' 2. Alternatively, you can allow the effects of those coefficients that the nominal test flagged to vary at all levels. You can do this
+#' by specifying a nominal call in the `clm()` function. Here, we'll do it just for age and sex.
 
+M2 <- clm(natfare_f ~ collegeed + rincom16 + pid7 + polviews, nominal = ~ age + sex, data=subset(gss_spending, race == 1))
+summary(M2) # Notice there's no single coefficient for age and sex. It's in the intercepts/thresholds.
 
-
-# You should, at least in spirit, care about the proportional odds assumption that the slopes are the same at every level.
-# There are any number of ways of testing this and I *really* wish there was a Brant test add-on for the ordinal package.
-# There isn't (i.e. it's there for the polr function in MASS, which I eschewed here).
-
-# Instead, you can do a nominal test, which is the ordinal package's way of saying "likelihood ratio test."
-# Think of this as a test of the hypothesis that relaxing the proportional odds (PO) assumption of parallel lines across all levels of the response provides a better model fit.
-# If the p < .05, you reject the hypothesis that relaxing the PO assumption does not improve model fit.
-# In other words, one or more of the covariates may have non-constant effects at all levels.
 nominal_test(M2)
 
-# You can interpret the above in a few ways:
-# You can use this as a call for a multinomial model. This might even be advisable in this context.
-# You could spin me a ball of yarn that with just three categories, awkwardly given to the respondent, that this is really an unstructured response.
-# OR: you can allow the effects to vary at all levels.
-# You do this by specifying a nominal call in the clm function.
-# Here, we'll do it for just age and sex.
+#' Now, however, the nominal test is complaining about the college education variable. At this point, I'm probably just going to throw up my hands and say
+#' "multinomial model" for this variable. But, as I mentioned at the top of the script, I wrote this kind of stream of consciousness and I suspect
+#' it's the few response categories we have that's causing this issue. So, let's take out that `natfare_f` variable and add in the prompt that sums both
+#' `natfare` and `natsoc` together. This creates a five-item variable where -2 = those who think we're spending too much on both welfare and social security
+#' and 2 = those who think we're spending too little on both. -1, 0, and 1 are also both possible.
+#' 
+#' Here'd be the breakdown for those.
 
-M3 <- clm(natfare_f ~ collegeed + rincom16 + pid7 + polviews, nominal = ~ age + sex, data=subset(gss_spending, race == 1))
-summary(M3) # Notice there's no single coefficient for age and sex. It's in the intercepts/thresholds.
+gss_spending %>%
+  filter(race == 1) %>%
+  distinct(natfaresoc, natfare, natsoc) %>%
+  na.omit %>%
+  arrange(natfaresoc)
+
+#' Now let's try this again with this new dependent variable that amounts to an index sentiment on whether the respondent thinks the U.S. needs to spend
+#' more on social welfare programs, here gauged by prompts on welfare and social security.
+
+# Let's try this again
+M3 <- clm(natfaresoc_f ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1))
+summary(M3)
+
+#' We do see there's no longer a significant gender difference, but the college education variable emerges as negative and statistically significant.
+#' The ideology and partisanship variables are the same, basically. More values in the dependent variable mean
+#' there are more thresholds through we must sift. However, we're here for the nominal test. Did we pass?
 
 nominal_test(M3)
 
-# Here's a better idea, while also upfront confessing I'm doing this stream of consciousness.
-# Let's note that the nature of the response (-1, 0, 1) is probably wanting a multinomial solution notwithstanding the order we want to impose on it.
-# Instead, let's make an index of three variables: natheal, natfare, and natsoc
-# Think of this as an index on attitudes toward social spending (broadly defined). Higher values = more support for more social spending
-# (or, technically, that the respondent thinks we're spending too little)
-
-gss_spending %>%
-  mutate(y = natheal + natfare + natsoc,
-         y_f = ordered(y)) -> gss_spending
-
-# Here's what our variable looks like:
-table(gss_spending$y_ord)
-
-# Let's try this again
-
-M4 <- clm(y_ord ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1))
-summary(M4)
-
-nominal_test(M4)
-# Much betta https://66.media.tumblr.com/6437f1bc98d5d0952a1edd19b9e4241e/1932ca80ea201e4f-5d/s640x960/a558c99f1fa3f6d0377ccfc48966917a8a94c8f2.gif
-
-# You can do the same thing and the same interpretation of the coefficient output as you did above.
-# More values in the DV, though, mean more thresholds to sift through.
-
-
-# HOT #take coming up: I'm of the mentality you should always run an ordinal logistic regression if that's the DV you're handed.
-# I will throw something at you if you try running an OLS on a five-item Likert because that's just not the data you have.
-# But I kind of hate them, and I would forgive you for hating them too, because communicating them is a chore.
-# OLS has a straightforward interpretation. Binary DVs are really straightforward as well.
-# However, the PO assumption can be restrictive and there are a lot of moving pieces from the model output.
-# Your audience may not have the appetite for it.
-
-# In other words, be prepared to communicate your statistical model graphically.
-
-# In the ordinal package, this is the predict() function and think about using it with hypothetical data.
-# For example, let's create a simple data frame that has all our right-hand side values, but we'll have three variables of partisanship.
-# These will be the strong Ds (0), pure indies who don't lean one way or another (3), and the strong Rs (6).
-# Everything else is at a typical value (a median).
+#' Much betta. 
+#' 
+#' ![](https://64.media.tumblr.com/6437f1bc98d5d0952a1edd19b9e4241e/1932ca80ea201e4f-5d/s640x960/a558c99f1fa3f6d0377ccfc48966917a8a94c8f2.gif)
+#' 
+#' ## Imposing Your Will on the Ordinal Model
+#' 
+#' `emo::ji("fire")` #take coming up: I'm of the mentality you should always run an ordinal logistic regression if that's the DV you're handed.
+#' I will throw something at you if you try running an OLS on a five-item Likert because that's just not the data you have.
+#' But I kind of hate them, and I would forgive you for hating them too, because communicating them is a chore.
+#' OLS has a straightforward interpretation. Binary DVs are really straightforward as well.
+#' However, the PO assumption can be restrictive and there are a lot of moving pieces from the model output. Your audience may not have the appetite for it.
+#' 
+#' In other words, be prepared to communicate your statistical model graphically and impose your will on a somewhat unruly model accordingly.
+#' 
+#' In the `{ordinal}` package, you can do this with the `predict()` function and think about using it with hypothetical data. For example,
+#' let's create a simple data frame that has all our right-hand side values at their typical values. But, we'll allow partisanship to
+#' vary across three types. These will be the strong Democrats (`pid7 == 0`), the pure independents who say they don't lean one way or the
+#' other (`pid7 == 3`), and the strong Republicans (`pid7 == 6`).
 
 newdat <- tibble(age = median(gss_spending$age, na.rm=T),
                  collegeed = 0,
@@ -131,12 +188,17 @@ newdat <- tibble(age = median(gss_spending$age, na.rm=T),
                  polviews = median(gss_spending$polviews, na.rm=T),
                  rincom16 = median(gss_spending$rincom16, na.rm=T))
 
+newdat # who dis
 
-# Alrightie, this code is convoluted as hell, and it's why I prefer Bayes for ordinal models.
-# But that's in two weeks.
+#' Thus, think of three types of people: a typical-aged man of average income, without a college diploma, and who says they're ideologically moderate. They're identical,
+#' but for their partisanship. One is a strong Democrat, another an independent, and the last a Republican. We want to know what the effect of increasing
+#' partisanship "looks like" for these three people across the handful of different responses recorded in the dependent variable. For simplicity's sake,
+#' we're going to focus on that first model that looked at just attitudes about welfare, even acknowledging the model wasn't a super great fit for the data.
+#' 
+#' You've beeen warned: this code is convoluted as hell. It's why I prefer Bayes for ordinal models, but Bayes is in two weeks.
 # Oh god, here we go...
 
-predict(M2, newdata = newdat, se.fit=T) %>% # get predictions with standard errors.
+predict(M1, newdata = newdat, se.fit=T) %>% # get predictions with standard errors.
   # This is a list of two matrices
   # Let's coerce it to two data frames while also begrudging that I have to do this.
   map(~as.data.frame(.)) %>% # god purrr is awesome
@@ -161,49 +223,57 @@ predict(M2, newdata = newdat, se.fit=T) %>% # get predictions with standard erro
   group_split(obj) %>%
   bind_cols() %>%
   # voila! I have everything I need now
+  # however, I'll need to rename things and focus on just what I want
+  rename(pid7 = `pid7...1`,
+         natfare = `var...3`,
+         fit = `val...4`,
+         se = `val...8`) %>%
+  select(pid7, natfare, fit, se) %>%
   # Now, let's have some fun and create a column called upr and lwr creating bounds around the estimate
-  rename(fit = val,
-         se = val1) %>%
   mutate(upr = fit + 1.96*se,
          lwr = fit - 1.96*se) %>%
   ggplot(.,aes(pid7, fit, ymax=upr, ymin=lwr)) +
   geom_pointrange() +
   # Oh god help me I never do anything the easy way...
-  facet_wrap(~var, labeller=labeller(var = c("-1" = "Spends Too Much",
+  facet_wrap(~natfare, labeller=labeller(natfare = c("-1" = "Spends Too Much",
                                              "0" = "Spending About Right",
                                              "1" = "Spending Too Little"))) +
   labs(title = "Attitudes Toward Spending on Welfare, by Partisanship",
        x = "Partisanship", y = "Predicted Probability of the Response (with 95% Intervals)",
        caption = "Source: General Social Survey, 2018. Note: for pedagogical use in my grad methods class. Stay out of my mentions.",
-       subtitle = "Increasing partisanship (with the GOP) increases the likelihood of the spend too much or spend about right response, but decreases the likelihood of the\nspend too little response. You knew this.")
+       subtitle = "Increasing GOP partisanship increases the likelihood of the spend too much or spend about right response, but decreases the likelihood of the\nspend too little response. You knew this.")
 
 
-# ^ Consider this a preview for the quantities of interest week, that's coming up next.
-# Basically: regression modeling is story-telling as well, in a way.
-# You, the story-teller, just have more work to do with ordinal models, even as the ordinal model may faithfully capture the underlying distribution of the DV.
+#' ^ Consider this a preview for the quantities of interest week, that's coming up next. Basically: regression modeling is story-telling as well, in a way.
+#' You, the story-teller, just have more work to do with ordinal models, even as the ordinal model may faithfully capture the underlying distribution of the DV.
+#' 
+#' # When Can You Jettison the Ordinal Model for OLS?
+#' 
+#' 
+#' I want to give you an "out", of a kind. The truth is OLS models are a better fit on ordered-categorical data than they are on dummy variables. What follows 
+#' will touch on some of the readings you had this week (and even earlier in the semester) on whether you can treat your ordinal DV as continuous. Here's 
+#' my rule of thumb:
+#' 
+#' - **3-4**: basically, no. Don't do it. You have so few responses that the OLS model just isn't going to return a quantity of interest that I or the audience
+#' should care to know.
+#' - **5-7**: others do this. I don't, but I would say to use the OLS as a "first cut" to assess if there's a "there there", then finish with the ordinal model. Think of the
+#' kind of data you have in, say, a five-item ordered categorical variable. Think of a Likert, for example. The ordinal model can tell you, with some work, 
+#' the probability of being a "strongly disagree", a "neither agree nor disagree", and a "strongly agree." Those are quantities of interest that kind of present themselves
+#' in these applications. The ordinal model can help you with those. The OLS model really can't. The sign and significance may be unchanged, but that's also not the point.
+#' - **8+**: f*ck it, just go for it, provided there's no natural clumping of responses on some extreme in the distribution. Here'd be the more thorough interpretation. With
+#' more values on a still finite scae, you can start to think of the differences as "equally spaced out" where the observed responses rest on a continuum that makes a bit
+#' more sense. The OLS model is still informative, if technically wrong. In our lecture, I showed how it performed okay with simulated data, even if it was discernibly
+#' off the true parameters (and that was for a five-item response variable). No one is going to give you too much grief and I won't either, 
+#' but you may want to consider some form of robust standard error correction to be safe.
+#' 
+#' ^ On the above point in the distribution of responses on a granular ordinal scale. Remember the bribe-taking prompt from the World Values Survey? 
+#' This was the justifiability of taking a bribe on a 1-10 scale. It has 10 responses, but almost all of them are at 1. In other words, don't treat that as interval below:
 
-
-# With that in mind, I want to give you an "out" of a kind.
-# This will touch on some of the readings you had this week (and even earlier in the semester) on whether you can treat your ordinal DV as continuous.
-# My rule of thumb:
-# 3-5: hard no.
-# 7: I'm listening...
-# 10+: f*ck it, just go for it, provided there's no natural clumping of responses on some extreme in the distribution.
-# ^ The more thorough interpretation: with more values on a still truncated (ordinal) scale, you can start to think of the differences as "equally spaced out."
-# In which case, the OLS model is informative, if technically wrong.
-# You'll remember it performed well enough in the lecture in which I explicitly simulated the data, even if it was discernibly off the true parameters.
-# No one is going to give you too much grief and I won't either, but you may want to consider some form of heteroskedasticity correction to be safe.
-
-# ^ On the above point in the distribution of responses on a granular ordinal scale. Remember the bribe-taking prompt in the US from the World Values Survey?
-# This was the justifiability of taking a bribe on a 1-10 scale.
-# It has 10 responses, but almost all of them are at 1.
-# In other words, don't treat that as interval below:
-
-usa_justifbribe %>%
-  group_by(justifbribe) %>%
+wvs_justifbribe %>%
+  group_by(f117) %>%
   count() %>%
   na.omit %>%
-  ggplot(.,aes(as.factor(justifbribe), n)) +
+  ggplot(.,aes(as.factor(f117), n)) +
   geom_bar(stat="identity", alpha=0.8, color="black") +
   scale_x_discrete(labels=c("Never Justifiable", "2", "3", "4",
                             "5", "6", "7", "8", "9", "Always Justifiable")) +
@@ -212,31 +282,56 @@ usa_justifbribe %>%
             position=position_dodge(.9), size=4) +
   labs(y = "Number of Observations in Particular Response",
        x = "",
-       title = "The Justifiability of Taking a Bribe in the U.S., 1995-2011",
-       caption = "Data: World Values Survey, 1995-2011",
-       subtitle = "There are just 10 different responses in this variable with a huge right skew. I wouldn't ask for a mean of this.")
+       title = "The Justifiability of Taking a Bribe in the World Values Survey, 1981-2016",
+       caption = "Data: World Values Survey (1981-2016), via ?wvs_justifbribe in {stevedata}",
+       subtitle = "There are just 10 different responses in this variable with a huge right skew.")
 
-# You may not even want to think of it as ordinal. With noisy as hell data like this, as I mentioned in that session, you'll probably just want to embrace
-# the noisiness and estimate it as a binary DV of 1 versus not 1.
 
-# What about in our y variable from model 4?
 
-summary(M4)
-summary(M5 <- lm(y ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1)))
+#' You may not even want to think of it as ordinal. With noisy as hell data like this, as I mentioned in that session, you'll probably just want to embrace 
+#' the noisiness and estimate it as a binary DV of 1 versus not 1.
+#' 
+#' What about our dependent variable from model 3?
 
-broom::tidy(M4)
-broom::tidy(M5)
+summary(M3)
+summary(M4 <- lm(natfaresoc ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1)))
 
-# ^ off, technically wrong, but not so wrong.
-# Recall the assumptions of the ordinal model of the underlying latent variable. This is why OLS is performing better here
-# than it performed with the binary model.
+broom::tidy(M3) %>%
+  filter(coef.type != "intercept") %>%
+  select(-coef.type) %>%
+  mutate(model = "Ordinal Logistic Regression") %>%
+  bind_rows(., broom::tidy(M4) %>% mutate(model = "OLS")) %>%
+  arrange(term)
 
-# What about something bigger, like the sumnatsoc variable?
+#' ^ off, technically wrong, but not the worst I've ever seen. I'd still say to jettison OLS for the ordinal logistic regression here. Do it for the reasons I hinted
+#' at above. If you have just five responses in the DV, I'm probably going to want to know about the extremes and the middle. There are a lot of moving pieces in an ordinal
+#' model, but you can focus on just those responses that almost naturally present themselves in this setup.
+#' 
+#' What about something bigger, like the `sumnatsoc` variable in the `gss_spending` data? Whereas Model 3 adds just the two prompts together, this sums
+#' all responses toward various "social" prompts about the environment, health, dealing with drug addiction, education, improving racial equality, welfare,
+#' roads, mass transit, parks, social security, and child care.
+#' 
+#' Here's what this variable would look like, all 22 possible responses of it. There's a bit of a left tail for the anti-government-doing-anything folk, but this has
+#' a nice juicy center for a variable with just 22 different responses.
 
-table(gss_spending$sumnatsoc)
+gss_spending %>%
+  filter(race == 1) %>%
+  group_by(sumnatsoc) %>%
+  tally() %>%
+  ggplot(.,aes(ordered(sumnatsoc), n)) +
+  geom_bar(stat="identity")
 
-summary(M6 <- clm(ordered(sumnatsoc) ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1)))
-summary(M7 <- lm(sumnatsoc ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1)))
+#' Now, let's compare the ordinal model with the OLS model.
 
-# Similar performance.  No one is going to yell too much at you for doing an OLS on a technically ordinal item that has like 22 different values.
-# But, maybe consider some kind of heteroskedasticity correction.
+M5 <- clm(ordered(sumnatsoc) ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1))
+M6 <- lm(sumnatsoc ~ age + sex + collegeed + rincom16 + pid7 + polviews,  data=subset(gss_spending, race == 1))
+
+broom::tidy(M5) %>%
+  filter(coef.type != "intercept") %>%
+  select(-coef.type) %>%
+  mutate(model = "Ordinal Logistic Regression") %>%
+  bind_rows(., broom::tidy(M6) %>% mutate(model = "OLS")) %>%
+  arrange(term)
+
+#' Similar performance.  No one is going to yell too much at you for doing an OLS on a technically ordinal item that has like 22 different values.
+#' But, maybe consider some kind of robust standard error correction.
