@@ -168,7 +168,7 @@ nominal_test(M3)
 #' 
 #' ## Imposing Your Will on the Ordinal Model
 #' 
-#' `emo::ji("fire")` #take coming up: I'm of the mentality you should always run an ordinal logistic regression if that's the DV you're handed.
+#' `r emo::ji("fire")` #take coming up: I'm of the mentality you should always run an ordinal logistic regression if that's the DV you're handed.
 #' I will throw something at you if you try running an OLS on a five-item Likert because that's just not the data you have.
 #' But I kind of hate them, and I would forgive you for hating them too, because communicating them is a chore.
 #' OLS has a straightforward interpretation. Binary DVs are really straightforward as well.
