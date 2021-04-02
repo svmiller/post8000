@@ -37,4 +37,9 @@
 - title: "Ordinal Logistic Regression"
   filename: ordinal-logistic-regression-lab
   tldr: "A lab session on ordinal logistic regression: unpacking it, assessing it, and when you should use it."
-  
+
+- title: "Making the Most of Regression"
+  filename: mmr-lab
+  tldr: "Regression is story-telling and here's how to tell your story well."
+
+
