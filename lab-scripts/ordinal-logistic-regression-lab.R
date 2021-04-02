@@ -78,7 +78,7 @@ M1 <- clm(natfare_f ~ age + sex + collegeed + rincom16 +
 summary(M1)
 
 #' Remember: interpreting coefficients in your "first step" is functionally identical to what you'd do from an OLS model. That is,
-#' you're looking for sign of coefficients and statistical significance. Here'd be the preliminary takeaways, none of which are
+#' you're looking for sign of coefficients and statistical significance. Here would be the preliminary takeaways, none of which are
 #' particularly surprising beyond the gender effect. In these data, the statistically significant effects are for women, ideology,
 #' and partisanship and all three are negative. Women are less likely than me to think about spending more on welfare. The ideology
 #' and partisanship effects are unsurprising if you have at least a cursory understanding on American politics.
@@ -195,7 +195,7 @@ newdat # who dis
 #' partisanship "looks like" for these three people across the handful of different responses recorded in the dependent variable. For simplicity's sake,
 #' we're going to focus on that first model that looked at just attitudes about welfare, even acknowledging the model wasn't a super great fit for the data.
 #' 
-#' You've beeen warned: this code is convoluted as hell. It's why I prefer Bayes for ordinal models, but Bayes is in two weeks.
+#' You've been warned: this code is convoluted as hell. It's why I prefer Bayes for ordinal models, but Bayes is in two weeks.
 # Oh god, here we go...
 
 predict(M1, newdata = newdat, se.fit=T) %>% # get predictions with standard errors.
@@ -303,9 +303,13 @@ broom::tidy(M3) %>%
   bind_rows(., broom::tidy(M4) %>% mutate(model = "OLS")) %>%
   arrange(term)
 
-#' ^ off, technically wrong, but not the worst I've ever seen. I'd still say to jettison OLS for the ordinal logistic regression here. Do it for the reasons I hinted
+#' ^ off, technically wrong, but not the worst I've ever seen. In fact, those *t*/*z* statistics look very similar even as the underlying coefficients are
+#' being communicated on different scales. I'd still say to jettison OLS for the ordinal logistic regression here. Do it for the reasons I hinted
 #' at above. If you have just five responses in the DV, I'm probably going to want to know about the extremes and the middle. There are a lot of moving pieces in an ordinal
-#' model, but you can focus on just those responses that almost naturally present themselves in this setup.
+#' model, but you can focus on just those responses that almost naturally present themselves in this setup. Those who advocating slapping an OLS sticker on all types
+#' insist it does well enough being BLUE. My retort to that is 1) I'm not convinced it's doing that and 2) with so few response categories, OLS is going to
+#' struggle in an obvious way providing reasonable fitted values. Ordinal logistic regression is tailored for communicating probabilities (albeit with
+#' some work) for finite values. OLS can't do that.
 #' 
 #' What about something bigger, like the `sumnatsoc` variable in the `gss_spending` data? Whereas Model 3 adds just the two prompts together, this sums
 #' all responses toward various "social" prompts about the environment, health, dealing with drug addiction, education, improving racial equality, welfare,

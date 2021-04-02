@@ -167,7 +167,7 @@ D$y_ord = ordered(D$y)
 M2 <- clm(y_ord ~ x1 + x2, data = D)
 broom::tidy(M2) %>%
     mutate_if(is.numeric, ~round(., 2)) %>%
-  filter(coefficient_type == "beta") %>%
+  filter(coef.type == "location") %>%
     kable(., "markdown")
 ```
 
@@ -300,7 +300,7 @@ If your DV is ordered-categorical, considered an ordinal logistic regression.
 
 - OLS works much better with ordered-categorical DVs than binary DVs, but that's less the point.
     - Feel free to compare OLS with it, though OLS would be "wrong" in a non-trivial way.
-- Think of these as situations where $Y^*$ is assumed but only a finite $Y$ iis observed.
+- Think of these as situations where $Y^*$ is assumed but only a finite $Y$ is observed.
 
 Ordinal logistic regression better models the nature of the data, but:
 
