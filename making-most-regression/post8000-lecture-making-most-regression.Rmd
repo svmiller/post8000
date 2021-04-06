@@ -100,17 +100,19 @@ You and your audience will want to compare regression coefficients.
 
 Let's illustrate this with a simple data set in `{stevedata}`.
 
+\small
 ```{r}
 election_turnout %>% 
-  select(state, percoled, gdppercap, sunempr12md, trumpshare)
+  select(state, percoled, gdp, sunempr12md, trumpshare)
 ```
+\normalsize
 
 ### A Simple Illustration
 
 Let's see if we can model the share of the vote Trump received in 2016 (`trumpshare`) with four variables:
 
 - the percent of the state (25 and older) with a college diploma (`percoled`).
-- the GDP per capita of the state in 2016 (`gdp16`).
+- the GDP of the state in 2016 (`gdp16`).
 - Whether the state is in the South (`south`).
 - The 12-month difference in the state unemployment rate for Nov. 2016 (`sunempr12md`). 
 
@@ -130,7 +132,7 @@ election_turnout %>%
            trumpshare = trumpshare*100) -> election_turnout
 
 
-M1 <- lm(trumpshare ~ percoled + sunempr12md + gdppercap + south, 
+M1 <- lm(trumpshare ~ percoled + sunempr12md + gdp + south, 
          subset(election_turnout, state != "District of Columbia"))
 ```
 
@@ -145,26 +147,24 @@ broom::tidy(M1) %>%
 
 Here's how you would describe what you see here:
 
-- A one-unit increase in % of the state with a college diploma decreases the Trump vote share by -1.65 percentage points.
-- A one-unit increase in the state's GDP decreases Trump's vote share by -.000004 points.
-- A one-unit increase in the state unemployment change increases Trump's vote share by 6.49 points.
-- Being in the South increases Trump's vote share by .69 points.
+- A one-unit increase in % of the state with a college diploma decreases the Trump vote share by -1.52 percentage points.
+- A one-unit increase in the state's GDP decreases Trump's vote share by about -.000007 points.
+- A one-unit increase in the state unemployment change increases Trump's vote share by 7.44 points.
+- Being in the South increases Trump's vote share by 1.7 points.
 
 
-Takeaway: education and unemployment rate change had significant effects.
+Takeaway: all but the South dummy had significant effects.
 
-- The other two variables did not have significant effects.
-
-However, there are several unsatisfying things about this model output.
+- However, there are several unsatisfying things about this model output.
 
 ### The Problem of the Constant
 
-To start: the intercept suggests Trump's vote share is expected to be 99.9% (!) in a state where:
+To start: the intercept suggests Trump's vote share is expected to be 96.45% (!) in a state where:
 
 - No one graduated from college, AND
 - There was no change from Nov. 2015 in the unemployment rate, AND
 - The state isn't in the South, AND
-- the GDP per capita of the state is zero.
+- the GDP of the state is zero.
 
 Constants/*y*-intercepts come standard in model output, but this parameter is useless as it is.
 
@@ -179,7 +179,7 @@ What's the biggest effect, as a magnitude? You won't know.
 All variables work on a different scale.
 
 - `percoled` has a minimum of 19.2 (WV) and a maximum of 40.5 (MA).
-- `gdppercap` has a minimum of 35,717 (MS) and a maximum of 81,801 (AK).
+- `gdp` has a minimum of 31,659 (VT) and a maximum of 2,657,798 (CA).
 - `sunempr12md` has a minimum of -1 (NV) and a maximum of .4 (OH).
 - `south` is a dummy/fixed effect and can only be 0 or 1.
 
@@ -211,8 +211,8 @@ This works well in most cases, except when $p(d = 1)$ is really small.
 
 The process looks similar to how to calculate a $z$-score (with the obvious change in the denominator).
 
-- `rescale()` in the `arm` package will do it.
-- `r2sd()` in my `stevemisc` package will do it.
+- `rescale()` in the `{arm}` package will do it.
+- `r2sd()` in my `{stevemisc}` package will do it.
 
 You could also do it manually.
 
@@ -226,7 +226,7 @@ rescale <- function(x) { (x - mean(x, na.rm=T))/(2*sd(x, na.rm=T)) }
 ```{r}
 election_turnout %>%
     # we'll use the custom function we just wrote in this document.
-    mutate_at(vars("percoled", "gdppercap","sunempr12md"), 
+    mutate_at(vars("percoled", "gdp","sunempr12md"), 
               list(z = ~rescale(.))) %>%
     rename_at(vars(contains("_z")),
               ~paste("z", gsub("_z", "", .), sep = "_") ) -> election_turnout
@@ -241,7 +241,7 @@ sd(election_turnout$z_percoled)
 
 \small
 ```{r}
-M2 <- lm(trumpshare ~ z_percoled + z_sunempr12md + z_gdppercap + 
+M2 <- lm(trumpshare ~ z_percoled + z_sunempr12md + z_gdp + 
              south, subset(election_turnout, state != "District of Columbia"))
 
 broom::tidy(M2) %>%
@@ -251,11 +251,11 @@ broom::tidy(M2) %>%
 
 ### Interpreting an Improved Statistical Model
 
-- The typical state not in the South had an estimated Trump vote share of 47.31%. The intercept is much more informative.
+- The typical state not in the South had an estimated Trump vote share of 47.18%. The intercept is much more informative.
     - Caveat: states are weighted equally, even as there are more Californians than South Carolinians.
     - i.e. you could've added Trump's SC votes to his CA tally and he'd still lose CA by >3 million votes.
 - The education variable looks to have the largest effect when everything is on a mostly common scale.
-    - i.e. the effect of going from, say, a standard deviation below the mean to a standard deviation above the mean is an estimated decrease in Trump's vote share by almost 20 points.
+    - i.e. the effect of going from, say, a standard deviation below the mean to a standard deviation above the mean is an estimated decrease in Trump's vote share by over 18 points.
 
 ### Interpreting an Improved Statistical Model
 
@@ -305,7 +305,7 @@ Statistical presentations should:
 3. Require little specialized knowledge to understand Nos. 1 and 2.
 4. Not bombard the audience with superfluous information.
 
-We will do this with post-estimation simulation using draws from a multivariate normal distribution (King et al. 2000).
+We will do this with post-estimation simulation using draws from a multivariate normal distribution (King et al. 2000, Gelman and Hill, 2007).
 
 ### Estimating Uncertainty with Simulation
 
@@ -346,7 +346,7 @@ $$
 
 In other words: distribution of quantities of interest will follow a multivariate normal distribution with mean equal to $\hat{\gamma}$, the simulated parameter vector.
 
-
+- Practically, whenever estimating a regression model, make sure you have your coefficients and variance-covariance matrix handy.
 
 ### Getting our Quantities of Interest
 
@@ -372,8 +372,8 @@ There are a variety of packages that can do this:
 My approach leans on `arm::sim()`.
 
 - This is the foundation for my `get_sims()` function in `{stevemisc}`.
-    - However, I wrote that for mixed effects models and will tweak it soon for you.
-        
+
+
 ### A Quantity of Interest
 
 What’s Trump’s expected vote share in:
@@ -420,6 +420,7 @@ MM <- model.matrix(terms(M2),newdat)
 ```{r}
 set.seed(8675309) # Jenny, I got your number
 simM2 <- arm::sim(M2, n.sims = 1000)
+# ^ will grab your coefficients and vcov and do all that for you
 ```
 
 
