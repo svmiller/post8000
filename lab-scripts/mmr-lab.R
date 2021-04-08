@@ -443,4 +443,36 @@ get_sims(M2, newdat_generation, 1000, 8675309) %>%
   labs(y = "Mean Probability of Voting for Trump (with 95% Intervals)",
        x = "")
 
+#' What about the probability of a Trump vote for each combination of college-educated and self-identified "born again" Christian?
+
+Data %>%
+  data_grid(.model = M2,
+            votetrump = 0,
+            collegeed = c(0, 1),
+            bornagain = c(0, 1)) -> newdat_colborn
+
+sims_colborn <- get_sims(M2, newdat_colborn, 1000, 8675309)
+
+newdat_colborn %>%
+  # we really just want these two
+  select(collegeed, bornagain) %>%
+  # Repeate these 5 rows however many times we did the simulations (here: 1000)
+  slice(rep(row_number(), 1000)) %>%
+  bind_cols(., sims_colborn) %>%
+  mutate(y = plogis(y)) %>%
+  # create categories
+  mutate(colcat = ifelse(collegeed == 0, "Not College Educated", "College Educated"),
+         bornagaincat = ifelse(bornagain == 0, "Not Born Again", "Born Again"),
+         cat = paste0(colcat, ",\n", bornagaincat)) %>%
+  # summarize
+  group_by(cat) %>%
+  summarize(mean = mean(y),
+            lwr = quantile(y, .025),
+            upr = quantile(y, .975)) %>%
+  ggplot(.,aes(cat, y=mean, ymin=lwr, ymax=upr)) +
+  geom_hline(yintercept = 0.5, linetype="dashed") +
+  coord_flip() +
+  theme_bw() +
+  geom_pointrange()
+
 #' What you do here is up to you. I don't know the story you want to tell, but I think these to be the most accessible tools to tell your story.
