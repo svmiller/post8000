@@ -44,7 +44,7 @@ library(stevedata)
 #' number of ways. Here's one way of thinking about it, with respect to a simple example that I've seen around the block a few times and
 #' incidentally involves a university that has a special place in my heart. Suspend disbelief about adequately sourcing the information presented
 #' here and take it as a matter of fact. But, the introduction physical training during World War II apparently made for quite the fit male
-#' student body at this time. A simple random sample, purportedly of 100 (male) students, resulted in [a mean mile run time of 7.11 minutes](https://brainly.com/question/13018058)
+#' student body at the University of Illinois at this time. A simple random sample, purportedly of 100 (male) students, resulted in [a mean mile run time of 7.11 minutes](https://brainly.com/question/13018058)
 #'  with a standard deviation of .74 minutes. That'd be an amazing level of fitness; I'd think. 
 #'  
 #' Let's mimic that here, standardizing those times to seconds, and recreating a random sample of 100 observations that'd roughly correspond to that.

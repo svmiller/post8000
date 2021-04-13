@@ -386,7 +386,7 @@ This is a lab script for <a href="http://post8000.svmiller.com">POST 8000</a>, a
 <div id="the-intuition-behind-bayesian-inference-and-why-you-should-consider-it" class="section level1">
 <h1>The Intuition Behind Bayesian Inference, and Why You Should Consider It</h1>
 <p>We’ll start with a basic illustration of Bayesian inference as it’s implemented computationally and join it with a pitch of why you should think about this approach, no matter its limitations (i.e. computational run-time). The biggest benefit is that Bayesian inference is actually providing an answer to the question you’re asking. In a lot of applications, you want to know the probability of some hypothesis, given the data you asked. The alternative/standard approach—the so-called “frequentist” approach—is giving you the probability of the data, given some alternative hypothesis. Thus, the frequentist answer to the question you’re asking is basically indirect. The answer you get from the frequentist approach amounts to “here are some values I can’t rule out.” The Bayesian answer is direct: the probability of the theta, given the data.</p>
-<p>However, this approach requires the introduction of prior beliefs that effectively weight the likelihood function of the data to produce the posterior estimates that you want. These priors amount to reasonable expectations of the data, which you can approach any number of ways. Here’s one way of thinking about it, with respect to a simple example that I’ve seen around the block a few times and incidentally involves a university that has a special place in my heart. Suspend disbelief about adequately sourcing the information presented here and take it as a matter of fact. But, the introduction physical training during World War II apparently made for quite the fit male student body at this time. A simple random sample, purportedly of 100 (male) students, resulted in <a href="https://brainly.com/question/13018058">a mean mile run time of 7.11 minutes</a> with a standard deviation of .74 minutes. That’d be an amazing level of fitness; I’d think.</p>
+<p>However, this approach requires the introduction of prior beliefs that effectively weight the likelihood function of the data to produce the posterior estimates that you want. These priors amount to reasonable expectations of the data, which you can approach any number of ways. Here’s one way of thinking about it, with respect to a simple example that I’ve seen around the block a few times and incidentally involves a university that has a special place in my heart. Suspend disbelief about adequately sourcing the information presented here and take it as a matter of fact. But, the introduction physical training during World War II apparently made for quite the fit male student body at the University of Illinois at this time. A simple random sample, purportedly of 100 (male) students, resulted in <a href="https://brainly.com/question/13018058">a mean mile run time of 7.11 minutes</a> with a standard deviation of .74 minutes. That’d be an amazing level of fitness; I’d think.</p>
 <p>Let’s mimic that here, standardizing those times to seconds, and recreating a random sample of 100 observations that’d roughly correspond to that.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mean_time <span class="ot">&lt;-</span> <span class="fl">7.11</span><span class="sc">*</span><span class="dv">60</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sd_time <span class="ot">&lt;-</span> .<span class="dv">71</span><span class="sc">*</span><span class="dv">60</span></span>
@@ -453,7 +453,7 @@ This is a lab script for <a href="http://post8000.svmiller.com">POST 8000</a>, a
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
-## Total execution time: 0.4 seconds.</code></pre>
+## Total execution time: 0.3 seconds.</code></pre>
 <p>Now, let’s use some <code>{brms}</code> functions to extract the output of interest to us. <code>posterior_samples()</code> returns the posterior estimates (<code>b_Intercept</code> and <code>sigma</code>) along with simulations from the prior distribution as well (i.e. <code>prior_Intercept</code> and <code>prior_sigma</code>). Some “tidy”-friendly verbs will make the following plot.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_samples</span>(M1) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(b_Intercept, prior_Intercept) <span class="sc">%&gt;%</span></span>
@@ -509,8 +509,8 @@ This is a lab script for <a href="http://post8000.svmiller.com">POST 8000</a>, a
 <pre><code>## Running MCMC with 4 chains, at most 32 in parallel...
 ## 
 ## Chain 1 finished in 0.1 seconds.
-## Chain 2 finished in 0.1 seconds.
-## Chain 3 finished in 0.1 seconds.
+## Chain 2 finished in 0.0 seconds.
+## Chain 3 finished in 0.0 seconds.
 ## Chain 4 finished in 0.0 seconds.
 ## 
 ## All 4 chains finished successfully.
@@ -797,7 +797,7 @@ This is a lab script for <a href="http://post8000.svmiller.com">POST 8000</a>, a
 <pre><code>## Start sampling</code></pre>
 <pre><code>## Running MCMC with 4 chains, at most 32 in parallel...
 ## 
-## Chain 1 finished in 0.3 seconds.
+## Chain 1 finished in 0.4 seconds.
 ## Chain 2 finished in 0.3 seconds.
 ## Chain 3 finished in 0.3 seconds.
 ## Chain 4 finished in 0.3 seconds.
