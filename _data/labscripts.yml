@@ -42,4 +42,8 @@
   filename: mmr-lab
   tldr: "Regression is story-telling and here's how to tell your story well."
 
+- title: "The Basics of Bayesian Inference"
+  filename: bayes-lab
+  tldr: "A way too brief introduction to the world of Bayes."
+
 
