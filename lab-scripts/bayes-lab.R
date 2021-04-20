@@ -34,23 +34,23 @@ library(stevedata)
 #' We'll start with a basic illustration of Bayesian inference as it's implemented computationally and join it with a pitch 
 #' of why you should think about this approach, no matter its limitations (i.e. computational run-time). The biggest benefit 
 #' is that Bayesian inference is actually providing an answer to the question you're asking. In a lot of applications, you want
-#' to know the probability of some hypothesis, given the data you asked. The alternative/standard approach---the so-called
+#' to know the probability of some hypothesis, given the data you obtained analyzed. The alternative/standard approach---the so-called
 #' "frequentist" approach---is giving you the probability of the data, given some alternative hypothesis. Thus, the frequentist
 #' answer to the question you're asking is basically indirect. The answer you get from the frequentist approach amounts to 
-#' "here are some values I can't rule out." The Bayesian answer is direct: the probability of the theta, given the data.
+#' "here are some values I can't rule out." The Bayesian answer is a bit more direct: the probability of theta, given the data.
 #' 
 #' However, this approach requires the introduction of prior beliefs that effectively weight the likelihood function of the data to
 #' produce the posterior estimates that you want. These priors amount to reasonable expectations of the data, which you can approach any
 #' number of ways. Here's one way of thinking about it, with respect to a simple example that I've seen around the block a few times and
 #' incidentally involves a university that has a special place in my heart. Suspend disbelief about adequately sourcing the information presented
-#' here and take it as a matter of fact. But, the introduction physical training during World War II apparently made for quite the fit male
+#' here and take it as a matter of fact. But, the introduction of physical training during World War II apparently made for quite the fit male
 #' student body at the University of Illinois at this time. A simple random sample, purportedly of 100 (male) students, resulted in [a mean mile run time of 7.11 minutes](https://brainly.com/question/13018058)
-#'  with a standard deviation of .74 minutes. That'd be an amazing level of fitness; I'd think. 
+#'  with a standard deviation of .74 minutes. That would be an amazing level of fitness; I'd think. 
 #'  
-#' Let's mimic that here, standardizing those times to seconds, and recreating a random sample of 100 observations that'd roughly correspond to that.
+#' Let's mimic that here, standardizing those times to seconds, and recreating a random sample of 100 observations that would roughly correspond to that.
 
 mean_time <- 7.11*60
-sd_time <- .71*60
+sd_time <- .74*60
 
 set.seed(8675309)
 illinois_times <- tibble(y = rnorm(100, mean_time, sd_time))
@@ -83,8 +83,8 @@ get_prior(mile_form, data = illinois_times)
 #' starting for these two parameters.
 
 set.seed(8675309)
-tibble(int_prior = rstudent_t(100, 3, 428.9, 41.1),
-       sig_prior = rstudent_t(100, 3, 0, 41.1)) %>%
+tibble(int_prior = rstudent_t(10000, 3, 429, 42.9),
+       sig_prior = rstudent_t(10000, 3, 0, 42.9)) %>%
   gather(var, value) %>%
   ggplot(.,aes(value)) +
   facet_wrap(~var, scales = "free") +
@@ -139,7 +139,7 @@ M1 <- brm(mile_form,
 #' estimates (`b_Intercept` and `sigma`) along with simulations from the prior distribution as well (i.e. `prior_Intercept` and
 #' `prior_sigma`). Some "tidy"-friendly verbs will make the following plot.
 
-posterior_samples(M1) %>% as_tibble() %>%
+posterior_samples(M1)  %>% as_tibble() %>%
   select(b_Intercept, prior_Intercept) %>%
   gather(var, val) %>%
   bind_rows(., tibble(var = "actual", val = illinois_times$y)) %>%
@@ -193,9 +193,9 @@ posterior_samples(M3) %>% as_tibble() %>%
   ggplot(.,aes(val, fill=var)) + geom_density(alpha=0.8) +
   theme_bw() + theme(legend.position = "bottom")
 
-#' If you have weak data and some prior expectations about it, you should use a Bayesian approach. If you want a direct answer to your question about the state of the world,
+#' If you have weak data and some prior expectations about it, you should use a Bayesian approach. If you want a bit more direct answer to your question about the state of the world,
 #' given some observed data, you should also use a Bayesian approach.
-
+#' 
 #' # How Should You Use Bayes For Your Own Purposes?
 #' 
 #' The "why" for Bayes is multiple and the rationale above reduces to 1) it's actually answering the question you're asking and 2) it allows prior beliefs
